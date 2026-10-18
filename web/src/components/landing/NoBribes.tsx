@@ -52,7 +52,7 @@ function BribeExample() {
   const { auction, bid } = found;
   const first = (auction.bids ?? []).find((b) => b.rank === 1);
   const ratio = first && first.fee_cents > 0 ? bid.fee_cents / first.fee_cents : 0;
-  const ratioText = ratio >= 1.5 ? `${Number.isInteger(ratio) ? ratio : ratio.toFixed(1)}× the No. 1 paddle's` : null;
+  const ratioText = ratio >= 1.5 ? `${Number.isInteger(ratio) ? ratio : ratio.toFixed(1)}×\u00a0what the No.\u00a01 paddle offered` : null;
 
   return (
     <div className="border-t border-line bg-raised/40 px-6 py-5 md:px-8">
@@ -72,7 +72,8 @@ function BribeExample() {
           </div>
           <p className="mt-1 text-[13px] leading-5 text-muted">
             Offered <b className="font-semibold tabular-nums text-fee">{money(bid.fee_cents)}</b> commission per sale
-            {ratioText ? `, ${ratioText}` : ""}. Still No. <b className="font-semibold tabular-nums text-ink">{bid.rank}</b>.
+            {ratioText ? `, ${ratioText}` : ""}. Still ranked{" "}
+            <b className="whitespace-nowrap font-semibold tabular-nums text-ink">No.&nbsp;{bid.rank}</b>.
           </p>
         </div>
       </div>
@@ -112,12 +113,13 @@ export function NoBribes() {
               <div className="mt-6">
                 <WeightsBar />
               </div>
-              <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+              <ul className="mt-5 grid grid-cols-1 gap-x-8 sm:grid-cols-2">
                 {WEIGHTS.map((w) => (
-                  <li key={w.label} className="inline-flex items-center gap-2 text-[13px]">
-                    <span className="size-2 rounded-[2px]" style={{ background: w.fill }} aria-hidden />
+                  <li key={w.label} className="flex items-center gap-2.5 border-b border-line py-2 text-[13.5px]">
+                    <span className="size-2.5 shrink-0 rounded-[2px]" style={{ background: w.fill }} aria-hidden />
                     <span className="font-medium text-ink">{w.label}</span>
-                    <span className="tabular-nums text-muted">{w.value}</span>
+                    <span aria-hidden className="mx-1 h-px flex-1 border-b border-dotted border-line-strong" />
+                    <span className="font-serif text-[18px] leading-none tabular-nums text-ink">{w.value}</span>
                   </li>
                 ))}
               </ul>
