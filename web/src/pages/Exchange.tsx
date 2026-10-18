@@ -34,7 +34,7 @@ export default function Exchange() {
             <div className="card shimmer min-h-[420px] flex-1" />
           ) : current ? (
             <>
-              <SaleroomBoard a={current} />
+              <SaleroomBoard key={current.id} a={current} />
               <div className="flex min-h-[300px] flex-1 flex-col xl:min-h-0">
                 <PaddleList a={current} onOpenBid={(bidId) => setDrawer({ auctionId: current.id, bidId })} />
               </div>
@@ -48,7 +48,7 @@ export default function Exchange() {
           <div className="flex min-h-[260px] flex-1 flex-col xl:min-h-0">
             <AgentWire />
           </div>
-          <TrustBoard onOpen={setMerchantId} className="max-h-[290px] shrink-0" />
+          <TrustBoard onOpen={setMerchantId} className="shrink-0" />
           <JoinCard />
         </div>
       </div>
