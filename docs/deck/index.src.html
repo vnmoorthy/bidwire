@@ -342,6 +342,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 #hint{position:fixed;right:20px;bottom:18px;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;z-index:21;transition:opacity .6s}
 #hint.off{opacity:0;pointer-events:none}
 @media print{#hint,#notes{display:none!important}}
+@media (prefers-reduced-motion: reduce){.slide .r,.slide.active .r,.slide.active .step{opacity:1!important;animation:none!important;transform:none!important;clip-path:none!important}.flow line,.marrow line{animation:none!important}}
 </style>
 </head>
 <body>
