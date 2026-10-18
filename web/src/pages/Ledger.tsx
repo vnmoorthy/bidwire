@@ -118,7 +118,7 @@ export default function Ledger() {
           <section className="panel overflow-hidden">
             <div className="flex items-center gap-2 border-b border-line px-5 py-3">
               <ShoppingBag size={15} className="text-muted" />
-              <h2 className="card-title">Orders</h2>
+              <h2 className="serif text-[24px] leading-7">Sold lots</h2>
               <span className="tnum ml-auto text-[13px] text-muted">{orders.length}</span>
             </div>
             <div className="overflow-x-auto">
@@ -130,7 +130,7 @@ export default function Ledger() {
                     <th className="px-3 py-2 font-semibold">Product</th>
                     <th className="px-3 py-2 font-semibold">Merchant</th>
                     <th className="px-3 py-2 text-right font-semibold">Amount</th>
-                    <th className="px-3 py-2 text-right font-semibold">Fee</th>
+                    <th className="px-3 py-2 text-right font-semibold">Commission</th>
                     <th className="px-3 py-2 font-semibold">Status</th>
                     <th className="px-5 py-2 font-semibold">Receipt</th>
                   </tr>
@@ -190,7 +190,7 @@ export default function Ledger() {
           <section className="panel overflow-hidden">
             <div className="flex items-center gap-2 border-b border-line px-5 py-3">
               <BookOpen size={15} className="text-muted" />
-              <h2 className="card-title">Journal</h2>
+              <h2 className="serif text-[24px] leading-7">Journal</h2>
               <span className="text-[12px] text-dim">grouped by transaction</span>
               <span className="tnum ml-auto text-[13px] text-muted">{data?.entries.length ?? 0} entries</span>
             </div>
@@ -248,7 +248,7 @@ export default function Ledger() {
         <section className="panel h-fit overflow-hidden">
           <div className="flex items-center gap-2 border-b border-line px-5 py-3">
             <Landmark size={15} className="text-muted" />
-            <h2 className="card-title">Balances by account</h2>
+            <h2 className="serif text-[24px] leading-7">Balances by account</h2>
           </div>
           <div className="divide-y divide-line">
             {groups.map((g) => {
@@ -290,7 +290,7 @@ function Kpi({ icon, label, value, color }: { icon: React.ReactNode; label: stri
         <span className="text-dim">{icon}</span>
         {label}
       </div>
-      <div className={`mt-1 text-[28px] font-semibold leading-8 tracking-[-0.01em] ${color}`}>{value}</div>
+      <div className={`serif mt-0.5 text-[32px] leading-9 ${color}`}>{value}</div>
     </div>
   );
 }
