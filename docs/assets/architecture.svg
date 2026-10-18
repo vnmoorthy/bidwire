@@ -72,22 +72,22 @@
     <line x1="38" y1="390" x2="214" y2="390" stroke="#E2D9C6" stroke-width="1"/>
     <text x="40" y="413" font-size="16" font-weight="600" fill="#16130E">Cursor</text>
     <text x="40" y="432" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#233F6E">HTTP</text>
-    <rect class="card" x="24" y="600" width="204" height="118" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
-    <text x="40" y="629" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Merchant agents</text>
-    <text x="40" y="653" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">register_merchant</text>
-    <text x="40" y="675" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E"><tspan fill="#9C937F">→ </tspan>list_open_requests</text>
-    <text x="40" y="697" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E"><tspan fill="#9C937F">→ </tspan>place_bid</text>
+    <rect class="card" x="24" y="688" width="204" height="118" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="717" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Merchant agents</text>
+    <text x="40" y="741" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">register_merchant</text>
+    <text x="40" y="763" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E"><tspan fill="#9C937F">→ </tspan>list_open_requests</text>
+    <text x="40" y="785" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E"><tspan fill="#9C937F">→ </tspan>place_bid</text>
     <rect class="card" x="24" y="1040" width="204" height="176" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
     <text x="40" y="1069" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Humans</text>
-    <rect x="38" y="1088" width="13" height="22" rx="3" fill="none" stroke="#6E6658" stroke-width="1.4"/>
-    <line x1="42.5" y1="1106" x2="46.5" y2="1106" stroke="#6E6658" stroke-width="1.4" stroke-linecap="round"/>
-    <text x="60" y="1101" font-size="16" font-weight="600" fill="#16130E">Merchant phones</text>
-    <text x="60" y="1121" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/merchant</tspan> · QR join</text>
+    <rect x="36" y="1088" width="13" height="22" rx="3" fill="none" stroke="#6E6658" stroke-width="1.4"/>
+    <line x1="40.5" y1="1106" x2="44.5" y2="1106" stroke="#6E6658" stroke-width="1.4" stroke-linecap="round"/>
+    <text x="56" y="1101" font-size="16" font-weight="600" fill="#16130E">Merchant phones</text>
+    <text x="56" y="1121" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/merchant</tspan> · QR join</text>
     <line x1="38" y1="1138" x2="214" y2="1138" stroke="#E2D9C6" stroke-width="1"/>
-    <rect x="38" y="1152" width="13" height="22" rx="3" fill="none" stroke="#6E6658" stroke-width="1.4"/>
-    <line x1="42.5" y1="1170" x2="46.5" y2="1170" stroke="#6E6658" stroke-width="1.4" stroke-linecap="round"/>
-    <text x="60" y="1165" font-size="16" font-weight="600" fill="#16130E">Approver phone</text>
-    <text x="60" y="1185" font-size="14" fill="#6E6658">SMS / on-screen <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/phone</tspan></text>
+    <rect x="36" y="1152" width="13" height="22" rx="3" fill="none" stroke="#6E6658" stroke-width="1.4"/>
+    <line x1="40.5" y1="1170" x2="44.5" y2="1170" stroke="#6E6658" stroke-width="1.4" stroke-linecap="round"/>
+    <text x="56" y="1165" font-size="16" font-weight="600" fill="#16130E">Approver phone</text>
+    <text x="56" y="1185" font-size="14" fill="#6E6658">SMS / on-screen <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/phone</tspan></text>
   </g>
   <!-- Right column · outside the process, legend -->
   <g>
@@ -179,20 +179,20 @@
     <line x1="444" y1="576" x2="1242" y2="576" stroke="#B0894F" stroke-width="1"/>
     <rect x="444" y="528" width="798" height="280" rx="10" fill="none" stroke="#B0894F" stroke-width="1.25"/>
     <text x="462" y="560" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="22" fill="#F3E9D2">Exchange engine<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#B0894F" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">exchange.ts</tspan></text>
-    <rect class="chip" x="1160" y="541" width="66" height="22" rx="4" fill="#E5F0E8"/>
-    <text x="1193" y="557" font-size="14" font-weight="600" fill="#2D6A48" text-anchor="middle">+1 sale</text>
-    <rect class="chip" x="992" y="541" width="160" height="22" rx="4" fill="#F6E3DF"/>
-    <text x="1072" y="557" font-size="14" font-weight="600" fill="#8E2A22" text-anchor="middle">−10 confirmed report</text>
-    <rect class="chip" x="922" y="541" width="62" height="22" rx="4" fill="#F6E3DF"/>
-    <text x="953" y="557" font-size="14" font-weight="600" fill="#8E2A22" text-anchor="middle">−12 lie</text>
-    <text x="908" y="557" font-size="12" font-weight="600" fill="#B0894F" text-anchor="end" letter-spacing="1.44">TRUST</text>
-    <rect class="card" x="458" y="588" width="124" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <rect class="chip" x="1154" y="541" width="72" height="22" rx="4" fill="#E5F0E8"/>
+    <text x="1190" y="557" font-size="14" font-weight="600" fill="#2D6A48" text-anchor="middle">+1 sale</text>
+    <rect class="chip" x="974" y="541" width="172" height="22" rx="4" fill="#F6E3DF"/>
+    <text x="1060" y="557" font-size="14" font-weight="600" fill="#8E2A22" text-anchor="middle">−10 confirmed report</text>
+    <rect class="chip" x="894" y="541" width="72" height="22" rx="4" fill="#F6E3DF"/>
+    <text x="930" y="557" font-size="14" font-weight="600" fill="#8E2A22" text-anchor="middle">−12 lie</text>
+    <text x="880" y="557" font-size="12" font-weight="600" fill="#B0894F" text-anchor="end" letter-spacing="1.44">TRUST</text>
+    <rect class="card" x="458" y="588" width="112" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
     <text x="470" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Auction</text>
-    <text x="570" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">01</text>
-    <rect class="card" x="600" y="588" width="124" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="612" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Verifier</text>
+    <text x="558" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">01</text>
+    <rect class="card" x="588" y="588" width="136" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="600" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Verifier</text>
     <text x="712" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">02</text>
-    <path id="e-stage1" class="edge" d="M584 669 L598 669" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-dim-sm)"/>
+    <path id="e-stage1" class="edge" d="M572 669 L586 669" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-dim-sm)"/>
     <rect class="card" x="742" y="588" width="202" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
     <text x="754" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Ranker</text>
     <text x="932" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">03</text>
@@ -211,19 +211,19 @@
     <circle cx="480" cy="725" r="9" fill="none" stroke="#E2D9C6" stroke-width="2.5"/>
     <path d="M480 716 A9 9 0 1 1 472.21 720.5" fill="none" stroke="#B0894F" stroke-width="2.5" stroke-linecap="round"/>
     <text x="497" y="731" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">12 s</text>
-    <text x="612" y="638" font-size="14" fill="#6E6658">page JSON-LD +</text>
-    <text x="612" y="658" font-size="14" fill="#6E6658">checkout quote</text>
-    <text x="612" y="682" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan><tspan fill="#2D6A48" font-weight="600">5 checks</tspan></text>
-    <circle cx="619" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
-    <path d="M616 725.2 L618.2 727.4 L622.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="638" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
-    <path d="M635 725.2 L637.2 727.4 L641.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="657" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
-    <path d="M654 725.2 L656.2 727.4 L660.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="676" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
-    <path d="M673 725.2 L675.2 727.4 L679.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="695" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
-    <path d="M692 725.2 L694.2 727.4 L698.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="600" y="638" font-size="14" fill="#6E6658">page JSON-LD</text>
+    <text x="600" y="658" font-size="14" fill="#6E6658"><tspan fill="#9C937F">+ </tspan>checkout quote</text>
+    <text x="600" y="682" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan><tspan fill="#2D6A48" font-weight="600">5 checks</tspan></text>
+    <circle cx="607" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M604 725.2 L606.2 727.4 L610.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="626" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M623 725.2 L625.2 727.4 L629.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="645" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M642 725.2 L644.2 727.4 L648.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="664" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M661 725.2 L663.2 727.4 L667.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="683" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M680 725.2 L682.2 727.4 L686.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     <text x="754" y="638" font-size="14" fill="#6E6658">price</text>
     <rect x="820" y="630" width="84" height="6" rx="3" fill="#EFE8D9"/>
     <rect x="820" y="630" width="84" height="6" rx="3" fill="#B0894F"/>
@@ -244,7 +244,7 @@
     <rect x="820" y="706" width="84" height="6" rx="3" fill="#EFE8D9"/>
     <rect x="820" y="706" width="10.5" height="6" rx="3" fill="#B0894F"/>
     <text x="932" y="714" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E" text-anchor="end">5</text>
-    <rect class="chip" x="752" y="720" width="182" height="22" rx="4" fill="#F6EBD6"/>
+    <rect class="chip" x="749" y="720" width="188" height="22" rx="4" fill="#F6EBD6"/>
     <text x="843" y="735.5" font-size="14" font-weight="600" fill="#94641F" text-anchor="middle">fee breaks ties &lt; 0.5 pts</text>
     <text x="974" y="638" font-size="14" fill="#6E6658">per-purchase +</text>
     <text x="974" y="658" font-size="14" fill="#6E6658">daily limits</text>
@@ -332,10 +332,10 @@
     <line x1="228" y1="416" x2="242" y2="416" stroke="#233F6E" stroke-width="1.6"/>
     <circle cx="228" cy="416" r="2.8" fill="#233F6E"/>
     <circle cx="242" cy="416" r="2.4" fill="#233F6E"/>
-    <line x1="228" y1="659" x2="242" y2="659" stroke="#233F6E" stroke-width="1.6"/>
-    <circle cx="228" cy="659" r="2.8" fill="#233F6E"/>
-    <circle cx="242" cy="659" r="2.4" fill="#233F6E"/>
-    <line x1="242" y1="190" x2="242" y2="659" stroke="#233F6E" stroke-width="1.6"/>
+    <line x1="228" y1="747" x2="242" y2="747" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="747" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="747" r="2.4" fill="#233F6E"/>
+    <line x1="242" y1="190" x2="242" y2="747" stroke="#233F6E" stroke-width="1.6"/>
     <path id="e-mcp" class="edge" d="M242 230 L444 230" fill="none" stroke="#233F6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-navy)"/>
     <circle cx="242" cy="230" r="3" fill="#233F6E"/>
     <text x="335" y="221" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#233F6E" text-anchor="middle">MCP · streamable HTTP</text>
