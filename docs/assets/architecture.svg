@@ -152,7 +152,7 @@
     <text x="460" y="379" font-size="14" fill="#6E6658">static <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">web/dist</tspan> · <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/api/tools</tspan></text>
     <rect class="card" x="444" y="416" width="280" height="72" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
     <text x="460" y="445" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Demo agent<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">agent.ts</tspan></text>
-    <text x="460" y="468" font-size="14" fill="#6E6658">6 scenarios · calls the same tools</text>
+    <text x="460" y="468" font-size="14" fill="#6E6658">8 scenarios · calls the same tools</text>
     <rect class="card" x="760" y="168" width="482" height="252" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
     <text x="778" y="197" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Tool registry<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">tools.ts</tspan></text>
     <text x="778" y="219" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-weight="600">12</tspan> tools · <tspan fill="#16130E" font-weight="600">3</tspan> resources · <tspan fill="#16130E" font-weight="600">2</tspan> prompts</text>
@@ -217,7 +217,8 @@
     <text x="497" y="731" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">12 s</text>
     <text x="606" y="638" font-size="14" fill="#6E6658">page JSON-LD</text>
     <text x="606" y="658" font-size="14" fill="#6E6658"><tspan fill="#9C937F">+ </tspan>checkout quote</text>
-    <text x="606" y="682" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan><tspan fill="#2D6A48" font-weight="600">5 checks</tspan></text>
+    <text x="606" y="678" font-size="14" fill="#6E6658"><tspan fill="#9C937F">+ </tspan>pitch screen</text>
+    <text x="606" y="700" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan><tspan fill="#2D6A48" font-weight="600">6 checks</tspan></text>
     <circle cx="613" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
     <path d="M610 725.2 L612.2 727.4 L616.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     <circle cx="632" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
@@ -228,6 +229,8 @@
     <path d="M667 725.2 L669.2 727.4 L673.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     <circle cx="689" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
     <path d="M686 725.2 L688.2 727.4 L692.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="708" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M705 725.2 L707.2 727.4 L711.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     <text x="760" y="638" font-size="14" fill="#6E6658">price</text>
     <rect x="822" y="630" width="80" height="6" rx="3" fill="#EFE8D9"/>
     <rect x="822" y="630" width="80" height="6" rx="3" fill="#B0894F"/>
@@ -262,24 +265,25 @@
     <line x1="1122" y1="726" x2="1134" y2="726" stroke="#2D6A48" stroke-width="1.2" stroke-linecap="round"/>
     <line x1="1146" y1="731" x2="1158" y2="731" stroke="#2D6A48" stroke-width="1.2" stroke-linecap="round"/>
     <rect class="card" x="444" y="872" width="320" height="176" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
-    <text x="460" y="901" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Merchant bots<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">bots.ts</tspan></text>
-    <text x="460" y="923" font-size="14" fill="#6E6658">8 personas</text>
-    <rect class="chip" x="460" y="934" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="467" y="949.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">honest-value</text>
-    <rect class="chip" x="581" y="934" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="588" y="949.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">premium-fast</text>
-    <rect class="chip" x="460" y="961" width="157" height="22" rx="4" fill="#F6E3DF" stroke="#E7C3BC"/>
-    <text x="467" y="976.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#8E2A22">drip-pricing-liar</text>
-    <rect class="chip" x="623" y="961" width="65" height="22" rx="4" fill="#F6EBD6" stroke="#E6D2AE"/>
-    <text x="630" y="976.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#94641F">briber</text>
-    <rect class="chip" x="460" y="988" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="467" y="1003.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">slow-shipper</text>
-    <rect class="chip" x="581" y="988" width="132" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="588" y="1003.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">spec-stretcher</text>
-    <rect class="chip" x="460" y="1015" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="467" y="1030.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">scarce-stock</text>
-    <rect class="chip" x="581" y="1015" width="98" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
-    <text x="588" y="1030.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">specialist</text>
+    <text x="460" y="901" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Merchant bots<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">bots.ts</tspan><tspan fill="#6E6658" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · 9 personas</tspan></text>
+    <rect class="chip" x="460" y="916" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="931.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">honest-value</text>
+    <rect class="chip" x="581" y="916" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="588" y="931.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">premium-fast</text>
+    <rect class="chip" x="460" y="941" width="157" height="22" rx="4" fill="#F6E3DF" stroke="#E7C3BC"/>
+    <text x="467" y="956.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#8E2A22">drip-pricing-liar</text>
+    <rect class="chip" x="623" y="941" width="65" height="22" rx="4" fill="#F6EBD6" stroke="#E6D2AE"/>
+    <text x="630" y="956.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#94641F">briber</text>
+    <rect class="chip" x="460" y="966" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="981.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">slow-shipper</text>
+    <rect class="chip" x="581" y="966" width="132" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="588" y="981.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">spec-stretcher</text>
+    <rect class="chip" x="460" y="991" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="1006.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">scarce-stock</text>
+    <rect class="chip" x="581" y="991" width="98" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="588" y="1006.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">specialist</text>
+    <rect class="chip" x="460" y="1016" width="140" height="22" rx="4" fill="#F6E3DF" stroke="#E7C3BC"/>
+    <text x="467" y="1031.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#8E2A22">prompt-injector</text>
     <rect class="card" x="784" y="872" width="290" height="112" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
     <text x="800" y="901" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Storefronts</text>
     <text x="800" y="924" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/store/:handle/:sku (+ /quote)</text>
