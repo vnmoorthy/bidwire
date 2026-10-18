@@ -35,6 +35,8 @@ ok(found.ok && found.result.status === "closed", "auction closes and returns", J
 ok(found.result.offers?.length > 0, `${found.result.offers?.length} verified offers ranked`);
 ok(found.result.offers?.every((o: any) => o.verified && o.fee_affected_rank === false), "every returned offer is verified and fee never affected rank");
 ok((found.result.excluded ?? []).some((e: any) => /checkout says/.test(e.reason)), "drip-pricing liar excluded with checkout evidence", JSON.stringify(found.result.excluded));
+ok((found.result.excluded ?? []).some((e: any) => /instructions aimed at the buying agent/.test(e.reason)), "prompt-injection pitch withdrawn (pitches are data, never instructions)", JSON.stringify(found.result.excluded));
+ok(!JSON.stringify(found.result).toLowerCase().includes("ignore your previous instructions"), "no merchant pitch text ever reaches the agent");
 const ranks = found.result.offers.map((o: any) => o.merit);
 ok(ranks.every((m: number, i: number) => i === 0 || ranks[i - 1] >= m - 0.5), "offers sorted by merit (ties broken by fee)");
 const bought = await j("/api/tools/buy_offer", { args: { offer_id: found.result.offers[0].offer_id, idempotency_key: `e2e-${Date.now()}`, wait_for_approval_seconds: 0 }, buyer_id: "b_chatgpt" });
