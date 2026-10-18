@@ -6,11 +6,13 @@ import { ClientBadge } from "@/components/ClientBadge";
 import { KindBadge } from "@/components/KindBadge";
 import { PaddleChip } from "@/components/MerchantDot";
 import { Money } from "@/components/Money";
-import { BribeBadge, PickBadge, VerifyStamp } from "@/components/VerifyStamp";
+import { BidStamp, BribeBadge, PickBadge, SoldBadge } from "@/components/VerifyStamp";
 import { api, errMsg } from "@/lib/api";
 import { useLive } from "@/lib/store";
 import { claimedTotal, clock, days, money } from "@/lib/format";
-import { isWinner, sortBids } from "./BidBoard";
+import { sortBids } from "./BidBoard";
+import { isHammer, withdrawal } from "@/lib/lot";
+import { useLot } from "@/lib/useLot";
 
 export function AuctionDrawer({ auctionId, focusBidId, onClose }: { auctionId: string | null; focusBidId?: string | null; onClose: () => void }) {
   const live = useLive((s) => (auctionId ? s.auctions.find((a) => a.id === auctionId) : undefined));
@@ -76,7 +78,7 @@ export function AuctionDrawer({ auctionId, focusBidId, onClose }: { auctionId: s
     >
       <div ref={scroller}>
         {!a && !err && <div className="shimmer h-40 rounded-[6px]" />}
-        {err && !a && <div className="rounded-[6px] border border-lie/40 bg-lie/10 p-4 text-sm text-lie">{err}</div>}
+        {err && !a && <div className="rounded-[6px] bg-lie-soft p-4 text-sm text-lie">{err}</div>}
         {a && (
           <>
             {a.must_have.length > 0 && (
@@ -105,15 +107,18 @@ export function AuctionDrawer({ auctionId, focusBidId, onClose }: { auctionId: s
 }
 
 function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
-  const lied = b.verify_status === "mismatch";
-  const win = isWinner(a, b);
+  const lot = useLot(a);
+  const w = withdrawal(b);
+  const lied = !!w;
+  const win = isHammer(a, b);
+  const sold = !!lot.soldBid && lot.soldBid.id === b.id;
   const e = b.evidence;
   return (
     <div
       id={`bid-${b.id}`}
       className={`scroll-mt-4 rounded-[6px] border p-4 ${
-        win ? "border-[#f8c9b5] bg-accent-soft/60" : lied ? "border-[#f3c4c6] bg-lie-soft/50" : "border-line bg-panel"
-      } ${focus ? "ring-[3px] ring-[rgba(242,86,29,0.25)]" : ""}`}
+        win ? "border-[#e3cfa6] bg-accent-soft/60" : sold ? "border-[#bcd8c5] bg-money-soft/50" : lied ? "border-[#e3bdb6] bg-lie-soft/50" : "border-line bg-panel"
+      } ${focus ? "ring-[3px] ring-[rgba(176,137,79,0.3)]" : ""}`}
     >
       <div className="flex items-start gap-3">
         <div className="tnum w-8 shrink-0 pt-0.5 text-center text-[20px] font-semibold">
@@ -126,15 +131,23 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
             <KindBadge kind={b.merchant_kind} />
             {win && <PickBadge />}
             {b.bribe_ignored && <BribeBadge />}
-            <span className="ml-auto">
-              <VerifyStamp status={b.verify_status} size="sm" />
+            <span className="ml-auto flex items-center gap-1.5">
+              {sold && <SoldBadge size="sm" />}
+              <BidStamp b={b} size="sm" />
             </span>
           </div>
           <div className="mt-2 flex items-center gap-2 text-[15px] text-ink">
             <span className="text-xl">{b.product_emoji}</span> {b.product_title}
             <span className="font-mono text-[12px] text-dim">{b.sku}</span>
           </div>
-          {b.pitch && <div className="mt-1 text-[13px] italic text-muted">“{b.pitch}”</div>}
+          {b.pitch &&
+            (w?.kind === "injection" ? (
+              <div className="mt-1 text-[13px] italic text-lie [overflow-wrap:anywhere]">
+                <span className="not-italic font-semibold">Pitch, withheld from agents:</span> “{b.pitch}”
+              </div>
+            ) : (
+              <div className="mt-1 text-[13px] italic text-muted [overflow-wrap:anywhere]">“{b.pitch}”</div>
+            ))}
 
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
             <Kv label="Claimed total" value={<Money cents={claimedTotal(b)} className={lied && e && e.actual_total_cents !== e.claimed_total_cents ? "text-dim line-through" : ""} />} />
@@ -171,13 +184,13 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
                   Open storefront <ExternalLink size={12} />
                 </a>
               </div>
-              <div className={`mb-2 text-[14px] ${lied ? "font-medium text-lie" : "text-ink"}`}>{e.summary}</div>
+              <div className={`mb-2 text-[14px] [overflow-wrap:anywhere] ${lied ? "font-medium text-lie" : "text-ink"}`}>{w ? w.detail : e.summary}</div>
               <ul className="space-y-1">
                 {e.checks.map((c, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px]">
                     {c.ok ? <CircleCheck size={15} className="mt-[1px] shrink-0 text-money" /> : <CircleX size={15} className="mt-[1px] shrink-0 text-lie" />}
                     <span className={`font-medium ${c.ok ? "text-ink" : "text-lie"}`}>{c.name}</span>
-                    <span className="text-muted">{c.detail}</span>
+                    <span className="min-w-0 text-muted [overflow-wrap:anywhere]">{c.detail}</span>
                   </li>
                 ))}
               </ul>
