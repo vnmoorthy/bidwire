@@ -16,4 +16,5 @@ export const config = {
   inkboxIdentity: clean(process.env.INKBOX_IDENTITY),
   approverPhone: clean(process.env.APPROVER_PHONE),
   receiptEmail: clean(process.env.RECEIPT_EMAIL),
+  directorKey: clean(process.env.DIRECTOR_KEY) ?? `dk_${Math.random().toString(36).slice(2, 12)}`,
 };
