@@ -25,7 +25,8 @@ import { LivePill } from "@/components/LivePill";
 import { ClientBadge } from "@/components/ClientBadge";
 import { CountdownRing } from "@/components/CountdownRing";
 import { Money } from "@/components/Money";
-import { VerifyStamp } from "@/components/VerifyStamp";
+import { BidStamp, SoldBadge } from "@/components/VerifyStamp";
+import { isHammer, withdrawal } from "@/lib/lot";
 import { api, ApiError, errMsg, type ListingWithProduct, type MerchantFeed, type MerchantProfile } from "@/lib/api";
 import { useLive } from "@/lib/store";
 import { claimedTotal, listingTotal, money, titleCase, trustColor } from "@/lib/format";
@@ -420,7 +421,7 @@ function RequestCard({ a, myBid, onBid }: { a: Auction; myBid?: Bid; onBid: () =
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      className={`rounded-[6px] border p-4 ${open ? "border-[#f8c9b5] bg-panel shadow-[0_1px_2px_rgba(14,14,16,0.04),0_0_0_3px_rgba(242,86,29,0.08)]" : "border-line bg-panel"}`}
+      className={`rounded-[6px] border p-4 ${open ? "border-accent bg-panel shadow-[0_0_0_3px_rgba(176,137,79,0.12)]" : "border-line bg-panel"}`}
     >
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
@@ -455,7 +456,7 @@ function RequestCard({ a, myBid, onBid }: { a: Auction; myBid?: Bid; onBid: () =
           <span className="text-[13px] text-muted">
             Your paddle <Money cents={claimedTotal(myBid)} className="font-semibold text-ink" />
           </span>
-          <VerifyStamp status={myBid.verify_status} size="sm" lieLabel="Withdrawn" />
+          <BidStamp b={myBid} size="sm" short />
         </button>
       ) : open ? (
         <button onClick={onBid} className="btn btn-primary mt-3 h-12 w-full text-[16px]">
@@ -470,8 +471,9 @@ function RequestCard({ a, myBid, onBid }: { a: Auction; myBid?: Bid; onBid: () =
 
 function MyBidRow({ b, a, feeCharged, sold, onOpen }: { b: Bid; a?: Auction; feeCharged?: number; sold: boolean; onOpen: () => void }) {
   const closed = a?.status === "closed";
-  const lied = b.verify_status === "mismatch";
-  const won = !!a && !lied && (a.winner_bid_id ? a.winner_bid_id === b.id : closed && b.rank === 1);
+  const w = withdrawal(b);
+  const lied = !!w;
+  const won = !!a && isHammer(a, b);
   return (
     <button onClick={onOpen} className="flex w-full items-center gap-3 rounded-[6px] border border-line bg-panel px-3 py-2.5 text-left">
       <span className="text-[22px]">{b.product_emoji}</span>
@@ -483,16 +485,18 @@ function MyBidRow({ b, a, feeCharged, sold, onOpen }: { b: Bid; a?: Auction; fee
           {sold && feeCharged != null && <span className="tnum text-[13px] text-fee">Fee {money(feeCharged)}</span>}
         </div>
       </div>
-      {closed || lied ? (
+      {closed || lied || sold ? (
         lied ? (
-          <span className="rounded-full bg-lie-soft px-2.5 py-1 text-[12px] font-semibold text-lie">Withdrawn</span>
+          <BidStamp b={b} size="sm" short />
+        ) : sold ? (
+          <SoldBadge size="sm" />
         ) : won ? (
           <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[12px] font-semibold text-[#7d5f30]">Hammer</span>
         ) : (
           <span className="rounded-full bg-raised px-2.5 py-1 text-[12px] font-semibold text-muted">Outbid</span>
         )
       ) : (
-        <VerifyStamp status={b.verify_status} size="sm" />
+        <BidStamp b={b} size="sm" short />
       )}
     </button>
   );
@@ -716,11 +720,11 @@ function BidSheet({
 
             <input className="input mt-5" placeholder="Pitch (optional)" maxLength={120} value={pitch} onChange={(e) => setPitch(e.target.value)} />
 
-            <button className={`btn mt-5 h-14 w-full text-[17px] ${lying ? "border-lie bg-lie text-white hover:bg-[#c2282e]" : "btn-primary"}`} disabled={busy || !listing} onClick={submit}>
+            <button className={`btn mt-5 h-14 w-full text-[17px] ${lying ? "border-lie bg-lie text-white hover:bg-[#7a231c]" : "btn-primary"}`} disabled={busy || !listing} onClick={submit}>
               {busy ? <LoaderCircle size={20} className="animate-spin" /> : null}
               {busy ? "Raising your paddle…" : lying ? `Raise paddle at ${money(price)} anyway` : `Raise paddle at ${money(price)}`}
             </button>
-            {err && <div className="mt-3 rounded-[6px] border border-[#f3c4c6] bg-lie-soft px-3 py-2 text-[14px] text-lie">{err}</div>}
+            {err && <div className="mt-3 rounded-[6px] border border-[#e3bdb6] bg-lie-soft px-3 py-2 text-[14px] text-lie">{err}</div>}
           </>
         )}
       </motion.div>
@@ -763,21 +767,27 @@ function Stepper({
 }
 
 function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: number }) {
-  const lied = b.verify_status === "mismatch";
+  const w = withdrawal(b);
+  const lied = !!w;
   const closed = a.status === "closed";
-  const won = !lied && (a.winner_bid_id ? a.winner_bid_id === b.id : closed && b.rank === 1);
+  const won = isHammer(a, b);
+  const orders = useLive((s) => s.orders);
+  const approvals = useLive((s) => s.approvals);
+  const sold = feeCharged != null || orders.some((o) => o.bid_id === b.id && o.status !== "failed");
+  const soldElsewhere = !sold && orders.some((o) => o.auction_id === a.id && o.bid_id !== b.id && o.status !== "failed");
+  const onPhone = approvals.some((p) => p.auction_id === a.id && p.bid_id === b.id && p.status === "pending");
   return (
     <div className="mt-6">
-      <div className={`rounded-[6px] border p-5 text-center ${lied ? "border-[#f3c4c6] bg-lie-soft" : b.verify_status === "verified" ? "border-[#bfe5d3] bg-money-soft" : "border-line bg-raised"}`}>
+      <div className={`rounded-[6px] border p-5 text-center ${lied ? "border-[#e3bdb6] bg-lie-soft" : b.verify_status === "verified" ? "border-[#bcd8c5] bg-money-soft" : "border-line bg-raised"}`}>
         <div className="text-[13px] text-muted">Your paddle · {paddleNo(b.merchant_id)}</div>
         <div className={`tnum mt-1 text-[34px] font-semibold tracking-[-0.02em] ${lied ? "text-lie line-through" : ""}`}>{money(claimedTotal(b))}</div>
         <div className="text-[13px] text-muted">
           {b.product_emoji} {b.product_title} · ships in {b.claimed_ship_days} {b.claimed_ship_days === 1 ? "day" : "days"} · {money(b.fee_cents)} commission
         </div>
         <div className="mt-4 flex justify-center">
-          <VerifyStamp status={b.verify_status} size="lg" lieLabel="Withdrawn: misrepresentation" />
+          <BidStamp b={b} size="lg" />
         </div>
-        {b.evidence && <div className={`mt-3 text-[14px] ${lied ? "text-lie" : "text-muted"}`}>{b.evidence.summary}</div>}
+        {b.evidence && <div className={`mt-3 text-[14px] [overflow-wrap:anywhere] ${lied ? "text-lie" : "text-muted"}`}>{w ? w.detail : b.evidence.summary}</div>}
       </div>
 
       <div className="mt-4 rounded-[6px] border border-line bg-panel p-4">
@@ -788,11 +798,16 @@ function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: numb
           </div>
         ) : lied ? (
           <div className="flex items-start gap-2 text-[14px] text-lie">
-            <ShieldAlert size={17} className="mt-[1px] shrink-0" /> Withdrawn for misrepresentation: it never reached the agent, and your standing took a hit.
+            <ShieldAlert size={17} className="mt-[1px] shrink-0" />
+            {w?.kind === "injection"
+              ? "Prompt injection blocked: pitches are data, never instructions. Your paddle never reached the agent, and your standing took a hit."
+              : "Withdrawn for misrepresentation: it never reached the agent, and your standing took a hit."}
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            {won ? (
+            {sold ? (
+              <SoldBadge size="lg" />
+            ) : won ? (
               <span className="flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1.5 text-[15px] font-semibold text-[#7d5f30]">
                 <Trophy size={15} /> Hammer
               </span>
@@ -804,10 +819,16 @@ function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: numb
                 Ranked <span className="serif tnum text-[18px]">No. {b.rank ?? "—"}</span>
                 {b.merit != null && <span className="text-muted"> · merit {Math.round(b.merit)}/100</span>}
               </div>
-              {feeCharged != null ? (
-                <div className="text-fee">Sold at the hammer · commission {money(feeCharged)} charged</div>
+              {sold ? (
+                <div className="text-money">
+                  Sold to the agent{feeCharged != null ? <span className="text-fee"> · commission {money(feeCharged)} charged</span> : null}
+                </div>
+              ) : won && soldElsewhere ? (
+                <div className="text-muted">Your paddle was out of stock at checkout; the agent bought the next verified paddle.</div>
+              ) : won && onPhone ? (
+                <div className="text-muted">Hammer is yours. The agent's human is approving the purchase on the phone…</div>
               ) : won ? (
-                <div className="text-muted">Waiting for the agent to complete the purchase…</div>
+                <div className="text-muted">Hammer is yours. Waiting for the agent to buy…</div>
               ) : null}
             </div>
           </div>
