@@ -40,7 +40,7 @@ console.log("desk pill (SSE blocked):", pill);
 
 if (await merchant.locator("#store-name").count()) {
   await merchant.fill("#store-name", "Polling Test Store");
-  await merchant.getByRole("button", { name: /open my store/i }).click();
+  await merchant.getByRole("button", { name: /register and take a paddle|open my store/i }).click();
 }
 await merchant.getByText(/your storefront/i).waitFor({ timeout: 10000 });
 
@@ -49,7 +49,7 @@ console.log("scenario travel-charger:", r.status);
 let maxLie = 0, maxBribe = 0, maxSold = 0;
 for (let i = 0; i < 40; i++) {
   await sleep(500);
-  maxLie = Math.max(maxLie, await desk.getByText(/^Caught lying · /).count());
+  maxLie = Math.max(maxLie, await desk.getByText(/^(Caught lying|Bid withdrawn) · /).count());
   maxBribe = Math.max(maxBribe, await desk.getByText(/^Bribe ignored · /).count());
   maxSold = Math.max(maxSold, await desk.locator("text=/^Sold$/").count());
   if (i === 6) await desk.screenshot({ path: join(out, "fallback-polling-bids.png") });
