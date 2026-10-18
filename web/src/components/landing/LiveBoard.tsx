@@ -42,7 +42,9 @@ export function LiveBoard({ className }: { className?: string }) {
     if (live) setPinned(live.id);
   }, [live?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const shown = live ?? (pinned ? auctions.find((a) => a.id === pinned) : undefined) ?? pickShowcase(auctions);
+  // A lot that closed without a single paddle makes a poor centerpiece: fall back to the showcase.
+  const pinnedLot = pinned ? auctions.find((a) => a.id === pinned && (a.bids?.length ?? 0) > 0) : undefined;
+  const shown = live ?? pinnedLot ?? pickShowcase(auctions);
   const lot = shown ? lotNo(shown, auctions, Math.max(total, auctions.length)) : null;
 
   return (
@@ -121,16 +123,29 @@ function BoardLot({ a, lot }: { a: Auction; lot: number | null }) {
           <SmallCaps className={sold ? "text-board-amber" : "text-board-text/50"}>{label}</SmallCaps>
           <div className="relative mt-1 h-[64px] sm:h-[72px]">
             <AnimatePresence mode="popLayout" initial={false}>
-              <motion.p
-                key={top ? `${top.id}:${deliveredCents(top)}` : "none"}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.26, ease: EASE }}
-                className="whitespace-nowrap font-serif text-[60px] font-normal leading-[64px] tracking-[-0.01em] tabular-nums text-board-text sm:text-[72px] sm:leading-[72px]"
-              >
-                {top ? money(deliveredCents(top)) : "—"}
-              </motion.p>
+              {top ? (
+                <motion.p
+                  key={`${top.id}:${deliveredCents(top)}`}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.26, ease: EASE }}
+                  className="whitespace-nowrap font-serif text-[60px] font-normal leading-[64px] tracking-[-0.01em] tabular-nums text-board-text sm:text-[72px] sm:leading-[72px]"
+                >
+                  {money(deliveredCents(top))}
+                </motion.p>
+              ) : (
+                <motion.p
+                  key={closed ? "no-sale" : "open"}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.26, ease: EASE }}
+                  className="whitespace-nowrap font-serif text-[40px] font-normal italic leading-[64px] text-board-text/65 sm:text-[48px] sm:leading-[72px]"
+                >
+                  {closed ? "No sale." : "Bidding is open…"}
+                </motion.p>
+              )}
             </AnimatePresence>
           </div>
           {sold && (
@@ -158,7 +173,7 @@ function BoardLot({ a, lot }: { a: Auction; lot: number | null }) {
       </div>
 
       <div className="mt-4 border-t border-board-text/10 pt-3">
-        <SmallCaps className="block truncate text-board-text/45">{meta.join(" · ")}</SmallCaps>
+        <SmallCaps className="block text-board-text/45">{meta.join(" · ")}</SmallCaps>
       </div>
     </>
   );
@@ -242,7 +257,7 @@ function BoardClock({ a }: { a: Auction }) {
           <Gavel className="size-6" strokeWidth={1.75} aria-hidden />
         </motion.span>
       </span>
-      <SmallCaps className="whitespace-nowrap text-board-text/45">{ago(a.closed_at ?? a.closes_at, now)}</SmallCaps>
+      <span className="whitespace-nowrap text-[12px] text-board-text/50">{ago(a.closed_at ?? a.closes_at, now)}</span>
     </div>
   );
 }
