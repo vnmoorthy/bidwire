@@ -24,8 +24,8 @@ export function Banners({ top = 60 }: { top?: number }) {
               <span className={`absolute inset-y-0 left-0 w-[5px] ${lie ? "bg-lie" : "bg-fee"}`} />
               <Icon size={22} className={`mt-1 shrink-0 ${lie ? "text-lie" : "text-fee"}`} />
               <div className="min-w-0 flex-1">
-                <div className={`serif text-[26px] leading-8 ${lie ? "text-lie" : "text-fee"}`}>{b.title}</div>
-                {b.sub && <div className="mt-0.5 text-[15px] leading-6 text-ink/80">{b.sub}</div>}
+                <div className={`serif text-[26px] leading-8 [overflow-wrap:anywhere] ${lie ? "text-lie" : "text-fee"}`}>{b.title}</div>
+                {b.sub && <div className="mt-0.5 line-clamp-4 text-[15px] leading-6 text-ink/80 [overflow-wrap:anywhere]">{b.sub}</div>}
               </div>
               <button className="mt-1 text-muted hover:text-ink" onClick={() => dismissBanner(b.id)} aria-label="Dismiss">
                 <X size={16} />
