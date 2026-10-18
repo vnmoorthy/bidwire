@@ -99,7 +99,7 @@ function PaddleRow({ a, b, onClick }: { a: Auction; b: Bid; onClick: () => void 
       exit={{ opacity: 0 }}
       transition={{ duration: 0.24, ease: "easeOut" }}
       onClick={onClick}
-      className={`relative flex cursor-pointer flex-col gap-2 border-b border-line px-5 py-2.5 transition-colors last:border-b-0 md:min-h-[62px] ${PADDLE_COLS} ${
+      className={`relative flex cursor-pointer flex-col gap-2 border-b border-line px-5 py-2 transition-colors last:border-b-0 md:min-h-[58px] ${PADDLE_COLS} ${
         win ? "bg-accent-soft/50 hover:bg-accent-soft/80" : "hover:bg-raised/60"
       }`}
     >
