@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, Gavel, Play, X } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { forwardRef, useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Auction, Bid } from "@shared/types";
 import { api, errMsg } from "@/lib/api";
@@ -342,7 +342,7 @@ function PaddleList({ a, hydrated }: { a: Auction | null; hydrated: boolean }) {
   );
 }
 
-function PaddleRow({ b }: { b: Bid }) {
+const PaddleRow = forwardRef<HTMLLIElement, { b: Bid }>(function PaddleRow({ b }, ref) {
   const reduce = useReducedMotion();
   const lied = b.verify_status === "mismatch";
   const hammer = !lied && b.rank === 1;
@@ -351,6 +351,7 @@ function PaddleRow({ b }: { b: Bid }) {
 
   return (
     <motion.li
+      ref={ref}
       layout="position"
       initial={reduce ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
@@ -384,21 +385,8 @@ function PaddleRow({ b }: { b: Bid }) {
             </Badge>
           )}
         </div>
-        <p className={cx("mt-0.5 truncate text-[12.5px] leading-[18px]", lied ? "text-lie" : bribe ? "text-fee" : "text-muted")}>
-          {lie ? (
-            lie.checkout != null ? (
-              <>
-                Misrepresentation · checkout says <b className="font-semibold tabular-nums">{money(lie.checkout)}</b>
-                {lie.fee && <span className="hidden sm:inline"> ({lie.fee})</span>}
-              </>
-            ) : (
-              <>Misrepresentation · {lie.text}</>
-            )
-          ) : bribe ? (
-            `Offered ${money(b.fee_cents)} commission · still No. ${b.rank}`
-          ) : (
-            b.product_title
-          )}
+        <p className={cx("mt-0.5 truncate text-[12.5px] leading-[18px]", bribe ? "text-fee" : "text-muted")}>
+          {bribe ? `Offered ${money(b.fee_cents)} commission · still No. ${b.rank}` : b.product_title}
         </p>
       </div>
 
@@ -416,9 +404,24 @@ function PaddleRow({ b }: { b: Bid }) {
           <Status b={b} hammer={hammer} />
         </span>
       </div>
+
+      {lie && (
+        <p className="col-span-full -mt-0.5 pl-[54px] text-pretty text-[12.5px] leading-[18px] text-lie sm:pl-[84px]">
+          <span className="font-semibold">Misrepresentation.</span>{" "}
+          {lie.checkout != null ? (
+            <>
+              Claimed {money(claimedTotal(b))} delivered; checkout says{" "}
+              <b className="font-semibold tabular-nums">{money(lie.checkout)}</b>
+              {lie.fee ? ` (${lie.fee})` : ""}
+            </>
+          ) : (
+            lie.text
+          )}
+        </p>
+      )}
     </motion.li>
   );
-}
+});
 
 function Status({ b, hammer }: { b: Bid; hammer: boolean }) {
   const key = hammer ? "hammer" : b.verify_status;
