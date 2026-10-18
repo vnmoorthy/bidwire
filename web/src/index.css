@@ -1,0 +1,356 @@
+@import "tailwindcss";
+
+/* Bidwire design system v3: "Saleroom" (docs/DESIGN.md) */
+@theme {
+  --color-bg: #f4efe4;
+  --color-panel: #fffdf7;
+  --color-raised: #efe8d9;
+  --color-line: #e2d9c6;
+  --color-line-strong: #cfc3aa;
+  --color-ink: #16130e;
+  --color-muted: #6e6658;
+  --color-dim: #9c937f;
+  --color-accent: #b0894f;
+  --color-accent-soft: #f5ebd6;
+  --color-agent: #233f6e;
+  --color-agent-soft: #e6ecf6;
+  --color-money: #2d6a48;
+  --color-money-soft: #e5f0e8;
+  --color-fee: #94641f;
+  --color-fee-soft: #f6ebd6;
+  --color-lie: #8e2a22;
+  --color-lie-soft: #f6e3df;
+  --color-info: #233f6e;
+  --color-board: #0f0e0c;
+  --color-board-2: #1a1814;
+  --color-board-text: #f3e9d2;
+  --color-board-amber: #e9b44c;
+
+  --breakpoint-wide: 80rem;
+
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-card: none;
+  --shadow-elevated: 0 18px 40px rgba(22, 19, 14, 0.12);
+
+  --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
+  --animate-sheen: sheen 1.6s ease-in-out infinite;
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  @keyframes sheen {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+/* Palette as plain CSS variables too (for inline styles / SVG). */
+:root {
+  color-scheme: light;
+  --bg: #f4efe4;
+  --panel: #fffdf7;
+  --raised: #efe8d9;
+  --border: #e2d9c6;
+  --text: #16130e;
+  --muted: #6e6658;
+  --accent: #b0894f;
+  --agent: #233f6e;
+  --money: #2d6a48;
+  --fee: #94641f;
+  --lie: #8e2a22;
+  --info: #233f6e;
+  --board: #0f0e0c;
+  --board-text: #f3e9d2;
+  --board-amber: #e9b44c;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #ecdcb8;
+  }
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(176, 137, 79, 0.3);
+    border-radius: 6px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #cfc3aa transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #cfc3aa;
+    border-radius: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* Numbers: Inter with tabular figures. Mono stays for code, tool names and ids. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+@layer components {
+  .app-backdrop {
+    background-color: var(--bg);
+  }
+  /* ultra-subtle paper grain */
+  .app-backdrop::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .smallcaps {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  /* Cards */
+  .card,
+  .panel {
+    background: var(--color-panel);
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+  }
+  .panel-flat {
+    background: var(--color-panel);
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+  }
+  .card-title {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 600;
+    color: var(--color-ink);
+    letter-spacing: -0.005em;
+  }
+  .eyebrow {
+    font-size: 11.5px;
+    line-height: 16px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+    font-weight: 600;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Form controls */
+  .input {
+    width: 100%;
+    background: var(--color-panel);
+    border: 1px solid var(--color-line-strong);
+    border-radius: 6px;
+    padding: 8px 12px;
+    min-height: 40px;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(176, 137, 79, 0.3);
+  }
+  .input::placeholder {
+    color: var(--color-dim);
+  }
+  select.input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235D5D66' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+  }
+
+  /* Buttons: secondary by default; primary is solid ink. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 36px;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    border: 1px solid var(--color-line-strong);
+    background: var(--color-panel);
+    color: var(--color-ink);
+    transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .btn:hover {
+    background: var(--color-raised);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary,
+  .btn-money {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: #fffdf7;
+  }
+  .btn-primary:hover,
+  .btn-money:hover {
+    background: #2e2a22;
+    border-color: #2e2a22;
+  }
+  .btn-accent {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: #fffdf7;
+  }
+  .btn-accent:hover {
+    background: #2e2a22;
+  }
+  .btn-danger {
+    background: var(--color-panel);
+    border-color: var(--color-line-strong);
+    color: var(--color-lie);
+  }
+  .btn-danger:hover {
+    background: var(--color-lie-soft);
+    border-color: #e3bdb6;
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: transparent;
+  }
+  .btn-ghost:hover {
+    background: var(--color-raised);
+  }
+
+  /* Code blocks */
+  .code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    background: #f8f3e7;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    padding: 14px 16px;
+    overflow: auto;
+    white-space: pre;
+    color: #2a251c;
+  }
+
+  /* Range slider */
+  input[type="range"].range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 6px;
+    background: var(--color-line);
+    outline: none;
+  }
+  input[type="range"].range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid var(--color-line-strong);
+    box-shadow: 0 2px 6px rgba(22, 19, 14, 0.18);
+    cursor: pointer;
+  }
+  input[type="range"].range::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid var(--color-line-strong);
+    box-shadow: 0 2px 6px rgba(14, 14, 16, 0.18);
+    cursor: pointer;
+  }
+  input[type="range"].range.lie {
+    background: var(--color-lie-soft);
+  }
+  input[type="range"].range.lie::-webkit-slider-thumb {
+    border-color: var(--color-lie);
+  }
+
+  /* Loading placeholder */
+  .shimmer {
+    background: linear-gradient(90deg, #efe8d9, #e7dfcd, #efe8d9);
+    background-size: 200% 100%;
+    animation: var(--animate-sheen);
+  }
+
+  .fade-x {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Gavel strike + gold underline sweep (Saleroom board) */
+@keyframes bw-gold-sweep {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.gold-sweep {
+  transform-origin: left center;
+  animation: bw-gold-sweep 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
