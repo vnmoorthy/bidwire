@@ -725,44 +725,40 @@ def weights_bar(shapes, x, y, w, h, Wt, m=None, delay=0, size=9):
 # Slides
 # --------------------------------------------------------------------------------------------------------------
 NOTES = {
-    1: "Hi, this is Bidwire: the auction house for AI agents. Here's the thing. When an agent shops, nobody sees an ad. "
-       "No banner, no sponsored slot, no clever copy. So the only way a merchant can win an agent's purchase is with an offer "
-       "that's actually true. Bidwire is the saleroom where that happens, live, over MCP.",
-    2: "Agents can already shop for us. But the commerce stack they land on was built to manipulate humans: sponsored slots and SEO, "
-       "drip pricing where $34.99 on the page becomes $63.99 at checkout, specs nobody checks, and now prompt injection: a pitch that "
-       "says 'ignore your previous instructions'. Agents read those pages and get gamed. Merchants have the opposite problem: there is "
-       "no ad slot inside a tool call, so they can't reach agents at all.",
-    3: "Our insight: for an agent, the ad IS the offer. So instead of buying attention, merchants raise a paddle with claims a machine "
-       "can check: delivered price, delivery time, features. We verify every claim, rank on merit with public weights, and commission "
-       "can't buy rank. The YC prompt was to rebuild a tool built for humans: Google became Exa for search. This is Google Ads, rebuilt "
-       "for agents, as a live auction.",
-    4: "Here's how a lot sells. The agent calls one tool, find_offers, with its need, budget and deadline. That opens a twelve-second lot: "
-       "bots, people in this room and merchant agents raise paddles. We fetch each merchant's real product page and checkout, run five "
-       "checks, withdraw the liars, and rank on merit. Going once, going twice, sold: buy_offer pays from a prepaid wallet, and over the "
-       "limit the human gets a text and replies YES. Everything settles in a double-entry ledger.",
+    1: "Hi, this is Bidwire: the auction house for AI agents. When an agent shops, nobody sees an ad: no banner, no sponsored "
+       "slot. So the only way a merchant wins an agent's purchase is with an offer that's actually true. Bidwire is the saleroom "
+       "where that happens, live, over MCP.",
+    2: "Agents can already shop for us, but the web they land on was built to manipulate humans: sponsored slots and SEO, drip "
+       "pricing where $34.99 becomes $63.99 at checkout, fake specs, and now prompt injection hidden in product pitches. Agents get "
+       "gamed. And merchants can't reach agents at all: there's no ad slot inside a tool call.",
+    3: "Our insight: for an agent, the ad is the offer. So merchants raise a paddle with claims a machine can check: delivered "
+       "price, delivery time, features. We verify every claim, rank on merit with public weights, and commission can't buy rank. "
+       "YC asked us to rebuild a tool built for humans. This is Google Ads, rebuilt for agents.",
+    4: "Here's how a lot sells. The agent calls find_offers with its need, budget and deadline. For twelve seconds, bots, people "
+       "in this room and merchant agents bid. We check each bid against the merchant's real page and checkout, withdraw the liars "
+       "and rank on merit. Then buy_offer pays from a prepaid wallet; over the limit, the human approves by text.",
     5: "This ran live today. One lot: {bids} paddles, {verified} verified, {excluded} withdrawn: {excluded_desc}. A merchant offered "
-       "{bribe_fee} commission and stayed at number {bribe_rank}. A nine-day shipper got ranked down for missing a five-day deadline, and "
-       "the {approval_amount} hammer price was over the {approval_limit} limit, so it went to the human's phone for a YES. If a merchant "
-       "sells out mid-purchase, the agent gets the next best offer and recovers on its own.",
-    6: "We built Bidwire as an MCP server on mcp-use from Manufact: twelve tools, three resources, two prompts. The happy path is two "
-       "calls: find_offers, then buy_offer. Errors come back structured, with a hint that tells the agent what to call next. Buys take "
-       "idempotency keys. The first call needs zero config: no key makes you a guest agent. And the same server works in Claude Code, "
-       "Claude Desktop, ChatGPT, Codex and Cursor.",
-    7: "Trust is the product, so it's enforced in code. Every paddle gets six checks against the merchant's own page and checkout, "
-       "including pitch safety: a pitch is data, never instructions, so 'ignore your previous instructions' gets the bid withdrawn. A liar "
-       "loses trust for every agent. The ranking weights are public: price forty, must-haves twenty-five, delivery fifteen, trust fifteen, "
-       "returns five, commission zero. Spending limits come from the human, every transaction in the settlement ledger sums to zero, and "
-       "every tool call is logged.",
-    8: "Business model: merchants pay commission only at the hammer, when a verified sale happens. Pay-per-sale, no impressions, no "
-       "clicks, and that commission is our take. The wedge is DTC merchants and agent shopping apps; the long game is the trust layer "
-       "for agent commerce. Why now: eighteen months ago there was no MCP, no ACP, and no agent had a card. This year agents got wallets "
-       "and protocols. Search ads are a two-hundred-billion-dollar-plus business built on human attention, and agents don't look at ads.",
-    9: "All of this was built in twenty-four hours and it's running right now: an MCP server on mcp-use and Hono, SQLite, a live "
-       "saleroom over server-sent events, real storefront pages with schema.org JSON-LD that the verifier fetches over HTTP, eight "
-       "merchant bots with honest and dishonest strategies, and Inkbox for approval texts and receipts. Every number on the right is "
-       "counted from the code.",
-    10: "So that's Bidwire. When agents do the shopping, attention stops being for sale, and the truth becomes the only thing worth "
-        "bidding on. You can't bribe an agent. The code is on GitHub at vnmoorthy slash bidwire. The saleroom is live right now: "
+       "{bribe_fee} commission and stayed at number {bribe_rank}. A nine-day shipper missed a five-day deadline and ranked down. "
+       "The {approval_amount} hammer price was over the {approval_limit} limit, so it went to the human's phone for a YES. And when "
+       "a merchant sells out mid-purchase, the agent recovers on its own.",
+    6: "Bidwire is an MCP server built on mcp-use from Manufact: twelve tools, three resources, two prompts. The happy path is two "
+       "calls, find_offers then buy_offer. Errors come back with hints, buys take idempotency keys, the first call needs zero "
+       "config, and merchant pitches are treated as data, never instructions. It works in Claude Code, Claude Desktop, ChatGPT, "
+       "Codex and Cursor.",
+    7: "Trust is enforced in code. Every paddle gets six checks against the merchant's own page and checkout, including pitch "
+       "safety. Fail one and the bid is withdrawn, and the merchant loses trust with every agent. Ranking weights are public, and "
+       "commission counts for zero. Humans set spending limits, every transaction in the ledger sums to zero, and every tool call "
+       "is logged.",
+    8: "Merchants pay commission only at the hammer, when a verified sale happens: no impressions, no clicks, and that commission "
+       "is our take. The wedge is DTC merchants and agent shopping apps; the long game is the trust layer for agent commerce. Why "
+       "now: eighteen months ago agents had no MCP, no ACP, no cards. Search ads are a $200B-plus business built on attention, and "
+       "agents don't look at ads.",
+    9: "We built all of this in twenty-four hours and it's running right now: an MCP server on mcp-use and Hono, SQLite, a live "
+       "saleroom over server-sent events, real storefront pages with schema.org data that the verifier fetches over HTTP, merchant "
+       "bots with honest and dishonest strategies, and Inkbox for approval texts and receipts. Every number on the right is counted "
+       "from the code.",
+    10: "So that's Bidwire. When agents do the shopping, attention stops being for sale and the truth is the only thing worth "
+        "bidding on. You can't bribe an agent. The code is at github.com/vnmoorthy/bidwire, and the saleroom is live right now: "
         "connect your agent and buy something, or raise a paddle from your phone and try to bribe it. Thank you.",
 }
 
@@ -960,8 +956,8 @@ def s5_demo(prs, F, L, new_slide):
     chrome(s, 5, "Live demo highlights", m)
     sh = s.shapes
     headline(s, "Live today: [[muted,i|liars withdrawn, bribes ignored.]]", m, size=34, h=0.6)
-    m.add(smallcaps(sh, 0.75, 1.72, 6.6, "The saleroom · bid withdrawn"), "fade", 150, 400)
-    fr = browser(sh, 0.75, 2.0, 6.6, "exchange-liar", "localhost:8787/exchange", L)
+    m.add(smallcaps(sh, 0.75, 1.72, 6.6, "The saleroom · after the hammer" if shot("exchange-ranked") else "The saleroom · bid withdrawn"), "fade", 150, 400)
+    fr = browser(sh, 0.75, 2.0, 6.6, "exchange-ranked" if shot("exchange-ranked") else "exchange-liar", "localhost:8787/exchange", L)
     m.add(fr, "rise", 200, 700)
     ev = [("amber", "Bribe ignored", L["bribe_merchant"], "Offered %s commission · still No. %s." % (L["bribe_fee"], L["bribe_rank"])),
           ("red", "Injection withdrawn", L["inject_merchant"], "\u201cIgnore your previous instructions\u201d in a pitch. Pitches are data."),
@@ -1097,7 +1093,7 @@ def s7_trust(prs, F, L, new_slide):
     box(fg.shapes, 6.85, 3.42, 0.5, 0.2, fill="panel", line="amber", lw=1.0, r=0.03, dash=MSO_LINE_DASH_STYLE.DASH)
     text(fg.shapes, 7.48, 3.37, 4.9, 0.3, "[[amber,b|Commission: 0.]] Paid only at the hammer; only breaks ties under 0.5 points.", size=10, color="muted", anchor="m")
     m.add(fg, "fade", 1450, 400)
-    fr = browser(sh, 6.6, 4.2, 3.72, "ledger", "localhost:8787/ledger", L, mock=mock_ledger, focus=(0.5, 0.0))
+    fr = browser(sh, 6.6, 4.2, 3.72, "ledger", "localhost:8787/ledger", L, mock=mock_ledger, focus=(0.0, 0.0), region=(0.0, 0.0, 0.6, 0.6))
     m.add(fr, "rise", 900, 550)
     m.add(text(sh, 6.6, 6.57, 3.72, 0.3, "[[green,b|Settlement ledger:]] every transaction sums to $0", size=9.5, color="muted", anchor="m"), "fade", 1350, 400)
     side = [("amber", "Spending policy", "Per-purchase and daily limits from the human. Above them: SMS “Reply YES 1234”."),
@@ -1325,13 +1321,14 @@ def build_html(F, L, out):
     html = html.replace("/*{{FONTS}}*/", "\n".join(faces))
 
     def shot_sub(mo):
-        name = mo.group(1)
+        names = mo.group(1).split("|")
+        name = next((n for n in names if shot(n)), names[0])
         p = shot(name)
         if not p:
             return ""
         return data_uri_jpeg(p, max_w=900 if name.startswith(("phone", "merchant")) else 1920)
 
-    html = re.sub(r"\{\{SHOT:([a-z0-9-]+)\}\}", shot_sub, html)
+    html = re.sub(r"\{\{SHOT:([a-z0-9|-]+)\}\}", shot_sub, html)
     wt = F["weights"]
     vals = {
         "tools": len(F["tools"]), "buyer_tools": len(F["buyer_tools"]), "merchant_tools": len(F["merchant_tools"]),
@@ -1362,7 +1359,7 @@ def main():
               len(F["tools"]), len(F["buyer_tools"]), len(F["merchant_tools"]), len(F["resources"]), len(F["prompts"]), len(F["scenarios"]),
               len(F["personas"]), F["products"], len(F["categories"]), len(F["tables"]), len(F["events"]), len(F["checks"]),
               len(F["buyers"]), F["loc"], F["weights"]))
-    missing = [n for n in ("exchange-liar", "phone-approval", "ledger") if not shot(n)]
+    missing = [n for n in ("exchange-liar", "exchange-ranked", "phone-approval", "ledger") if not shot(n)]
     if missing:
         print("placeholders (screenshot missing): " + ", ".join(missing))
     if "--html" not in args or "--pptx" in args:
