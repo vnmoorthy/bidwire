@@ -55,10 +55,10 @@ function ToolGroup({ title, tools }: { title: string; tools: { name: string; tit
   return (
     <div>
       <SmallCaps className="text-muted">{title}</SmallCaps>
-      <ul className="mt-3 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
+      <ul className="mt-3 grid grid-cols-2 gap-x-6 gap-y-3">
         {tools.map((t) => (
           <li key={t.name} className="min-w-0">
-            <code className="font-mono text-[13px] font-medium text-ink">{t.name}</code>
+            <code className="block truncate font-mono text-[13px] font-medium text-ink">{t.name}</code>
             <p className="truncate text-[13px] leading-5 text-muted">{t.title}</p>
           </li>
         ))}
