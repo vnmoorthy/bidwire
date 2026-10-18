@@ -45,7 +45,7 @@ export function SaleroomBoard({ a }: { a: Auction }) {
   return (
     <section className="relative shrink-0 overflow-hidden rounded-[10px] bg-board text-board-text">
       <div className="pointer-events-none absolute inset-[6px] rounded-[6px] border border-[rgba(176,137,79,0.42)]" />
-      <div className="relative px-8 pb-5 pt-5">
+      <div className="relative px-8 pb-4 pt-4">
         {/* top line */}
         <div className={`flex flex-wrap items-center gap-x-2 smallcaps ${GOLD_DIM}`}>
           <span className="text-[#e3cf9f]">{lotLabel(lot)}</span>
@@ -69,7 +69,7 @@ export function SaleroomBoard({ a }: { a: Auction }) {
           “{a.need}”
         </h1>
 
-        <div className="mt-4 flex items-end gap-8 border-t border-[rgba(243,233,210,0.12)] pt-4">
+        <div className="mt-3 flex items-end gap-8 border-t border-[rgba(243,233,210,0.12)] pt-3">
           <div className="min-w-0 flex-1">
             <div className={`smallcaps ${GOLD_DIM}`}>{closed ? (winner ? "Hammer price · what the agent pays, delivered" : "Passed") : "Best verified price so far"}</div>
             <AnimatePresence mode="wait" initial={false}>
@@ -96,7 +96,7 @@ export function SaleroomBoard({ a }: { a: Auction }) {
                 </motion.div>
               )}
             </AnimatePresence>
-            <div className="mt-2 flex min-h-[28px] min-w-0 items-center gap-3 text-[16px] text-[#d9ccb0]">
+            <div className="mt-1.5 flex min-h-[28px] min-w-0 items-center gap-3 text-[16px] text-[#d9ccb0]">
               {shown && (
                 <>
                   <PaddleChip id={shown.merchant_id} color={shown.merchant_color} />
@@ -111,7 +111,7 @@ export function SaleroomBoard({ a }: { a: Auction }) {
         </div>
 
         {/* bottom strip */}
-        <div className={`mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-[rgba(243,233,210,0.12)] pt-3 smallcaps text-[#8d826c]`}>
+        <div className={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-[rgba(243,233,210,0.12)] pt-2.5 smallcaps text-[#8d826c]`}>
           <span>Budget {money(a.budget_cents)}</span>
           <span>· {a.deliver_within_days ? `Within ${days(a.deliver_within_days)}` : "Any delivery time"}</span>
           {a.must_have?.length > 0 && <span>· Must have {a.must_have.join(", ")}</span>}
@@ -181,7 +181,7 @@ function BoardClock({ a, sold }: { a: Auction; sold: boolean }) {
           </div>
         </div>
       )}
-      <div className="mt-2 h-8">
+      <div className="mt-1 h-8">
         <AnimatePresence mode="wait">
           {phrase ? (
             <motion.div key={phrase} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="serif text-[24px] italic text-board-amber">
