@@ -92,6 +92,7 @@ export const PERSONAS: Persona[] = [
   { name: "Specsmith", handle: "specsmith", strategy: "spec-stretcher", trust: 73, color: "#FF8A4C", categories: ["headphones", "chargers", "monitors"], priceFactor: 0.75, shipping: 499, ship_days: 3, returns: 14, stock: 40 },
   { name: "Last Unit Labs", handle: "last-unit", strategy: "scarce-stock", trust: 86, color: "#3DD9EB", categories: ["headphones", "keyboards", "chargers"], priceFactor: 0.85, shipping: 0, ship_days: 2, returns: 30, stock: 1 },
   { name: "Bean & Byte", handle: "bean-byte", strategy: "specialist", trust: 88, color: "#E8C872", categories: ["coffee", "keyboards", "backpacks"], priceFactor: 0.93, shipping: 0, ship_days: 2, returns: 30, stock: 20 },
+  { name: "InjectCo", handle: "injectco", strategy: "prompt-injector", trust: 74, color: "#C2410C", categories: ["headphones", "chargers", "keyboards"], priceFactor: 0.97, shipping: 0, ship_days: 3, returns: 30, stock: 30 },
 ];
 
 export const BUYERS = () => [
