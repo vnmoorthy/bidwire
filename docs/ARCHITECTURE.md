@@ -2,6 +2,8 @@
 
 This is the deep dive behind the [README](../README.md): how a purchase moves through the system, what is stored where, the exact verification and ranking rules, how money is posted, which events the UI sees, and what the security model does and doesn't cover. Every rule here is taken from the code in `server/src`.
 
+The web app speaks auction-house (a lot is an auction, a paddle is a bid, the hammer price is the winning verified total, commission is the merchant fee, "withdrawn: misrepresentation" is a bid that failed verification). This document uses the terms in the code.
+
 - [The shape of the system](#the-shape-of-the-system)
 - [Identity: who is calling](#identity-who-is-calling)
 - [Data model](#data-model)
