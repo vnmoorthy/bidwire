@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { Drawer } from "@/components/Drawer";
 import { KindBadge } from "@/components/KindBadge";
-import { MerchantAvatar } from "@/components/MerchantDot";
+import { PaddleChip } from "@/components/MerchantDot";
 import { Money } from "@/components/Money";
 import { Sparkline } from "@/components/Sparkline";
 import { VerifyStamp } from "@/components/VerifyStamp";
@@ -51,8 +51,8 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
       title={
         m ? (
           <div className="flex items-center gap-3">
-            <MerchantAvatar name={m.name} color={m.color} size={36} />
-            <h2 className="text-[22px] font-semibold leading-7 tracking-[-0.01em]">{m.name}</h2>
+            <PaddleChip id={m.id} color={m.color} size="lg" />
+            <h2 className="serif text-[30px] leading-9">{m.name}</h2>
             <KindBadge kind={m.kind} />
           </div>
         ) : (
@@ -67,8 +67,8 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
         <div className="space-y-6">
           <div className="grid grid-cols-[auto_1fr] gap-6 rounded-[14px] border border-line p-4">
             <div>
-              <div className="text-[13px] text-muted">Trust score</div>
-              <div className="tnum mt-1 text-[48px] font-semibold leading-none" style={{ color: trustColor(m.trust) }}>
+              <div className="text-[13px] text-muted">Standing (trust)</div>
+              <div className="serif tnum mt-1 text-[56px] leading-none" style={{ color: trustColor(m.trust) }}>
                 {Math.round(m.trust)}
               </div>
             </div>
@@ -90,10 +90,10 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
             <Stat label="Balance" value={<Money cents={m.balance_cents} />} />
             <Stat label="Earned" value={<Money cents={m.earned_cents} className="text-money" />} />
-            <Stat label="Fees paid" value={<Money cents={m.fees_paid_cents} className="text-fee" />} />
+            <Stat label="Commission paid" value={<Money cents={m.fees_paid_cents} className="text-fee" />} />
             <Stat label="Bids" value={<span className="tnum">{m.bids}</span>} />
-            <Stat label="Wins" value={<span className="tnum">{m.wins}</span>} />
-            <Stat label="Lies caught" value={<span className={`tnum ${m.lies_caught ? "text-lie" : ""}`}>{m.lies_caught}</span>} />
+            <Stat label="Hammers" value={<span className="tnum">{m.wins}</span>} />
+            <Stat label="Withdrawn" value={<span className={`tnum ${m.lies_caught ? "text-lie" : ""}`}>{m.lies_caught}</span>} />
           </div>
 
           <div>
