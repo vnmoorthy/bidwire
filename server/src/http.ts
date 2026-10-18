@@ -17,6 +17,8 @@ import { config } from "./env.js";
 import { all } from "./db.js";
 
 type C = any; // Hono context
+// Requests arriving through cloudflared or a platform edge carry forwarding headers; local presenter traffic doesn't.
+const isRemote = (c: C) => !!(c.req.header("cf-connecting-ip") || c.req.header("x-forwarded-for") || c.req.header("x-real-ip"));
 const json = (data: unknown, status = 200) => new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 const fail = (e: any) => e instanceof BidwireError ? json({ error: e.code, message: e.message, hint: e.hint }, e.status) : (console.error(e), json({ error: "internal_error", message: String(e?.message ?? e) }, 500));
 const body = async (c: C) => { try { return await c.req.json(); } catch { return {}; } };
@@ -92,6 +94,10 @@ const MIME: Record<string, string> = { ".html": "text/html; charset=utf-8", ".js
 export function mountHttp(server: any) {
   server.use("/api/*", async (c: C, next: () => Promise<void>) => {
     const path = new URL(c.req.url).pathname;
+    // Presenter-only controls: from a remote device (via tunnel or cloud proxy) they need the director key.
+    if (c.req.method === "POST" && /^\/api\/demo\/(reset|bots|config)$/.test(path) && isRemote(c) && (c.req.header("x-director-key") ?? new URL(c.req.url).searchParams.get("director_key")) !== config.directorKey) {
+      return json({ error: "director_only", message: "Only the presenter can reset the exchange or change bots and timing.", hint: "Use the Auctioneer's desk on the presenter's laptop (localhost), or send x-director-key." }, 403);
+    }
     for (const [method, re, h] of routes) {
       const m = path.match(re);
       if (m && c.req.method === method) {
