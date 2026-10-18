@@ -27,17 +27,17 @@ import { useLocalStorage } from "@/lib/useMedia";
 const WINDOWS = [8, 12, 20, 30];
 
 const RUN_OF_SHOW = [
-  { t: "Open the Exchange on the projector", d: "Stats at zero, Live pill on, QR card visible." },
+  { t: "Open the saleroom on the projector", d: "Stats at zero, Live pill on, “Raise a paddle” QR visible." },
   { t: "Connect Claude to the MCP server", d: "Show the Claude Code snippet on Connect, run it, list Bidwire's tools." },
   { t: "First find_offers from Claude", d: "The need appears big, bids stream in, Agent activity logs the call." },
-  { t: "Liar caught", d: "A drip-pricing bot claims a low price; the “Caught lying” banner shows claimed vs checkout." },
-  { t: "Bribe ignored", d: "MegaMart's big fee per sale doesn't move its rank; the “Bribe ignored” banner appears." },
-  { t: "A merchant joins from a phone", d: "Audience scans the QR, opens a store, bids (and tries to cheat)." },
+  { t: "Liar caught", d: "A drip-pricing bot claims a low price; the “Bid withdrawn” banner shows claimed vs checkout." },
+  { t: "Bribe ignored", d: "MegaMart's big commission doesn't move its rank; the “Bribe ignored” banner appears." },
+  { t: "A merchant joins from a phone", d: "The audience scans the QR, takes a paddle, bids (and tries to cheat)." },
   { t: "Over-budget approval on the phone", d: "Purchase above the limit texts the human; approve on /phone (or Inkbox SMS)." },
-  { t: "Purchase + receipt", d: "The Sold toast shows amount and fee; the receipt goes out by email." },
+  { t: "Purchase + receipt", d: "The hammer falls, the “Sold to…” card shows price and commission; the receipt goes out by email." },
   { t: "Out-of-stock recovery", d: "Run “Sold out mid-purchase”: buy_offer returns the next best offer; the agent recovers." },
-  { t: "Ledger balanced", d: "Open Ledger: every transaction sums to $0.00; GMV and fees match." },
-  { t: "Merchant trust drop", d: "Open the liar's profile: trust sparkline dips after each lie." },
+  { t: "Ledger balanced", d: "Open the settlement ledger: every transaction sums to $0.00; hammer total and commission match." },
+  { t: "Merchant trust drop", d: "Open the liar's profile: its standing drops after each withdrawn bid." },
   { t: "Multi-client: ChatGPT and Codex", d: "Same tools from different clients, each with its badge in Agent activity." },
   { t: "Tools, resources and prompts in Connect", d: "Walk the tool list grouped by role; show llms.txt." },
   { t: "Playground", d: "Run explain_offer on the winner to show evidence an agent can cite." },
@@ -418,7 +418,7 @@ function GavelToggle() {
       >
         <span className={`absolute top-[3px] size-5 rounded-full bg-white shadow-[0_1px_3px_rgba(22,19,14,0.25)] transition-all ${on ? "left-[23px]" : "left-[3px]"}`} />
       </button>
-      <div className="flex items-center gap-2 text-[14px] font-medium">
+      <div className="flex shrink-0 items-center gap-2 whitespace-nowrap text-[14px] font-medium">
         <Gavel size={16} className="text-muted" />
         Gavel sound {on ? "on" : "off"}
       </div>
