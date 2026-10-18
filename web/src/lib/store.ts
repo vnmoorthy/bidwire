@@ -177,7 +177,7 @@ const T = {
     return tick(
       "closed",
       a.id,
-      w ? `Sold · ${money(claimedTotal(w))} · ${w.merchant_name} (${w.product_title})` : `Passed: no eligible offers for “${a.need}”`,
+      w ? `Hammer · ${money(claimedTotal(w))} · ${w.merchant_name} (${w.product_title})` : `Passed: no eligible offers for “${a.need}”`,
       ts,
     );
   },
@@ -198,8 +198,9 @@ const T = {
     ),
 };
 
+/** The hammer (No. 1 verified paddle at close). Whether it sold is told by order.created / T.sold. */
 function winnerOf(a: Auction): Bid | undefined {
-  return a.bids?.find((b) => b.id === a.winner_bid_id) ?? a.bids?.find((b) => b.rank === 1 && b.verify_status !== "mismatch");
+  return a.bids?.find((b) => b.rank === 1 && b.verify_status !== "mismatch");
 }
 
 function pushTicks(items: TickerItem[]) {
