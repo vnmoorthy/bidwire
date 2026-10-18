@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import type { Auction, Bid } from "@shared/types";
 import { PhoneFrame } from "@/components/PhoneFrame";
+import { paddleNo } from "@/components/MerchantDot";
 import { LogoMark } from "@/components/Logo";
 import { LivePill } from "@/components/LivePill";
 import { ClientBadge } from "@/components/ClientBadge";
@@ -141,13 +142,13 @@ function JoinScreen({ notice, onJoined }: { notice: string | null; onJoined: (s:
       <div className="flex items-center gap-2.5">
         <LogoMark size={28} />
         <div className="text-[18px] font-semibold tracking-[-0.01em]">
-          Bidwire <span className="font-normal text-muted">for merchants</span>
+          <span className="serif text-[24px] font-normal">Bidwire</span> <span className="font-normal text-muted">Paddle</span>
         </div>
       </div>
       <div className="mt-12">
-        <h1 className="text-[34px] font-semibold leading-[1.1] tracking-[-0.03em]">Sell to AI agents, live.</h1>
+        <h1 className="serif text-[44px] leading-[46px]">Register as a bidder</h1>
         <p className="mt-3 text-[16px] leading-relaxed text-muted">
-          Open a store, get real listings, and bid on what shopping agents are asking for right now. Your price is checked against your real checkout.
+          Open a store, take a paddle, and bid on what AI agents are buying right now. Every claim is checked against your real checkout.
         </p>
       </div>
       {notice && <div className="mt-6 rounded-[12px] bg-fee-soft px-4 py-3 text-[14px] font-medium text-fee">{notice}</div>}
@@ -166,14 +167,14 @@ function JoinScreen({ notice, onJoined }: { notice: string | null; onJoined: (s:
         />
         <button type="submit" className="btn btn-primary mt-2 h-14 text-[17px]" disabled={busy || !name.trim()}>
           {busy ? <LoaderCircle size={20} className="animate-spin" /> : <Store size={20} />}
-          {busy ? "Opening…" : "Open my store"}
+          {busy ? "Registering…" : "Register and take a paddle"}
         </button>
         {err && <div className="rounded-[10px] bg-lie-soft px-3 py-2 text-[14px] text-lie">{err}</div>}
       </form>
       <div className="mt-auto pt-10">
         <div className="grid grid-cols-3 gap-2 text-center text-[12px] text-muted">
           <div className="rounded-[12px] bg-raised px-2 py-3">
-            <div className="text-[18px]">⚡️</div>Live requests
+            <div className="text-[18px]">⚡️</div>Live lots
           </div>
           <div className="rounded-[12px] bg-raised px-2 py-3">
             <div className="text-[18px]">🔍</div>Verified bids
@@ -278,7 +279,7 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
       <div className="sticky top-0 z-20 border-b border-line bg-panel/95 px-5 pb-3 pt-12 backdrop-blur-md lg:pt-14">
         <div className="flex items-center gap-2">
           <LogoMark size={22} />
-          <span className="text-[15px] font-semibold text-ink">Bidwire <span className="font-normal text-muted">for merchants</span></span>
+          <span className="text-[15px] font-semibold text-ink"><span className="serif text-[21px] font-normal">Bidwire</span> <span className="font-normal text-muted">Paddle</span></span>
           <LivePill className="ml-auto" />
         </div>
       </div>
@@ -287,16 +288,19 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
         {/* store card */}
         <div className="card p-4">
           <div className="flex items-start gap-3">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-full text-[18px] font-semibold text-white" style={{ background: merchant?.color ?? "var(--agent)" }}>
-              {(merchant?.name ?? "?").slice(0, 1).toUpperCase()}
+            <div className="shrink-0">
+              <div className="smallcaps">Your paddle</div>
+              <div className="serif tnum text-[64px] leading-[60px]" style={{ color: merchant?.color ? undefined : undefined }}>
+                {paddleNo(saved.merchant_id)}
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-[20px] font-semibold leading-tight tracking-[-0.01em]">{merchant?.name ?? "Your store"}</div>
+            <div className="min-w-0 flex-1 pt-5">
+              <div className="truncate text-[18px] font-semibold leading-tight">{merchant?.name ?? "Your store"}</div>
               <div className="truncate text-[13px] text-muted">@{merchant?.handle ?? "…"}</div>
             </div>
-            <div className="text-right">
-              <div className="text-[12px] text-muted">trust</div>
-              <div className="tnum text-[28px] font-semibold leading-none" style={{ color: trustColor(merchant?.trust ?? 0) }}>
+            <div className="pt-1 text-right">
+              <div className="text-[12px] text-muted">Standing</div>
+              <div className="serif tnum text-[34px] leading-none" style={{ color: trustColor(merchant?.trust ?? 0) }}>
                 {merchant ? Math.round(merchant.trust) : "–"}
               </div>
             </div>
@@ -316,7 +320,7 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
         {/* requests */}
         <div className="mt-6 flex items-center gap-2">
           <span className="inline-flex size-2 rounded-full bg-accent animate-pulse-dot" />
-          <h2 className="card-title">Live requests</h2>
+          <h2 className="serif text-[26px] leading-7">Live lots</h2>
           <span className="tnum ml-auto text-[13px] text-muted">{openRequests.length} open</span>
         </div>
         <div className="mt-3 flex flex-col gap-3">
@@ -328,8 +332,8 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
           {openRequests.length === 0 && (
             <div className="rounded-[14px] border border-dashed border-line-strong px-5 py-8 text-center">
               <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-raised text-muted"><Inbox size={22} /></div>
-              <div className="mt-3 text-[15px] font-medium text-ink">No open requests in your categories</div>
-              <div className="mt-1 text-[13px] text-muted">Keep this open. Requests appear the second an agent asks.</div>
+              <div className="mt-3 text-[15px] font-medium text-ink">No open lots in your categories</div>
+              <div className="mt-1 text-[13px] text-muted">Keep this open. Lots appear the second an agent starts shopping.</div>
               {feedErr && <div className="mt-2 text-[12px] text-lie">{feedErr}</div>}
             </div>
           )}
@@ -338,7 +342,7 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
         {/* my bids */}
         {myBids.length > 0 && (
           <>
-            <h2 className="mt-7 card-title">Your bids</h2>
+            <h2 className="serif mt-7 text-[26px] leading-7">Your paddles</h2>
             <div className="mt-3 flex flex-col gap-2">
               {myBids.slice(0, 8).map((b) => {
                 const a = auctions.find((x) => x.id === b.auction_id);
@@ -350,7 +354,7 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
         )}
 
         {/* storefront */}
-        <h2 className="mt-7 card-title">Your storefront</h2>
+        <h2 className="serif mt-7 text-[26px] leading-7">Your storefront</h2>
         <div className="mt-3 flex flex-col gap-2">
           {listings.map((l) => (
             <div key={l.id} className="flex items-center gap-3 rounded-[12px] border border-line bg-panel p-3">
@@ -372,7 +376,7 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
         </div>
 
         <button className="btn btn-ghost mt-8 w-full text-muted" onClick={() => onLeave()}>
-          <LogOut size={16} /> Leave store
+          <LogOut size={16} /> Leave the saleroom
         </button>
       </div>
 
@@ -424,7 +428,7 @@ function RequestCard({ a, myBid, onBid }: { a: Auction; myBid?: Bid; onBid: () =
             <ClientBadge client={a.client} size="sm" />
             <span className="truncate text-[12px] text-muted">{a.buyer_name}</span>
           </div>
-          <div className="mt-2 text-[18px] font-semibold leading-snug tracking-[-0.01em]">{a.need}</div>
+          <div className="serif mt-2 text-[24px] italic leading-7">{a.need}</div>
           <div className="mt-1.5 flex flex-wrap gap-x-3 text-[13px] text-muted">
             <span>
               budget <Money cents={a.budget_cents} smart className="font-semibold text-ink" />
@@ -432,7 +436,7 @@ function RequestCard({ a, myBid, onBid }: { a: Auction; myBid?: Bid; onBid: () =
             <span className="flex items-center gap-1">
               <CalendarClock size={12} /> {a.deliver_within_days ? `within ${a.deliver_within_days} ${a.deliver_within_days === 1 ? "day" : "days"}` : "any time"}
             </span>
-            <span>{a.bids.length} bids</span>
+            <span>{a.bids.length} paddles</span>
           </div>
           {a.must_have.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1">
@@ -449,13 +453,13 @@ function RequestCard({ a, myBid, onBid }: { a: Auction; myBid?: Bid; onBid: () =
       {myBid ? (
         <button onClick={onBid} className="mt-3 flex w-full items-center justify-between rounded-[12px] border border-line bg-raised px-3 py-2.5">
           <span className="text-[13px] text-muted">
-            You bid <Money cents={claimedTotal(myBid)} className="font-semibold text-ink" />
+            Your paddle <Money cents={claimedTotal(myBid)} className="font-semibold text-ink" />
           </span>
-          <VerifyStamp status={myBid.verify_status} size="sm" lieLabel="Caught lying" />
+          <VerifyStamp status={myBid.verify_status} size="sm" lieLabel="Withdrawn" />
         </button>
       ) : open ? (
         <button onClick={onBid} className="btn btn-primary mt-3 h-12 w-full text-[16px]">
-          Bid on this <ArrowRight size={17} />
+          Raise paddle <ArrowRight size={17} />
         </button>
       ) : (
         <div className="mt-3 text-center text-[13px] text-muted">Bidding closed · verifying offers…</div>
@@ -481,11 +485,11 @@ function MyBidRow({ b, a, feeCharged, sold, onOpen }: { b: Bid; a?: Auction; fee
       </div>
       {closed || lied ? (
         lied ? (
-          <span className="rounded-full bg-lie-soft px-2.5 py-1 text-[12px] font-semibold text-lie">Caught</span>
+          <span className="rounded-full bg-lie-soft px-2.5 py-1 text-[12px] font-semibold text-lie">Withdrawn</span>
         ) : won ? (
-          <span className="rounded-full bg-money-soft px-2.5 py-1 text-[12px] font-semibold text-money">Won</span>
+          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[12px] font-semibold text-[#7d5f30]">Hammer</span>
         ) : (
-          <span className="rounded-full bg-raised px-2.5 py-1 text-[12px] font-semibold text-muted">Lost</span>
+          <span className="rounded-full bg-raised px-2.5 py-1 text-[12px] font-semibold text-muted">Outbid</span>
         )
       ) : (
         <VerifyStamp status={b.verify_status} size="sm" />
@@ -613,7 +617,7 @@ function BidSheet({
         ) : (
           <>
             {/* listing picker */}
-            <div className="mt-5 text-[14px] font-semibold text-ink">Your listing</div>
+            <div className="mt-5 text-[14px] font-semibold text-ink">Lot item from your storefront</div>
             <div className="mt-2 flex flex-col gap-2">
               {eligible.map((l) => {
                 const on = l.id === listing?.id;
@@ -638,7 +642,7 @@ function BidSheet({
 
             {/* price */}
             <div className="mt-6 flex items-end justify-between">
-              <div className="text-[14px] font-semibold text-ink">Advertised delivered price</div>
+              <div className="text-[14px] font-semibold text-ink">Your delivered price <span className="font-normal text-muted">(what the agent pays)</span></div>
             </div>
             <div className="mt-2 flex items-center gap-3">
               <button className="btn size-12 rounded-full p-0" onClick={() => setPrice((p) => Math.max(min, p - 100))} aria-label="Lower price by $1">
@@ -699,7 +703,7 @@ function BidSheet({
                 warn={!!listing && shipDays < listing.ship_days}
               />
               <Stepper
-                label="Fee you'll pay per sale"
+                label="Commission per sale"
                 value={money(fee)}
                 valueClass="text-fee"
                 onMinus={() => setFee((f) => Math.max(0, f - 100))}
@@ -707,14 +711,14 @@ function BidSheet({
               />
             </div>
             <div className="mt-2 flex items-center gap-1.5 text-[13px] text-fee">
-              <Scale size={14} /> Fees never buy rank — they only break ties.
+              <Scale size={14} /> Commission never buys rank — it only breaks ties.
             </div>
 
             <input className="input mt-5" placeholder="Pitch (optional)" maxLength={120} value={pitch} onChange={(e) => setPitch(e.target.value)} />
 
             <button className={`btn mt-5 h-14 w-full text-[17px] ${lying ? "border-lie bg-lie text-white hover:bg-[#c2282e]" : "btn-primary"}`} disabled={busy || !listing} onClick={submit}>
               {busy ? <LoaderCircle size={20} className="animate-spin" /> : null}
-              {busy ? "Placing bid…" : lying ? `Place bid at ${money(price)} anyway` : `Place bid · ${money(price)}`}
+              {busy ? "Raising your paddle…" : lying ? `Raise paddle at ${money(price)} anyway` : `Raise paddle at ${money(price)}`}
             </button>
             {err && <div className="mt-3 rounded-lg border border-[#f3c4c6] bg-lie-soft px-3 py-2 text-[14px] text-lie">{err}</div>}
           </>
@@ -765,13 +769,13 @@ function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: numb
   return (
     <div className="mt-6">
       <div className={`rounded-[14px] border p-5 text-center ${lied ? "border-[#f3c4c6] bg-lie-soft" : b.verify_status === "verified" ? "border-[#bfe5d3] bg-money-soft" : "border-line bg-raised"}`}>
-        <div className="text-[13px] text-muted">Your bid</div>
+        <div className="text-[13px] text-muted">Your paddle · {paddleNo(b.merchant_id)}</div>
         <div className={`tnum mt-1 text-[34px] font-semibold tracking-[-0.02em] ${lied ? "text-lie line-through" : ""}`}>{money(claimedTotal(b))}</div>
         <div className="text-[13px] text-muted">
           {b.product_emoji} {b.product_title} · ships in {b.claimed_ship_days} {b.claimed_ship_days === 1 ? "day" : "days"} · {money(b.fee_cents)} fee per sale
         </div>
         <div className="mt-4 flex justify-center">
-          <VerifyStamp status={b.verify_status} size="lg" lieLabel="Caught lying" />
+          <VerifyStamp status={b.verify_status} size="lg" lieLabel="Withdrawn: misrepresentation" />
         </div>
         {b.evidence && <div className={`mt-3 text-[14px] ${lied ? "text-lie" : "text-muted"}`}>{b.evidence.summary}</div>}
       </div>
@@ -780,30 +784,30 @@ function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: numb
         {!closed ? (
           <div className="flex items-center gap-2 text-[14px] text-muted">
             <LoaderCircle size={16} className="animate-spin text-muted" />
-            {a.status === "open" ? "Auction still open. Ranking happens at close." : "Verifying every offer before ranking…"}
+            {a.status === "open" ? "Bidding is open. The lot is ranked when the hammer falls." : "Checking every claim before the hammer…"}
           </div>
         ) : lied ? (
           <div className="flex items-start gap-2 text-[14px] text-lie">
-            <ShieldAlert size={17} className="mt-[1px] shrink-0" /> Excluded from the ranking for misrepresenting the offer. Your trust score took a hit.
+            <ShieldAlert size={17} className="mt-[1px] shrink-0" /> Withdrawn for misrepresentation: it never reached the agent, and your standing took a hit.
           </div>
         ) : (
           <div className="flex items-center gap-3">
             {won ? (
-              <span className="flex items-center gap-1.5 rounded-full bg-money-soft px-3 py-1.5 text-[15px] font-semibold text-money">
-                <Trophy size={15} /> Won
+              <span className="flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1.5 text-[15px] font-semibold text-[#7d5f30]">
+                <Trophy size={15} /> Hammer
               </span>
             ) : (
-              <span className="rounded-full bg-raised px-3 py-1.5 text-[15px] font-semibold text-muted">Lost</span>
+              <span className="rounded-full bg-raised px-3 py-1.5 text-[15px] font-semibold text-muted">Outbid</span>
             )}
             <div className="text-[14px]">
               <div>
-                Ranked <span className="tnum font-semibold">#{b.rank ?? "—"}</span>
+                Ranked <span className="serif tnum text-[18px]">No. {b.rank ?? "—"}</span>
                 {b.merit != null && <span className="text-muted"> · merit {Math.round(b.merit)}/100</span>}
               </div>
               {feeCharged != null ? (
-                <div className="text-fee">Sold! Fee charged: {money(feeCharged)}</div>
+                <div className="text-fee">Sold at the hammer · commission {money(feeCharged)} charged</div>
               ) : won ? (
-                <div className="text-muted">Waiting for the agent to buy…</div>
+                <div className="text-muted">Waiting for the agent to complete the purchase…</div>
               ) : null}
             </div>
           </div>
@@ -818,7 +822,7 @@ function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: numb
       </div>
       {b.bribe_ignored && (
         <div className="mt-3 flex items-center gap-2 rounded-[12px] bg-fee-soft px-3 py-2 text-[13px] text-fee">
-          <Wallet size={14} /> Your {money(b.fee_cents)} fee didn't change your rank. Merit decides.
+          <Wallet size={14} /> Your {money(b.fee_cents)} commission didn't change your rank. Merit decides.
         </div>
       )}
     </div>
