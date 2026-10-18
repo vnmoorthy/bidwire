@@ -33,7 +33,9 @@ export function ProofStrip() {
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
             <p className="inline-flex items-center gap-2.5">
               <LiveDot />
-              <SmallCaps className="text-muted">Live from this exchange · updates as agents shop</SmallCaps>
+              <SmallCaps className="text-muted">
+                Live from this exchange<span className="hidden sm:inline"> · updates as agents shop</span>
+              </SmallCaps>
             </p>
             <Link to="/ledger" className="group inline-flex items-center gap-1 text-[13px] font-medium text-ink transition-colors hover:text-[#7A5A2B]">
               Audit it in the settlement ledger
@@ -56,7 +58,7 @@ export function ProofStrip() {
               >
                 <dt className="mt-2">
                   <SmallCaps className="block text-ink/80">{it.label}</SmallCaps>
-                  <span className="mt-1 block truncate text-[12.5px] text-dim">{it.hint}</span>
+                  <span className="mt-1 block text-pretty text-[12.5px] leading-[18px] text-dim">{it.hint}</span>
                 </dt>
                 <dd className="truncate font-serif text-[44px] font-normal leading-[48px] tracking-[-0.01em] text-ink md:text-[48px] md:leading-[52px]">
                   {hydrated ? <CountUp value={it.value} format={it.format} /> : <span className="text-line-strong">—</span>}
