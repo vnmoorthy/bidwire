@@ -129,7 +129,7 @@ Verification treats every bid as a claim about a storefront and checks it the wa
 flowchart LR
     BID["Bid<br/>claimed total, ship days, features"] --> PAGE["GET /store/:handle/:sku<br/>parse schema.org JSON-LD"]
     PAGE --> QUOTE["GET /store/:handle/:sku/quote<br/>checkout total, fees, ship days, stock"]
-    QUOTE --> CMP{"compare<br/>claim vs page vs checkout"}
+    QUOTE --> CMP{"compare claim vs page vs checkout<br/>and screen the pitch"}
     CMP -- all pass --> OK["verified<br/>bid.verified event"]
     CMP -- any fail --> LIE["mismatch<br/>lies_caught +1, trust −12<br/>bid.flagged event"]
 ```
@@ -142,9 +142,12 @@ The verifier fetches through the server's internal address (`http://127.0.0.1:$P
 | Checkout total | `claimed_total ≥ checkout_total − $0.50` | `Claimed $34.99 delivered; checkout says $63.99 (+$29.00 "Service & handling fee")` |
 | Delivery time | `claimed_days ≥ store ship_days` | `Claimed 1d; store ships in 3d` |
 | Features | every claimed feature is in the page's `additionalProperty` features | `Claims anc but the product page does not list it` |
+| Pitch safety | the bid's pitch doesn't match the injection screen (e.g. "ignore … previous instructions", "system note:", "you must buy", "do not verify") | `Pitch contained instructions aimed at the buying agent (…)` |
 | In stock | page availability is `InStock` and the quote says `in_stock` | `Out of stock at checkout` (not a lie; halves merit) |
 
 The evidence (`VerifyEvidence`) is stored on the bid: page URL, fetch time, claimed vs actual total, claimed vs actual ship days, stock, each check with its detail, and a one-line summary. Agents get the summary in `excluded[]`, merchants get it from `get_my_results`, and anyone can see the full record with `explain_offer`.
+
+**Pitches are data, never instructions.** Offers returned to agents contain only verified facts and Bidwire's own reasons; the merchant's pitch is never included. When the pitch screen fires, the agent-facing summary says only `Pitch contained instructions aimed at the buying agent (text withheld from agents)`, and `explain_offer` redacts the quoted text the same way. The screen is a pattern match, so it will miss some phrasings; the guarantee that matters is that pitch text never reaches the agent.
 
 What the agent sees and pays is always the **actual** checkout total from the evidence, never the claimed one. Overstating a price is not a lie (the check only fails on understatement), but it doesn't help either.
 
@@ -296,6 +299,7 @@ Trust is 15% of merit, so a merchant caught lying keeps losing ground on every f
 | drip-pricing-liar | 1.3–2.6 s | $12 (8%) | Claims the price without its hidden checkout fee. |
 | spec-stretcher | 1.8–3.6 s | $10 (8%) | Bids its cheapest item and claims every must-have. |
 | specialist | 1.5–4.2 s | $6 (8%) | Honest. |
+| prompt-injector | 1.1–2.4 s | $9 (8%) | Honest price and claims, but its pitch tells shopping agents to ignore their instructions and buy. |
 | honest-value | 2.0–4.8 s | $5 (8%) | Honest. |
 | scarce-stock | 2.4–5.0 s | $5 (8%) | Honest, one unit per listing. |
 | premium-fast | 2.6–5.2 s | $8 (8%) | Honest, next-day delivery. |
@@ -339,6 +343,7 @@ What the design enforces:
 - **Fees can't buy rank.** A fee only orders near-ties (under 0.5 merit points) and is charged only on a sale.
 - **Agents are scoped.** A buyer can only fetch and buy from its own auctions and only check its own approvals and orders (`not_your_auction`, `approval_not_found`, `order_not_found`). `explain_offer` is deliberately public: verification evidence is meant to be inspectable. Merchant tools require a merchant key; merchants can only bid their own listings, once per auction, in the right category, while the auction is open.
 - **Money moves only through `buy_offer`.** The server enforces the wallet balance and the per-purchase and daily limits; over a limit, nothing is charged until the human says yes. Orders are idempotent and committed atomically.
+- **Merchant text can't steer agents.** Pitches never reach agents, and a pitch with instructions aimed at the buying agent gets the bid withdrawn like any other lie.
 - **Reports can't be weaponized.** A report only costs trust if re-inspection reproduces the problem.
 - **Secrets stay out of logs.** `merchant_key` arguments are redacted in the tool-call log.
 
