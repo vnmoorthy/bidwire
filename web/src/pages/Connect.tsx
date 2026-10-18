@@ -202,7 +202,8 @@ function ArgsTable({ schema }: { schema: any }) {
   const req = new Set<string>(schema?.required ?? []);
   if (!props.length) return <div className="mt-2 font-mono text-[12px] text-dim">no arguments</div>;
   return (
-    <table className="mt-2 w-full text-[12.5px]">
+    <div className="mt-2 overflow-x-auto">
+    <table className="w-full text-[12.5px]">
       <tbody>
         {props.map(([k, p]) => (
           <tr key={k} className="align-top">
@@ -211,11 +212,12 @@ function ArgsTable({ schema }: { schema: any }) {
               {req.has(k) && <span className="text-lie">*</span>}
             </td>
             <td className="whitespace-nowrap py-0.5 pr-3 font-mono text-dim">{p?.type === "array" ? `${p.items?.type ?? "any"}[]` : p?.type ?? "any"}</td>
-            <td className="py-0.5 text-muted">{p?.description ?? (p?.items?.enum ? `one of ${p.items.enum.join(", ")}` : "")}</td>
+            <td className="py-0.5 text-muted [overflow-wrap:anywhere]">{p?.description ?? (p?.items?.enum ? `one of ${p.items.enum.join(", ")}` : "")}</td>
           </tr>
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
 
