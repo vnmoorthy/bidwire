@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1296" viewBox="0 0 1600 1296" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah-navy" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#233F6E"/>
+    </marker>
+    <marker id="ah-navy-sm" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#233F6E"/>
+    </marker>
+    <marker id="ah-green" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#2D6A48"/>
+    </marker>
+    <marker id="ah-green-sm" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#2D6A48"/>
+    </marker>
+    <marker id="ah-bronze" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#94641F"/>
+    </marker>
+    <marker id="ah-bronze-sm" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#94641F"/>
+    </marker>
+    <marker id="ah-ox" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#8E2A22"/>
+    </marker>
+    <marker id="ah-ox-sm" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#8E2A22"/>
+    </marker>
+    <marker id="ah-event" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#6E6658"/>
+    </marker>
+    <marker id="ah-event-sm" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#6E6658"/>
+    </marker>
+    <marker id="ah-dim" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#9C937F"/>
+    </marker>
+    <marker id="ah-dim-sm" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0.5 0.8 L10 5 L0.5 9.2 L3 5 Z" fill="#9C937F"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1600" height="1296" fill="#F4EFE4"/>
+  <!-- Title -->
+  <g>
+    <circle cx="46" cy="50" r="22" fill="#16130E"/>
+    <g transform="translate(46 50) rotate(-45)">
+      <rect x="-8.5" y="-10.5" width="17" height="8" rx="1.6" fill="#F3E9D2"/>
+      <rect x="-1.6" y="-2.5" width="3.2" height="13.5" rx="1.6" fill="#F3E9D2"/>
+    </g>
+    <rect x="33" y="62" width="14" height="2.6" rx="1.3" fill="#B0894F"/>
+    <text x="84" y="54" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="31" fill="#16130E">Bidwire architecture</text>
+    <text x="85" y="80" font-size="15" fill="#6E6658">one MCP server · live auctions · verified bids · merit ranking · human approvals · double-entry ledger</text>
+    <text x="1576" y="52" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" font-style="italic" fill="#6E6658" text-anchor="end">The auction house for AI agents</text>
+    <text x="1576" y="78" font-size="14" fill="#9C937F" text-anchor="end">every purchase is a lot · merchants raise paddles · liars are withdrawn</text>
+    <line x1="24" y1="100" x2="1576" y2="100" stroke="#B0894F" stroke-width="1"/>
+  </g>
+  <!-- Left column · agent clients, merchant agents, humans -->
+  <g>
+    <text x="24" y="140" font-size="12" font-weight="600" fill="#9C937F" letter-spacing="1.44">AGENT CLIENTS</text>
+    <rect class="card" x="24" y="152" width="204" height="302" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="187" font-size="16" font-weight="600" fill="#16130E">Claude Code</text>
+    <text x="40" y="206" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#233F6E">HTTP</text>
+    <line x1="38" y1="216" x2="214" y2="216" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="239" font-size="16" font-weight="600" fill="#16130E">Claude Desktop</text>
+    <text x="40" y="258" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#233F6E">mcp-remote</text>
+    <line x1="38" y1="268" x2="214" y2="268" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="291" font-size="16" font-weight="600" fill="#16130E">ChatGPT</text>
+    <text x="40" y="310" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#233F6E">connector</text>
+    <text x="40" y="329" font-size="14" fill="#6E6658">needs public HTTPS URL</text>
+    <line x1="38" y1="338" x2="214" y2="338" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="361" font-size="16" font-weight="600" fill="#16130E">Codex</text>
+    <text x="40" y="380" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#233F6E">mcp-remote</text>
+    <line x1="38" y1="390" x2="214" y2="390" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="413" font-size="16" font-weight="600" fill="#16130E">Cursor</text>
+    <text x="40" y="432" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#233F6E">HTTP</text>
+    <rect class="card" x="24" y="600" width="204" height="118" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="629" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Merchant agents</text>
+    <text x="40" y="653" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">register_merchant</text>
+    <text x="40" y="675" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E"><tspan fill="#9C937F">→ </tspan>list_open_requests</text>
+    <text x="40" y="697" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E"><tspan fill="#9C937F">→ </tspan>place_bid</text>
+    <rect class="card" x="24" y="1040" width="204" height="176" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="40" y="1069" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Humans</text>
+    <rect x="38" y="1088" width="13" height="22" rx="3" fill="none" stroke="#6E6658" stroke-width="1.4"/>
+    <line x1="42.5" y1="1106" x2="46.5" y2="1106" stroke="#6E6658" stroke-width="1.4" stroke-linecap="round"/>
+    <text x="60" y="1101" font-size="16" font-weight="600" fill="#16130E">Merchant phones</text>
+    <text x="60" y="1121" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/merchant</tspan> · QR join</text>
+    <line x1="38" y1="1138" x2="214" y2="1138" stroke="#E2D9C6" stroke-width="1"/>
+    <rect x="38" y="1152" width="13" height="22" rx="3" fill="none" stroke="#6E6658" stroke-width="1.4"/>
+    <line x1="42.5" y1="1170" x2="46.5" y2="1170" stroke="#6E6658" stroke-width="1.4" stroke-linecap="round"/>
+    <text x="60" y="1165" font-size="16" font-weight="600" fill="#16130E">Approver phone</text>
+    <text x="60" y="1185" font-size="14" fill="#6E6658">SMS / on-screen <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/phone</tspan></text>
+  </g>
+  <!-- Right column · outside the process, legend -->
+  <g>
+    <text x="1336" y="140" font-size="12" font-weight="600" fill="#9C937F" letter-spacing="1.44">OUTSIDE</text>
+    <rect class="card" x="1336" y="152" width="240" height="178" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="1352" y="181" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Web app<tspan fill="#6E6658" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · React + Vite</tspan></text>
+    <rect class="chip" x="1352" y="196" width="98" height="24" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1360" y="213" font-size="14" fill="#16130E"><tspan font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/</tspan> Exchange</text>
+    <rect class="chip" x="1458" y="196" width="92" height="24" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1466" y="213" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/merchant</text>
+    <rect class="chip" x="1352" y="227" width="67" height="24" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1360" y="244" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/phone</text>
+    <rect class="chip" x="1427" y="227" width="75" height="24" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1435" y="244" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/ledger</text>
+    <rect class="chip" x="1352" y="258" width="83" height="24" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1360" y="275" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/connect</text>
+    <rect class="chip" x="1443" y="258" width="92" height="24" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1451" y="275" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/director</text>
+    <circle cx="1356" cy="309" r="3.5" fill="#6E6658"/>
+    <text x="1367" y="314" font-size="14" fill="#6E6658">fed by SSE</text>
+    <rect class="card" x="1336" y="712" width="240" height="176" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="1352" y="741" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Inkbox<tspan fill="#6E6658" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · SMS + email</tspan></text>
+    <text x="1352" y="765" font-size="14" fill="#6E6658">approval texts:</text>
+    <rect class="chip" x="1352" y="775" width="144" height="26" rx="12" fill="#E5F0E8"/>
+    <path d="M1358 796 l-5 7 l10 -4 z" fill="#E5F0E8"/>
+    <text x="1365" y="793" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" font-weight="600" fill="#2D6A48">Reply YES 1234</text>
+    <text x="1352" y="825" font-size="14" fill="#6E6658">receipts</text>
+    <text x="1352" y="846" font-size="14" fill="#6E6658">inbound poll every 3 s</text>
+    <text x="1352" y="867" font-size="14" fill="#6E6658">falls back to simulated phone</text>
+    <rect class="card" x="1336" y="1016" width="240" height="200" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="1352" y="1045" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Legend</text>
+    <line x1="1352" y1="1069" x2="1378" y2="1069" stroke="#233F6E" stroke-width="2.4" stroke-linecap="round"/>
+    <text x="1390" y="1074" font-size="14" fill="#6E6658">agent / MCP traffic</text>
+    <line x1="1352" y1="1093" x2="1378" y2="1093" stroke="#2D6A48" stroke-width="2.4" stroke-linecap="round"/>
+    <text x="1390" y="1098" font-size="14" fill="#6E6658">money · verified</text>
+    <line x1="1352" y1="1117" x2="1378" y2="1117" stroke="#94641F" stroke-width="2.4" stroke-linecap="round"/>
+    <text x="1390" y="1122" font-size="14" fill="#6E6658">fees · commission</text>
+    <line x1="1352" y1="1141" x2="1378" y2="1141" stroke="#8E2A22" stroke-width="2.4" stroke-linecap="round"/>
+    <text x="1390" y="1146" font-size="14" fill="#6E6658">lies caught · withdrawn</text>
+    <line x1="1352" y1="1165" x2="1378" y2="1165" stroke="#6E6658" stroke-width="2.4" stroke-linecap="round"/>
+    <text x="1390" y="1170" font-size="14" fill="#6E6658">UI / SSE events</text>
+    <line x1="1352" y1="1189" x2="1378" y2="1189" stroke="#9C937F" stroke-width="2.4" stroke-dasharray="4 4"/>
+    <text x="1390" y="1194" font-size="14" fill="#6E6658">rows → SQLite</text>
+  </g>
+  <!-- Bidwire server · one Node 22+ process on :8787 -->
+  <g>
+    <rect class="container" x="424" y="120" width="838" height="1096" rx="6" fill="#EFE8D9" stroke="#CFC3AA"/>
+    <text x="444" y="152" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="22">Bidwire server</tspan> · Node 22+ · one process · <tspan fill="#16130E" font-weight="600" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">:8787</tspan></text>
+    <rect class="card" x="444" y="168" width="280" height="124" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="460" y="197" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E"><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">mcp-use </tspan>MCPServer (Hono)</text>
+    <text x="460" y="220" font-size="14" fill="#6E6658"><tspan fill="#233F6E" font-weight="600" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">POST/GET /mcp</tspan> · streamable HTTP</text>
+    <line x1="460" y1="233" x2="708" y2="233" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="460" y="256" font-size="14" fill="#6E6658">Bearer <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">bw_buy_…</tspan><tspan fill="#9C937F"> · </tspan><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">bw_mer_…</tspan></text>
+    <text x="460" y="277" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">?key=</tspan> · no key → guest agent</text>
+    <rect class="card" x="444" y="306" width="280" height="96" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="460" y="335" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">HTTP API<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">/api/*</tspan></text>
+    <text x="460" y="358" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/api/stream</tspan> (SSE) · <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/llms.txt</tspan></text>
+    <text x="460" y="379" font-size="14" fill="#6E6658">static <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">web/dist</tspan> · <tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/api/tools</tspan></text>
+    <rect class="card" x="444" y="416" width="280" height="72" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="460" y="445" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Demo agent<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">agent.ts</tspan></text>
+    <text x="460" y="468" font-size="14" fill="#6E6658">6 scenarios · calls the same tools</text>
+    <rect class="card" x="760" y="168" width="482" height="252" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="778" y="197" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Tool registry<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">tools.ts</tspan></text>
+    <text x="778" y="219" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-weight="600">12</tspan> tools · <tspan fill="#16130E" font-weight="600">3</tspan> resources · <tspan fill="#16130E" font-weight="600">2</tspan> prompts</text>
+    <line x1="778" y1="232" x2="1224" y2="232" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="778" y="254" font-size="12" font-weight="600" fill="#9C937F" letter-spacing="1.44">BUYER · 7</text>
+    <text x="778" y="277" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">find_offers</text>
+    <text x="778" y="298" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">get_offers</text>
+    <text x="778" y="319" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">buy_offer</text>
+    <text x="778" y="340" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">check_approval</text>
+    <text x="778" y="361" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">get_order</text>
+    <text x="778" y="382" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">get_wallet</text>
+    <text x="778" y="403" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">report_offer</text>
+    <text x="912" y="254" font-size="12" font-weight="600" fill="#9C937F" letter-spacing="1.44">PUBLIC · 2</text>
+    <text x="912" y="277" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">explain_offer</text>
+    <text x="912" y="298" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">register_merchant</text>
+    <text x="1068" y="254" font-size="12" font-weight="600" fill="#9C937F" letter-spacing="1.44">MERCHANT · 3</text>
+    <text x="1068" y="277" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">list_open_requests</text>
+    <text x="1068" y="298" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">place_bid</text>
+    <text x="1068" y="319" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">get_my_results</text>
+    <rect x="902" y="338" width="326" height="58" rx="4" fill="#EFE8D9"/>
+    <text x="912" y="361" font-size="14" fill="#6E6658">same registry powers MCP,</text>
+    <text x="912" y="382" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">/api/tools</tspan> playground and the demo agent</text>
+    <rect class="card" x="936" y="436" width="306" height="52" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="952" y="469" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Event bus<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">bus.ts</tspan></text>
+    <text x="1226" y="468" font-size="14" fill="#6E6658" text-anchor="end">→ SSE fan-out</text>
+    <rect class="container" x="444" y="528" width="798" height="280" rx="10" fill="#FFFDF7" stroke="none" stroke-width="1"/>
+    <path d="M444 576 V538 Q444 528 454 528 H1232 Q1242 528 1242 538 V576 Z" fill="#0F0E0C"/>
+    <line x1="444" y1="576" x2="1242" y2="576" stroke="#B0894F" stroke-width="1"/>
+    <rect x="444" y="528" width="798" height="280" rx="10" fill="none" stroke="#B0894F" stroke-width="1.25"/>
+    <text x="462" y="560" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="22" fill="#F3E9D2">Exchange engine<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#B0894F" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">exchange.ts</tspan></text>
+    <rect class="chip" x="1160" y="541" width="66" height="22" rx="4" fill="#E5F0E8"/>
+    <text x="1193" y="557" font-size="14" font-weight="600" fill="#2D6A48" text-anchor="middle">+1 sale</text>
+    <rect class="chip" x="992" y="541" width="160" height="22" rx="4" fill="#F6E3DF"/>
+    <text x="1072" y="557" font-size="14" font-weight="600" fill="#8E2A22" text-anchor="middle">−10 confirmed report</text>
+    <rect class="chip" x="922" y="541" width="62" height="22" rx="4" fill="#F6E3DF"/>
+    <text x="953" y="557" font-size="14" font-weight="600" fill="#8E2A22" text-anchor="middle">−12 lie</text>
+    <text x="908" y="557" font-size="12" font-weight="600" fill="#B0894F" text-anchor="end" letter-spacing="1.44">TRUST</text>
+    <rect class="card" x="458" y="588" width="124" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="470" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Auction</text>
+    <text x="570" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">01</text>
+    <rect class="card" x="600" y="588" width="124" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="612" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Verifier</text>
+    <text x="712" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">02</text>
+    <path id="e-stage1" class="edge" d="M584 669 L598 669" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-dim-sm)"/>
+    <rect class="card" x="742" y="588" width="202" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="754" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Ranker</text>
+    <text x="932" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">03</text>
+    <path id="e-stage2" class="edge" d="M726 669 L740 669" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-dim-sm)"/>
+    <rect class="card" x="962" y="588" width="124" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="974" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Policy</text>
+    <text x="1074" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">04</text>
+    <path id="e-stage3" class="edge" d="M946 669 L960 669" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-dim-sm)"/>
+    <rect class="card" x="1104" y="588" width="124" height="162" rx="6" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1116" y="614" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Ledger</text>
+    <text x="1216" y="612" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#B0894F" text-anchor="end">05</text>
+    <path id="e-stage4" class="edge" d="M1088 669 L1102 669" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-dim-sm)"/>
+    <text x="470" y="638" font-size="14" fill="#16130E">open</text>
+    <text x="470" y="658" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan>verifying</text>
+    <text x="470" y="678" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan>closed</text>
+    <circle cx="480" cy="725" r="9" fill="none" stroke="#E2D9C6" stroke-width="2.5"/>
+    <path d="M480 716 A9 9 0 1 1 472.21 720.5" fill="none" stroke="#B0894F" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="497" y="731" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">12 s</text>
+    <text x="612" y="638" font-size="14" fill="#6E6658">page JSON-LD +</text>
+    <text x="612" y="658" font-size="14" fill="#6E6658">checkout quote</text>
+    <text x="612" y="682" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan><tspan fill="#2D6A48" font-weight="600">5 checks</tspan></text>
+    <circle cx="619" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M616 725.2 L618.2 727.4 L622.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="638" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M635 725.2 L637.2 727.4 L641.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="657" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M654 725.2 L656.2 727.4 L660.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="676" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M673 725.2 L675.2 727.4 L679.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="695" cy="725" r="7" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <path d="M692 725.2 L694.2 727.4 L698.2 722.8" fill="none" stroke="#2D6A48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="754" y="638" font-size="14" fill="#6E6658">price</text>
+    <rect x="820" y="630" width="84" height="6" rx="3" fill="#EFE8D9"/>
+    <rect x="820" y="630" width="84" height="6" rx="3" fill="#B0894F"/>
+    <text x="932" y="638" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E" text-anchor="end">40</text>
+    <text x="754" y="657" font-size="14" fill="#6E6658">specs</text>
+    <rect x="820" y="649" width="84" height="6" rx="3" fill="#EFE8D9"/>
+    <rect x="820" y="649" width="52.5" height="6" rx="3" fill="#B0894F"/>
+    <text x="932" y="657" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E" text-anchor="end">25</text>
+    <text x="754" y="676" font-size="14" fill="#6E6658">delivery</text>
+    <rect x="820" y="668" width="84" height="6" rx="3" fill="#EFE8D9"/>
+    <rect x="820" y="668" width="31.5" height="6" rx="3" fill="#B0894F"/>
+    <text x="932" y="676" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E" text-anchor="end">15</text>
+    <text x="754" y="695" font-size="14" fill="#6E6658">trust</text>
+    <rect x="820" y="687" width="84" height="6" rx="3" fill="#EFE8D9"/>
+    <rect x="820" y="687" width="31.5" height="6" rx="3" fill="#B0894F"/>
+    <text x="932" y="695" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E" text-anchor="end">15</text>
+    <text x="754" y="714" font-size="14" fill="#6E6658">returns</text>
+    <rect x="820" y="706" width="84" height="6" rx="3" fill="#EFE8D9"/>
+    <rect x="820" y="706" width="10.5" height="6" rx="3" fill="#B0894F"/>
+    <text x="932" y="714" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E" text-anchor="end">5</text>
+    <rect class="chip" x="752" y="720" width="182" height="22" rx="4" fill="#F6EBD6"/>
+    <text x="843" y="735.5" font-size="14" font-weight="600" fill="#94641F" text-anchor="middle">fee breaks ties &lt; 0.5 pts</text>
+    <text x="974" y="638" font-size="14" fill="#6E6658">per-purchase +</text>
+    <text x="974" y="658" font-size="14" fill="#6E6658">daily limits</text>
+    <text x="974" y="682" font-size="14" fill="#6E6658"><tspan fill="#9C937F">→ </tspan><tspan fill="#2D6A48" font-weight="600">approval</tspan></text>
+    <text x="1116" y="638" font-size="14" fill="#6E6658">double-entry</text>
+    <text x="1116" y="658" font-size="14" fill="#6E6658">idempotent</text>
+    <text x="1116" y="678" font-size="14" fill="#6E6658">orders</text>
+    <rect x="1116" y="710" width="48" height="28" rx="3" fill="#E5F0E8" stroke="#2D6A48" stroke-width="1"/>
+    <line x1="1116" y1="719" x2="1164" y2="719" stroke="#2D6A48" stroke-width="1"/>
+    <line x1="1140" y1="719" x2="1140" y2="738" stroke="#2D6A48" stroke-width="1"/>
+    <line x1="1122" y1="726" x2="1134" y2="726" stroke="#2D6A48" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="1146" y1="731" x2="1158" y2="731" stroke="#2D6A48" stroke-width="1.2" stroke-linecap="round"/>
+    <rect class="card" x="444" y="872" width="320" height="176" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="460" y="901" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Merchant bots<tspan fill="#9C937F" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14"> · </tspan><tspan fill="#6E6658" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">bots.ts</tspan></text>
+    <text x="460" y="923" font-size="14" fill="#6E6658">8 personas</text>
+    <rect class="chip" x="460" y="934" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="949.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">honest-value</text>
+    <rect class="chip" x="581" y="934" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="588" y="949.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">premium-fast</text>
+    <rect class="chip" x="460" y="961" width="157" height="22" rx="4" fill="#F6E3DF" stroke="#E7C3BC"/>
+    <text x="467" y="976.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#8E2A22">drip-pricing-liar</text>
+    <rect class="chip" x="623" y="961" width="65" height="22" rx="4" fill="#F6EBD6" stroke="#E6D2AE"/>
+    <text x="630" y="976.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#94641F">briber</text>
+    <rect class="chip" x="460" y="988" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="1003.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">slow-shipper</text>
+    <rect class="chip" x="581" y="988" width="132" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="588" y="1003.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">spec-stretcher</text>
+    <rect class="chip" x="460" y="1015" width="115" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="1030.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">scarce-stock</text>
+    <rect class="chip" x="581" y="1015" width="98" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="588" y="1030.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">specialist</text>
+    <rect class="card" x="784" y="872" width="290" height="112" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <text x="800" y="901" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19" fill="#16130E">Storefronts</text>
+    <text x="800" y="924" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">/store/:handle/:sku (+ /quote)</text>
+    <text x="800" y="946" font-size="14" fill="#6E6658">schema.org Product/Offer JSON-LD</text>
+    <text x="800" y="967" font-size="14" fill="#94641F">checkout quote reveals hidden fees</text>
+    <rect class="card" x="444" y="1088" width="798" height="112" rx="6" fill="#FFFDF7" stroke="#E2D9C6" stroke-width="1"/>
+    <path d="M460 1105 v12 a8 3.2 0 0 0 16 0 v-12" fill="none" stroke="#6E6658" stroke-width="1.4"/>
+    <path d="M460 1105 a8 3.2 0 0 1 16 0 a8 3.2 0 0 1 -16 0" fill="none" stroke="#6E6658" stroke-width="1.4"/>
+    <path d="M460 1111 a8 3.2 0 0 0 16 0" fill="none" stroke="#6E6658" stroke-width="1.1"/>
+    <text x="486" y="1117" font-size="14" fill="#6E6658"><tspan fill="#16130E" font-family="'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif" font-size="19">SQLite</tspan><tspan fill="#9C937F"> · </tspan><tspan font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">node:sqlite</tspan> (WAL) · <tspan font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace">data/bidwire.db</tspan></text>
+    <rect class="chip" x="460" y="1132" width="81" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">products</text>
+    <rect class="chip" x="547" y="1132" width="90" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="554" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">merchants</text>
+    <rect class="chip" x="643" y="1132" width="81" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="650" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">listings</text>
+    <rect class="chip" x="730" y="1132" width="65" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="737" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">buyers</text>
+    <rect class="chip" x="801" y="1132" width="81" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="808" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">auctions</text>
+    <rect class="chip" x="888" y="1132" width="48" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="895" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">bids</text>
+    <rect class="chip" x="942" y="1132" width="90" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="949" y="1147.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">approvals</text>
+    <rect class="chip" x="460" y="1161" width="65" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="467" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">orders</text>
+    <rect class="chip" x="531" y="1161" width="65" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="538" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">ledger</text>
+    <rect class="chip" x="602" y="1161" width="81" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="609" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">messages</text>
+    <rect class="chip" x="689" y="1161" width="98" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="696" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">tool_calls</text>
+    <rect class="chip" x="793" y="1161" width="124" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="800" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">trust_history</text>
+    <rect class="chip" x="923" y="1161" width="73" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="930" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">reports</text>
+    <rect class="chip" x="1002" y="1161" width="81" height="22" rx="4" fill="#F4EFE4" stroke="#E2D9C6"/>
+    <text x="1009" y="1176.9" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#16130E">settings</text>
+  </g>
+  <!-- Edges -->
+  <g>
+    <line x1="228" y1="190" x2="242" y2="190" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="190" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="190" r="2.4" fill="#233F6E"/>
+    <line x1="228" y1="242" x2="242" y2="242" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="242" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="242" r="2.4" fill="#233F6E"/>
+    <line x1="228" y1="302" x2="242" y2="302" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="302" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="302" r="2.4" fill="#233F6E"/>
+    <line x1="228" y1="364" x2="242" y2="364" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="364" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="364" r="2.4" fill="#233F6E"/>
+    <line x1="228" y1="416" x2="242" y2="416" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="416" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="416" r="2.4" fill="#233F6E"/>
+    <line x1="228" y1="659" x2="242" y2="659" stroke="#233F6E" stroke-width="1.6"/>
+    <circle cx="228" cy="659" r="2.8" fill="#233F6E"/>
+    <circle cx="242" cy="659" r="2.4" fill="#233F6E"/>
+    <line x1="242" y1="190" x2="242" y2="659" stroke="#233F6E" stroke-width="1.6"/>
+    <path id="e-mcp" class="edge" d="M242 230 L444 230" fill="none" stroke="#233F6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-navy)"/>
+    <circle cx="242" cy="230" r="3" fill="#233F6E"/>
+    <text x="335" y="221" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#233F6E" text-anchor="middle">MCP · streamable HTTP</text>
+    <path id="e-phones" class="edge" d="M228 1111 L270 1111 Q280 1111 280 1101 L280 364 Q280 354 290 354 L444 354" fill="none" stroke="#6E6658" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-event)"/>
+    <circle cx="228" cy="1111" r="2.8" fill="#6E6658"/>
+    <text x="356" y="345" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#6E6658" text-anchor="middle">join · bid</text>
+    <path id="e-mcp-reg" class="edge" d="M724 230 L760 230" fill="none" stroke="#233F6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-navy)"/>
+    <circle cx="724" cy="230" r="2.8" fill="#233F6E"/>
+    <path id="e-http-reg" class="edge" d="M724 354 L760 354" fill="none" stroke="#6E6658" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-event)"/>
+    <circle cx="724" cy="354" r="2.8" fill="#6E6658"/>
+    <path id="e-demo-reg" class="edge" d="M724 452 L790 452 Q800 452 800 442 L800 420" fill="none" stroke="#233F6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-navy)"/>
+    <circle cx="724" cy="452" r="2.8" fill="#233F6E"/>
+    <path id="e-reg-ex" class="edge" d="M880 420 L880 528" fill="none" stroke="#233F6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-navy)"/>
+    <circle cx="880" cy="420" r="2.8" fill="#233F6E"/>
+    <path id="e-ex-bus" class="edge" d="M1090 528 L1090 488" fill="none" stroke="#6E6658" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-event)"/>
+    <path id="e-sse" class="edge" d="M1242 462 L1446 462 Q1456 462 1456 452 L1456 330" fill="none" stroke="#6E6658" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-event)"/>
+    <circle cx="1242" cy="462" r="2.8" fill="#6E6658"/>
+    <text x="1352" y="453" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#6E6658" text-anchor="middle">SSE events</text>
+    <path id="e-pol-ink" class="edge" d="M1038 750 L1038 770 Q1038 778 1046 778 L1336 778" fill="none" stroke="#2D6A48" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-green)"/>
+    <circle cx="1038" cy="750" r="2.8" fill="#2D6A48"/>
+    <path id="e-ink-pol" class="edge" d="M1336 794 L1018 794 Q1010 794 1010 786 L1010 750" fill="none" stroke="#2D6A48" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-green)"/>
+    <circle cx="1336" cy="794" r="2.8" fill="#2D6A48"/>
+    <path id="e-hook" class="edge" d="M490 750 L490 872" fill="none" stroke="#6E6658" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-event)"/>
+    <circle cx="490" cy="750" r="2.8" fill="#6E6658"/>
+    <path id="e-bids" class="edge" d="M534 872 L534 750" fill="none" stroke="#233F6E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-navy)"/>
+    <circle cx="534" cy="872" r="2.8" fill="#233F6E"/>
+    <text x="546" y="834" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#6E6658">auction.opened hook</text>
+    <text x="546" y="854" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#233F6E">place bids</text>
+    <path id="e-verify" class="edge" d="M712 750 L712 812 Q712 820 720 820 L812 820 Q820 820 820 828 L820 872" fill="none" stroke="#2D6A48" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-green)"/>
+    <circle cx="712" cy="750" r="2.8" fill="#2D6A48"/>
+    <text x="832" y="840" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#2D6A48">HTTP GET page + /quote,</text>
+    <text x="832" y="858" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#2D6A48">like any external store</text>
+    <path id="e-db-bots" class="edge" d="M604 1048 L604 1088" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#ah-dim)"/>
+    <circle cx="604" cy="1048" r="2.8" fill="#9C937F"/>
+    <path id="e-db-store" class="edge" d="M929 984 L929 1088" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#ah-dim)"/>
+    <circle cx="929" cy="984" r="2.8" fill="#9C937F"/>
+    <path id="e-db-ex" class="edge" d="M1166 808 L1166 1088" fill="none" stroke="#9C937F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#ah-dim)"/>
+    <circle cx="1166" cy="808" r="2.8" fill="#9C937F"/>
+    <text x="766" y="1073" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#6E6658" text-anchor="middle">rows, not memory · restart-safe</text>
+    <path id="e-sms" class="edge" d="M1336 848 L1302 848 Q1290 848 1290 860 L1290 1232 Q1290 1244 1278 1244 L148 1244 Q136 1244 136 1232 L136 1216" fill="none" stroke="#2D6A48" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-green)"/>
+    <circle cx="1336" cy="848" r="2.8" fill="#2D6A48"/>
+    <path id="e-yes" class="edge" d="M116 1216 L116 1252 Q116 1264 128 1264 L1298 1264 Q1310 1264 1310 1252 L1310 876 Q1310 864 1322 864 L1336 864" fill="none" stroke="#2D6A48" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ah-green)"/>
+    <circle cx="116" cy="1216" r="2.8" fill="#2D6A48"/>
+    <g class="ontop">
+      <rect class="pill" x="553.5" y="1233" width="173" height="22" rx="11" fill="#E5F0E8" stroke="#CFC3AA" stroke-width="1"/>
+      <text x="640" y="1248.5" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#2D6A48" text-anchor="middle">SMS: Reply YES 1234</text>
+    </g>
+    <g class="ontop">
+      <rect class="pill" x="927.5" y="1253" width="165" height="22" rx="11" fill="#E5F0E8" stroke="#CFC3AA" stroke-width="1"/>
+      <text x="1010" y="1268.5" font-family="JetBrains Mono, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="600" fill="#2D6A48" text-anchor="middle">YES 1234 → approve</text>
+    </g>
+  </g>
+</svg>
