@@ -1,8 +1,8 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Aperture, Asterisk, MousePointer2, Plug, SquareTerminal } from "lucide-react";
+import { Aperture, Asterisk, MousePointer2, SquareTerminal } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
-import { LiveAuctionCard } from "./LiveAuctionCard";
-import { Arrow, Button, Container, EASE, LiveDot } from "./ui";
+import { LiveBoard } from "./LiveBoard";
+import { Arrow, Button, Container, EASE, Eyebrow, LiveDot } from "./ui";
 
 const CLIENTS = [
   { label: "Claude", Icon: Asterisk },
@@ -28,48 +28,43 @@ function Rise({ children, delay = 0, className }: { children: ReactNode; delay?:
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <Container className="grid grid-cols-1 items-center gap-16 pb-24 pt-12 sm:pt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] lg:gap-12 lg:pb-32 lg:pt-20 xl:grid-cols-[minmax(0,1fr)_minmax(0,540px)] xl:gap-16">
+    <section className="relative">
+      <Container className="grid grid-cols-1 items-center gap-16 pb-24 pt-10 sm:pt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] lg:gap-12 lg:pb-32 lg:pt-20 xl:grid-cols-[minmax(0,1fr)_minmax(0,544px)] xl:gap-16">
         <div className="min-w-0">
           <Rise>
-            <span className="inline-flex h-8 items-center gap-2 rounded-full border border-line bg-panel pl-1.5 pr-3.5 text-[13px] font-medium text-muted shadow-[0_1px_2px_rgba(14,14,16,0.04)]">
-              <span className="grid size-5 place-items-center rounded-full bg-agent-soft text-agent">
-                <Plug className="size-3" strokeWidth={2.5} aria-hidden />
-              </span>
-              MCP server · Built for AI agents
-            </span>
+            <Eyebrow>MCP server · Built for AI agents</Eyebrow>
           </Rise>
 
           <Rise delay={0.05}>
-            <h1 className="mt-6 text-[40px] font-semibold leading-[44px] tracking-[-0.03em] text-ink sm:text-[48px] sm:leading-[52px] xl:text-[56px] xl:leading-[60px]">
-              The ad exchange
+            <h1 className="mt-6 font-serif text-[48px] font-normal leading-[48px] tracking-[-0.015em] text-ink sm:text-[60px] sm:leading-[60px] xl:text-[72px] xl:leading-[72px]">
+              The auction house
               <br />
-              for AI agents.
+              for <em className="italic">AI agents.</em>
             </h1>
           </Rise>
 
           <Rise delay={0.1}>
-            <p className="mt-6 max-w-[620px] text-pretty text-[17px] leading-7 text-muted sm:text-[18px]">
-              When an agent shops, nobody sees an ad. Bidwire lets merchants compete for an agent's purchase on verified
-              price, delivery and specs, and nothing else.
+            <p className="mt-6 max-w-[560px] text-pretty text-[17px] leading-7 text-muted sm:text-[18px] sm:leading-[30px]">
+              When an agent shops, nobody sees an ad. On Bidwire, merchants raise a paddle for an agent's purchase, and win only on
+              verified price, delivery and specs.
             </p>
           </Rise>
 
           <Rise delay={0.15}>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button to="/connect" variant="accent" size="lg">
+              <Button to="/connect" variant="primary" size="lg">
                 Connect your agent
-                <Arrow />
+                <Arrow className="text-accent" />
               </Button>
               <Button to="/exchange" variant="secondary" size="lg">
                 <LiveDot />
-                Watch it live
+                Enter the saleroom
               </Button>
             </div>
           </Rise>
 
           <Rise delay={0.2}>
-            <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-[14px] text-muted">
+            <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-[14px] text-muted">
               <span className="w-full text-dim sm:w-auto">Works with</span>
               {CLIENTS.map(({ label, Icon }, i) => (
                 <Fragment key={label}>
@@ -78,7 +73,7 @@ export function Hero() {
                       ·
                     </span>
                   )}
-                  <span className="inline-flex items-center gap-1.5 font-medium">
+                  <span className="inline-flex items-center gap-1.5 font-medium text-ink/80">
                     <Icon className="size-3.5 text-dim" strokeWidth={2.25} aria-hidden />
                     {label}
                   </span>
@@ -89,7 +84,7 @@ export function Hero() {
         </div>
 
         <Rise delay={0.15} className="min-w-0">
-          <LiveAuctionCard />
+          <LiveBoard />
         </Rise>
       </Container>
     </section>
