@@ -23,18 +23,18 @@ export function deliveredCents(b: Bid): number {
 
 /* ------------------------------------------------------------------ auction-house vocabulary */
 
-function hash(s: string): number {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
-  return Math.abs(h);
+/**
+ * A stable 3-digit paddle number for a merchant (100–999), derived from its id.
+ * Same FNV-1a derivation as `paddleNo` in components/MerchantDot.tsx, so a merchant
+ * holds the same paddle on the landing page and in the saleroom.
+ */
+export function paddleNo(id: string | null | undefined): number {
+  let h = 2166136261;
+  for (const c of id ?? "") h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  return 100 + (Math.abs(h) % 900);
 }
 
-/** A stable 3-digit paddle number for a merchant (100–999), derived from its id. */
-export function paddleNo(merchantId: string): number {
-  return 100 + (hash(merchantId ?? "") % 900);
-}
-
-/** Lot number: auctions are numbered in the order they opened (the store keeps the most recent ones). */
+/** Lot number: auctions are numbered in the order they opened (same rule as `lotNumber` in lib/format). */
 export function lotNo(a: Auction, auctions: Auction[], total: number): number {
   const i = auctions.findIndex((x) => x.id === a.id);
   const n = i >= 0 ? total - i : total;
