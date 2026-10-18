@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useState, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { Arrow, Button, Container, EASE, GITHUB_URL, Wordmark, cx } from "./ui";
+import { Arrow, Button, Container, EASE, GITHUB_URL, LiveDot, Wordmark, cx } from "./ui";
 
 const LINKS: { label: string; href: string; external?: boolean }[] = [
   { label: "How it works", href: "#how" },
@@ -50,11 +50,11 @@ export function Nav() {
     <header
       className={cx(
         "sticky top-0 z-40 border-b transition-[background-color,border-color] duration-200 ease-out",
-        solid ? "border-line bg-white/80 backdrop-blur-md backdrop-saturate-150" : "border-transparent bg-bg/0",
+        solid ? "border-line bg-panel/85 backdrop-blur-md" : "border-transparent bg-transparent",
       )}
     >
       <Container className="flex h-16 items-center gap-8">
-        <Link to="/" className="rounded-[8px] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/25" aria-label="Bidwire home">
+        <Link to="/" className="rounded-full focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/35" aria-label="Bidwire home">
           <Wordmark />
         </Link>
 
@@ -66,7 +66,7 @@ export function Nav() {
               onClick={(e) => scrollToId(e, l.href)}
               target={l.external ? "_blank" : undefined}
               rel={l.external ? "noreferrer" : undefined}
-              className="inline-flex h-9 items-center gap-1 rounded-[8px] px-3 text-[14px] font-medium text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/25"
+              className="inline-flex h-9 items-center gap-1 rounded-full px-3 text-[14px] font-medium text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/35"
             >
               {l.label}
               {l.external && <ArrowUpRight className="size-3.5 text-dim" aria-hidden />}
@@ -76,18 +76,19 @@ export function Nav() {
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
           <Button to="/exchange" variant="secondary" size="sm">
-            Live exchange
-            <Arrow className="size-3.5" />
+            <LiveDot />
+            Live saleroom
           </Button>
           <Button to="/connect" variant="primary" size="sm">
             Connect your agent
+            <Arrow className="size-3.5 text-accent" />
           </Button>
         </div>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="ml-auto grid size-9 place-items-center rounded-[10px] border border-line bg-panel text-ink md:ml-0 lg:hidden"
+          className="ml-auto grid size-9 place-items-center rounded-full border border-line-strong bg-panel text-ink md:ml-0 lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -102,7 +103,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: EASE }}
-            className="absolute inset-x-0 top-full border-b border-line bg-white shadow-[0_12px_32px_rgba(14,14,16,0.10)] lg:hidden"
+            className="absolute inset-x-0 top-full border-b border-line bg-panel shadow-[0_18px_40px_rgba(22,19,14,0.12)] lg:hidden"
           >
             <Container className="py-2">
               <nav className="flex flex-col" aria-label="Mobile">
@@ -125,11 +126,12 @@ export function Nav() {
               </nav>
               <div className="grid grid-cols-1 gap-2 pb-4 pt-2 sm:grid-cols-2 md:hidden">
                 <Button to="/exchange" variant="secondary" size="md">
-                  Live exchange
-                  <Arrow className="size-3.5" />
+                  <LiveDot />
+                  Live saleroom
                 </Button>
                 <Button to="/connect" variant="primary" size="md">
                   Connect your agent
+                  <Arrow className="size-3.5 text-accent" />
                 </Button>
               </div>
             </Container>
