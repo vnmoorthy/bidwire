@@ -130,9 +130,18 @@ function BoardLot({ a, lot }: { a: Auction; lot: number | null }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.26, ease: EASE }}
-                  className="whitespace-nowrap font-serif text-[60px] font-normal leading-[64px] tracking-[-0.01em] tabular-nums text-board-text sm:text-[72px] sm:leading-[72px]"
+                  className="relative inline-block whitespace-nowrap font-serif text-[60px] font-normal leading-[64px] tracking-[-0.01em] tabular-nums text-board-text sm:text-[72px] sm:leading-[72px]"
                 >
                   {money(deliveredCents(top))}
+                  {sold && (
+                    <motion.span
+                      aria-hidden
+                      className="absolute inset-x-0 bottom-1 block h-px origin-left bg-board-amber"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
+                    />
+                  )}
                 </motion.p>
               ) : (
                 <motion.p
@@ -148,15 +157,6 @@ function BoardLot({ a, lot }: { a: Auction; lot: number | null }) {
               )}
             </AnimatePresence>
           </div>
-          {sold && (
-            <motion.span
-              aria-hidden
-              className="mt-1 block h-px origin-left bg-board-amber"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
-            />
-          )}
           <p className="mt-2 truncate text-[14px] text-board-text/70">
             {top ? (
               <>
@@ -173,7 +173,14 @@ function BoardLot({ a, lot }: { a: Auction; lot: number | null }) {
       </div>
 
       <div className="mt-4 border-t border-board-text/10 pt-3">
-        <SmallCaps className="block text-board-text/45">{meta.join(" · ")}</SmallCaps>
+        <SmallCaps className="block text-board-text/45">
+          {meta.map((m, i) => (
+            <span key={m} className="whitespace-nowrap">
+              {i > 0 ? " · " : ""}
+              {m}
+            </span>
+          ))}
+        </SmallCaps>
       </div>
     </>
   );
@@ -395,13 +402,15 @@ const PaddleRow = forwardRef<HTMLLIElement, { b: Bid }>(function PaddleRow({ b }
         <div className="flex min-w-0 items-center gap-2">
           <span className="truncate text-[14.5px] font-semibold leading-5 text-ink">{b.merchant_name}</span>
           {bribe && (
-            <Badge tone="fee" className="hidden h-5 px-2 text-[11px] sm:inline-flex">
-              Bribe ignored
-            </Badge>
+            <span className="hidden sm:inline-flex">
+              <Badge tone="fee" className="h-5 px-2 text-[11px]">
+                Bribe ignored
+              </Badge>
+            </span>
           )}
         </div>
         <p className={cx("mt-0.5 truncate text-[12.5px] leading-[18px]", bribe ? "text-fee" : "text-muted")}>
-          {bribe ? `Offered ${money(b.fee_cents)} commission · still No. ${b.rank}` : b.product_title}
+          {bribe ? `Offered ${money(b.fee_cents)} · still No. ${b.rank}` : b.product_title}
         </p>
       </div>
 
@@ -421,8 +430,8 @@ const PaddleRow = forwardRef<HTMLLIElement, { b: Bid }>(function PaddleRow({ b }
       </div>
 
       {lie && (
-        <p className="col-span-full -mt-0.5 pl-[54px] text-pretty text-[12.5px] leading-[18px] text-lie sm:pl-[84px]">
-          <span className="font-semibold">Misrepresentation.</span>{" "}
+        <p className="col-span-full -mt-0.5 line-clamp-2 pl-[54px] text-pretty text-[12.5px] leading-[18px] text-lie sm:pl-[84px]">
+          <span className="font-semibold">{lie.title}</span>{" "}
           {lie.checkout != null ? (
             <>
               Claimed {money(claimedTotal(b))} delivered; checkout says{" "}
