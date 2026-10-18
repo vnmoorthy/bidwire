@@ -90,8 +90,8 @@ export default function Ledger() {
       <div className="flex flex-wrap items-end gap-4">
         <div>
           <div className="eyebrow">Settlement</div>
-          <h1 className="mt-1 text-[32px] font-semibold leading-[38px] tracking-[-0.02em]">Double-entry ledger</h1>
-          <p className="mt-1 text-[16px] text-muted">Every purchase moves real money between accounts. Every transaction sums to exactly $0.00.</p>
+          <h1 className="serif mt-1 text-[46px] leading-[50px]">Settlement ledger</h1>
+          <p className="mt-1 text-[16px] text-muted">A double-entry ledger: every sale moves real money between accounts, and every transaction sums to exactly $0.00.</p>
         </div>
         <div
           className={`ml-auto flex items-center gap-2 rounded-full px-4 py-2 text-[14px] font-semibold ${
@@ -105,9 +105,9 @@ export default function Ledger() {
       {err && <div className="mt-4 rounded-[10px] bg-lie-soft px-4 py-2 text-sm text-lie">{err}</div>}
 
       <div className="card mt-6 grid grid-cols-2 gap-px overflow-hidden bg-line lg:grid-cols-5">
-        <Kpi icon={<ShoppingBag size={16} />} label="GMV" color="text-money" value={<AnimatedNumber value={stats.gmv_cents} format={(n) => money(Math.round(n))} />} />
-        <Kpi icon={<Receipt size={16} />} label="Platform fees" color="text-ink" value={<AnimatedNumber value={stats.platform_fees_cents} format={(n) => money(Math.round(n))} />} />
-        <Kpi icon={<BookOpen size={16} />} label="Orders" color="text-ink" value={<AnimatedNumber value={stats.orders} />} />
+        <Kpi icon={<ShoppingBag size={16} />} label="Hammer total (GMV)" color="text-money" value={<AnimatedNumber value={stats.gmv_cents} format={(n) => money(Math.round(n))} />} />
+        <Kpi icon={<Receipt size={16} />} label="Commission" color="text-ink" value={<AnimatedNumber value={stats.platform_fees_cents} format={(n) => money(Math.round(n))} />} />
+        <Kpi icon={<BookOpen size={16} />} label="Sold" color="text-ink" value={<AnimatedNumber value={stats.orders} />} />
         <Kpi icon={<Wallet size={16} />} label="Buyer wallets" color="text-ink" value={<AnimatedNumber value={walletsTotal} format={(n) => money(Math.round(n))} />} />
         <Kpi icon={<Store size={16} />} label="Merchant balances" color="text-ink" value={<AnimatedNumber value={merchantTotal} format={(n) => money(Math.round(n))} />} />
       </div>
