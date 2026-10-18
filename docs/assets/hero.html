@@ -1,10 +1,11 @@
 <!doctype html>
 <!--
-  Bidwire README hero ("Ledger Light" brand, see docs/DESIGN.md).
+  Bidwire README hero, "Saleroom" brand (docs/DESIGN.md v3).
   Source for docs/assets/hero.png (1600x640) and docs/assets/social-preview.png (1280x640).
   Render:  hero.html          at a 1600x640 viewport  -> hero.png
            hero.html?social   at a 1280x640 viewport  -> social-preview.png
-  Board numbers come from a real run of the "flight-headphones" scenario on a local Bidwire server.
+  Fonts load from web/node_modules/@fontsource (run `npm run build` once) with Google Fonts as a fallback.
+  Prices, merits and evidence come from a real run of the "flight-headphones" scenario; paddle numbers are illustrative.
 -->
 <html lang="en">
 <head>
@@ -13,139 +14,131 @@
 <title>Bidwire hero</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <script>if (location.search.includes("social")) document.documentElement.classList.add("social");</script>
 <style>
+@font-face { font-family: "Instrument Serif Local"; font-style: normal; font-weight: 400; src: url("../../web/node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif Local"; font-style: italic; font-weight: 400; src: url("../../web/node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2") format("woff2"); }
+@font-face { font-family: "Inter Local"; font-weight: 400; src: url("../../web/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter Local"; font-weight: 500; src: url("../../web/node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter Local"; font-weight: 600; src: url("../../web/node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter Local"; font-weight: 700; src: url("../../web/node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2") format("woff2"); }
+
 :root {
-  --bg: #FAFAF8; --panel: #FFFFFF; --raised: #F4F4F1; --line: #E9E8E3; --line2: #D9D8D1;
-  --ink: #0E0E10; --muted: #5D5D66; --dim: #9A9AA3;
-  --accent: #F2561D; --accent-soft: #FFF0EA;
-  --money: #12805C; --money-soft: #E7F6EF;
-  --lie: #D93036; --lie-soft: #FDECEC;
-  --fee: #A15C07; --fee-soft: #FFF4E2;
-  --agent: #2F5BEA; --agent-soft: #EDF2FF;
+  --bg: #F4EFE4; --panel: #FFFDF7; --raised: #EFE8D9; --line: #E2D9C6; --line2: #CFC3AA;
+  --ink: #16130E; --muted: #6E6658; --dim: #9C937F;
+  --gold: #B0894F; --gold-soft: #F5EBD6; --gold-ink: #7A5A26;
+  --money: #2D6A48; --money-soft: #E5F0E8;
+  --lie: #8E2A22; --lie-soft: #F6E3DF;
+  --fee: #94641F; --fee-soft: #F6EBD6;
+  --agent: #233F6E; --agent-soft: #E6ECF6;
+  --board: #0F0E0C; --board2: #1A1814; --btext: #F3E9D2; --amber: #E9B44C;
+  --serif: "Instrument Serif Local", "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter Local", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --W: 1600px; --H: 640px;
-  --cols: 46px minmax(0, 1fr) 100px 62px 50px 104px;
+  --cols: 50px 54px minmax(0, 1fr) 100px 64px 204px;
 }
-html.social { --W: 1280px; --cols: 46px minmax(0, 1fr) 100px 112px; }
+html.social { --W: 1280px; --cols: 44px 50px minmax(0, 1fr) 96px 150px; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: var(--bg); }
 body {
-  width: var(--W); height: var(--H); overflow: hidden; color: var(--ink);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  -webkit-font-smoothing: antialiased; font-feature-settings: "cv11", "ss03";
+  width: var(--W); height: var(--H); overflow: hidden; color: var(--ink); font-family: var(--sans);
+  -webkit-font-smoothing: antialiased; font-feature-settings: "cv11";
 }
-.num { font-variant-numeric: tabular-nums; }
-.mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+.serif { font-family: var(--serif); font-weight: 400; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+.caps { font-family: var(--sans); font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
 .sh { display: none; }
 html.social .sh { display: inline; }
 html.social .fl, html.social .hide-s { display: none; }
 
 .stage {
   position: relative; width: 100%; height: 100%; overflow: hidden;
-  display: grid; grid-template-columns: 490px minmax(0, 1fr); gap: 52px; align-items: center;
-  padding: 0 72px 0 80px;
-  background: linear-gradient(180deg, #FCFCFA 0%, #FAFAF8 55%, #F6F5F1 100%);
+  display: grid; grid-template-columns: 500px minmax(0, 1fr); gap: 50px; align-items: center;
+  padding: 0 70px 0 78px; background-color: var(--bg);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .09  0 0 0 0 .07  0 0 0 0 .05  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.05'/></svg>");
 }
-html.social .stage { grid-template-columns: 430px minmax(0, 1fr); gap: 40px; padding: 0 52px 0 60px; }
+html.social .stage { grid-template-columns: 420px minmax(0, 1fr); gap: 40px; padding: 0 54px 0 60px; }
 
-/* ---------- left: brand ---------- */
+/* ---------- left: the house ---------- */
 .left { display: flex; flex-direction: column; }
-.brandrow { display: flex; align-items: center; gap: 14px; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 13px; border-radius: 999px;
-  background: var(--panel); border: 1px solid var(--line); color: var(--muted); font-size: 14px; font-weight: 600; letter-spacing: .01em;
-  box-shadow: 0 1px 2px rgba(14, 14, 16, .04);
-}
-.eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: var(--agent); }
-.wordmark { margin-top: 26px; display: flex; align-items: baseline; font-size: 132px; line-height: .92; font-weight: 700; letter-spacing: -.05em; color: var(--ink); }
-.wordmark .dot { display: inline-block; width: .17em; height: .17em; border-radius: 50%; background: var(--accent); margin-left: .05em; }
-html.social .wordmark { font-size: 112px; }
-.tag1 { margin-top: 24px; font-size: 28px; font-weight: 500; letter-spacing: -.015em; color: var(--muted); }
-.tag2 { margin-top: 6px; font-size: 31px; font-weight: 700; letter-spacing: -.022em; color: var(--ink); }
-html.social .tag1 { font-size: 25px; }
-html.social .tag2 { font-size: 28px; }
+.brandrow { display: flex; align-items: center; gap: 14px; color: var(--dim); }
+.mark { width: 44px; height: 44px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; flex: none; }
+.wordmark { margin-top: 18px; font-family: var(--serif); font-weight: 400; font-size: 158px; line-height: .86; letter-spacing: -.02em; color: var(--ink); }
+html.social .wordmark { font-size: 132px; }
+.rule { width: 72px; height: 2px; background: var(--gold); margin: 22px 0 18px; }
+.tag1 { font-family: var(--serif); font-size: 38px; line-height: 1.1; color: var(--ink); }
+.tag2 { font-family: var(--serif); font-style: italic; font-size: 38px; line-height: 1.15; color: var(--fee); }
+html.social .tag1, html.social .tag2 { font-size: 33px; }
 
 .sms {
-  margin-top: 30px; width: 470px; padding: 14px 16px 15px; border-radius: 18px;
+  margin-top: 26px; width: 470px; padding: 13px 15px 14px; border-radius: 8px;
   background: var(--panel); border: 1px solid var(--line);
-  box-shadow: 0 1px 2px rgba(14, 14, 16, .04), 0 12px 32px rgba(14, 14, 16, .06);
 }
 .sms-head { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--muted); }
-.sms-head .app { width: 22px; height: 22px; border-radius: 6px; background: var(--ink); display: grid; place-items: center; }
-.sms-head b { color: var(--ink); font-weight: 650; font-size: 14px; }
-.sms-head .t { margin-left: auto; font-size: 12.5px; color: var(--dim); }
-.bubble { margin-top: 10px; border-radius: 18px; padding: 10px 14px; font-size: 15px; line-height: 1.42; }
-.bubble.in { background: #EDEDEA; color: #26262B; border-bottom-left-radius: 6px; max-width: 420px; }
-.bubble.in b { color: var(--ink); font-weight: 650; }
-.bubble.out { margin-left: auto; width: fit-content; background: var(--ink); color: #FFF; font-weight: 650; border-bottom-right-radius: 6px; }
-.chips { display: none; margin-top: 30px; gap: 8px; }
+.sms-head .m2 { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; }
+.sms-head b { color: var(--ink); font-weight: 600; font-size: 14px; }
+.sms-head .t { margin-left: auto; color: var(--dim); }
+.bubble { margin-top: 9px; border-radius: 18px; padding: 9px 13px; font-size: 14.5px; line-height: 1.42; }
+.bubble.in { background: var(--raised); color: #2B261E; border-bottom-left-radius: 5px; max-width: 425px; }
+.bubble.in b { color: var(--ink); font-weight: 600; }
+.bubble.out { margin-left: auto; width: fit-content; background: var(--ink); color: var(--bg); font-weight: 600; border-bottom-right-radius: 5px; }
+.chips { display: none; margin-top: 28px; gap: 8px; }
 html.social .sms { display: none; }
 html.social .chips { display: flex; }
 
-.badge {
-  display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 10px; border-radius: 999px;
-  font-size: 12.5px; font-weight: 600; white-space: nowrap; letter-spacing: .005em;
-}
-.badge.ok { background: var(--money-soft); color: var(--money); }
-.badge.lie { background: var(--lie-soft); color: var(--lie); }
-.badge.pick { background: var(--accent-soft); color: var(--accent); }
-.badge.fee { background: var(--fee-soft); color: var(--fee); }
-.badge.agent { background: var(--agent-soft); color: var(--agent); }
-.chips .badge { height: 32px; padding: 0 12px; font-size: 14px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; border: 1px solid transparent; }
+.badge.ok { background: var(--money-soft); color: var(--money); border-color: #C9DECF; }
+.badge.lie { background: var(--lie-soft); color: var(--lie); border-color: #E8C3BC; }
+.badge.fee { background: var(--fee-soft); color: var(--fee); border-color: #E6CFA6; }
+.badge.ham { background: var(--gold-soft); color: var(--gold-ink); border-color: #DCC596; }
+.chips .badge { height: 32px; padding: 0 13px; font-size: 14px; }
 
-/* ---------- right: bid board ---------- */
+/* ---------- right: the saleroom ---------- */
+.right { display: flex; flex-direction: column; gap: 12px; }
 .board {
-  border-radius: 16px; background: var(--panel); border: 1px solid var(--line); overflow: hidden;
-  box-shadow: 0 1px 2px rgba(14, 14, 16, .04), 0 24px 60px -28px rgba(14, 14, 16, .18);
+  position: relative; border-radius: 10px; background: radial-gradient(120% 140% at 30% 0%, #1B1915 0%, var(--board) 55%);
+  color: var(--btext); padding: 18px 26px 15px; box-shadow: 0 18px 40px rgba(22, 19, 14, .18);
 }
-.bhead { display: flex; align-items: center; gap: 14px; padding: 18px 22px 0; }
-.live {
-  display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 11px; border-radius: 999px;
-  border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-size: 13px; font-weight: 600; flex: none;
-}
-.live i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(242, 86, 29, .16); }
-.need { font-size: 23px; font-weight: 650; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-html.social .need { font-size: 20px; }
-.ring { margin-left: auto; position: relative; width: 44px; height: 44px; flex: none; }
-.ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 650; color: var(--ink); }
-.meta { display: flex; align-items: center; gap: 8px; padding: 10px 22px 14px; font-size: 13.5px; color: var(--muted); white-space: nowrap; }
-.meta .sep { color: var(--line2); }
-.meta .chip { height: 22px; display: inline-flex; align-items: center; padding: 0 8px; border-radius: 6px; background: var(--raised); color: var(--ink); font-size: 12.5px; font-weight: 500; }
-.meta .agent-glyph { width: 15px; height: 15px; border-radius: 50%; background: var(--agent); color: #fff; font-size: 9.5px; font-weight: 700; display: inline-grid; place-items: center; }
-html.social .meta .s-hide { display: none; }
+.board::after { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(176, 137, 79, .5); border-radius: 6px; pointer-events: none; }
+.btop { display: flex; align-items: center; gap: 12px; color: rgba(176, 137, 79, .95); }
+.btop .live { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; color: var(--amber); }
+.btop .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px rgba(233, 180, 76, .18); }
+.lot { margin-top: 6px; font-family: var(--serif); font-style: italic; font-size: 33px; line-height: 1.1; color: var(--btext); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.social .lot { font-size: 28px; }
+.bmain { margin-top: 12px; display: flex; align-items: flex-end; gap: 22px; }
+.best .lbl { color: #8F8670; }
+.best .price { font-family: var(--serif); font-size: 70px; line-height: .95; color: var(--btext); font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.01em; }
+.best .who { margin-top: 2px; font-size: 14.5px; color: #CFC3AA; }
+.best .who b { color: var(--btext); font-weight: 600; }
+.going { margin-left: auto; display: flex; align-items: center; gap: 14px; padding-bottom: 6px; }
+.going .ring { position: relative; width: 58px; height: 58px; }
+.going .ring b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--amber); }
+.going .txt { font-family: var(--serif); font-style: italic; font-size: 30px; color: var(--amber); white-space: nowrap; }
+.bstrip { margin-top: 12px; padding-top: 9px; border-top: 1px solid rgba(176, 137, 79, .28); color: #8F8670; white-space: nowrap; overflow: hidden; }
+.bstrip span { color: #CFC3AA; }
+html.social .bstrip .s-hide { display: none; }
 
+.list { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .cols, .row { display: grid; grid-template-columns: var(--cols); align-items: center; column-gap: 12px; }
-.cols { padding: 9px 22px; background: var(--raised); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 12.5px; font-weight: 600; color: var(--muted); }
-.r { text-align: right; justify-self: end; }
-
-.row { position: relative; min-height: 58px; padding: 8px 22px; border-bottom: 1px solid var(--line); }
+.cols { padding: 8px 18px; background: var(--raised); border-bottom: 1px solid var(--line); color: var(--dim); }
+.r { justify-self: end; text-align: right; }
+.row { position: relative; padding: 7px 18px; border-bottom: 1px solid var(--line); min-height: 50px; }
 .row:last-child { border-bottom: 0; }
-.rank { font-size: 15px; font-weight: 600; color: var(--dim); }
-.who { min-width: 0; display: flex; align-items: center; gap: 12px; }
-.av { width: 30px; height: 30px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; }
-.wt { min-width: 0; }
-.m { display: flex; align-items: center; gap: 8px; font-size: 16.5px; font-weight: 600; white-space: nowrap; }
-.p { margin-top: 1px; font-size: 13.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.price { font-size: 17.5px; font-weight: 600; }
-.days, .merit { font-size: 14.5px; color: var(--muted); }
-.merit { color: var(--ink); font-weight: 500; }
-
-.row.pick { background: linear-gradient(90deg, #FFF6F1, #FFFFFF 70%); }
-.row.pick::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
-.row.pick .rank { color: var(--accent); font-weight: 700; }
-.row.bribe .p { color: var(--fee); }
-.row.lied { background: #FFFCFC; }
-.row.lied .m { color: var(--ink); }
-.row.lied .p { color: var(--lie); }
-.row.lied .p b { font-weight: 600; }
-.row.lied .price s { color: var(--muted); text-decoration-color: var(--lie); text-decoration-thickness: 2px; }
-.row.lied .price.dimmed, .row.lied .merit { color: var(--dim); }
-
-.bfoot { display: flex; gap: 22px; padding: 12px 22px; border-top: 1px solid var(--line); background: #FCFCFB; font-size: 13px; color: var(--muted); white-space: nowrap; }
-.bfoot span { display: inline-flex; align-items: center; gap: 7px; }
-.bfoot i { width: 7px; height: 7px; border-radius: 50%; flex: none; }
-html.social .bfoot .s-hide { display: none; }
+.no { font-family: var(--serif); font-size: 22px; color: var(--muted); font-variant-numeric: tabular-nums lining-nums; }
+.chip { justify-self: start; display: inline-grid; place-items: center; height: 24px; min-width: 44px; padding: 0 7px; border-radius: 6px 6px 6px 2px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; font-variant-numeric: tabular-nums; border: 1px solid; }
+.who2 { min-width: 0; }
+.mn { display: flex; align-items: center; gap: 8px; font-size: 15.5px; font-weight: 600; white-space: nowrap; }
+.pd { margin-top: 1px; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dp { font-family: var(--serif); font-size: 25px; line-height: 1; font-variant-numeric: tabular-nums lining-nums; }
+.ar { font-size: 13.5px; color: var(--muted); }
+.row.top::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); }
+.row.top .no { color: var(--gold-ink); }
+.row.bribe .pd { color: var(--fee); }
+.row.out .mn { color: #3A332A; }
+.row.out .dp { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--lie); text-decoration-thickness: 1.5px; }
+.row.out .ev { grid-column: 3 / -1; margin-top: 2px; font-size: 12.5px; color: var(--lie); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row.out .ev b { font-weight: 600; }
 </style>
 </head>
 <body>
@@ -153,20 +146,21 @@ html.social .bfoot .s-hide { display: none; }
 
   <section class="left">
     <div class="brandrow">
-      <svg width="56" height="56" viewBox="0 0 32 32" aria-hidden="true">
-        <rect x="0.5" y="0.5" width="31" height="31" rx="8" fill="#0E0E10"/>
-        <path d="M7 21.5 11.5 15l4 3.5L20 11h3.2" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="25" cy="11" r="2.9" fill="#F2561D"/>
-      </svg>
-      <span class="eyebrow"><i></i>MCP server · Built for AI agents</span>
+      <span class="mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4EFE4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/>
+        </svg>
+      </span>
+      <span class="caps">MCP server · Built for AI agents</span>
     </div>
-    <h1 class="wordmark">Bidwire<span class="dot"></span></h1>
-    <p class="tag1">The ad exchange for AI agents.</p>
+    <h1 class="wordmark">Bidwire</h1>
+    <div class="rule"></div>
+    <p class="tag1">The auction house for AI agents.</p>
     <p class="tag2">You can't bribe an agent.</p>
 
     <div class="sms">
       <div class="sms-head">
-        <span class="app"><svg width="13" height="13" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 22.5 10.5 15l4.5 4L21 10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="10" r="3.6" fill="#F2561D"/></svg></span>
+        <span class="m2"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F4EFE4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></svg></span>
         <b>Bidwire</b><span>Text to your human</span><span class="t">now</span>
       </div>
       <div class="bubble in">Your agent wants to buy <b>Sennheiser Momentum 4</b> from Parcel &amp; Pine for <b class="num">$368.99</b> (your limit is $300.00). Reply <b>YES 7019</b> to approve.</div>
@@ -174,107 +168,84 @@ html.social .bfoot .s-hide { display: none; }
     </div>
 
     <div class="chips">
-      <span class="badge lie">Lied ✗ caught</span>
+      <span class="badge lie">Withdrawn: misrepresentation</span>
       <span class="badge fee">Bribe ignored</span>
-      <span class="badge ok">Approved by text ✓</span>
     </div>
   </section>
 
-  <section class="board">
-    <div class="bhead">
-      <span class="live"><i></i>Live</span>
-      <div class="need">“Noise cancelling headphones for long flights”</div>
-      <div class="ring">
-        <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
-          <circle cx="22" cy="22" r="19" fill="none" stroke="#E9E8E3" stroke-width="3"/>
-          <circle cx="22" cy="22" r="19" fill="none" stroke="#0E0E10" stroke-width="3" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="89.5" transform="rotate(-90 22 22)"/>
-        </svg>
-        <b class="num">3s</b>
+  <section class="right">
+    <div class="board">
+      <div class="btop caps">
+        <span>Lot 08 · Headphones · Opened by Claude</span>
+        <span class="live"><i></i>Live</span>
       </div>
-    </div>
-    <div class="meta">
-      <span class="badge agent"><span class="agent-glyph">C</span>Claude</span>
-      <span class="mono s-hide" style="font-size:12.5px;color:var(--ink)">find_offers</span>
-      <span class="sep s-hide">·</span>
-      <span>Budget <b class="num" style="color:var(--ink);font-weight:600">$400</b></span>
-      <span class="sep">·</span>
-      <span>Within <b style="color:var(--ink);font-weight:600">5 days</b></span>
-      <span class="sep">·</span>
-      <span class="chip">anc</span><span class="chip">30h-battery</span>
-      <span class="sep s-hide">·</span>
-      <span class="s-hide">7 bids</span>
-    </div>
-
-    <div class="cols">
-      <div>Rank</div><div>Merchant</div><div class="r">Delivered</div><div class="r hide-s">Arrives</div><div class="r hide-s">Merit</div><div class="r">Status</div>
-    </div>
-
-    <div class="rows">
-      <div class="row pick">
-        <div class="rank num">#1</div>
-        <div class="who">
-          <span class="av" style="background:#E6EDFF;color:#2F5BEA">PP</span>
-          <div class="wt"><div class="m">Parcel &amp; Pine <span class="badge pick">#1 pick</span></div><div class="p">Sennheiser Momentum 4 · 60-day returns</div></div>
+      <div class="lot">“Noise cancelling headphones for long flights”</div>
+      <div class="bmain">
+        <div class="best">
+          <div class="lbl caps">Best verified offer</div>
+          <div class="price">$368.99</div>
+          <div class="who"><b>Parcel &amp; Pine</b> · Paddle 214 · arrives in 1 day</div>
         </div>
-        <div class="price num r">$368.99</div><div class="days r hide-s">1 day</div><div class="merit num r hide-s">93.2</div>
-        <div class="r"><span class="badge ok">Verified ✓</span></div>
+        <div class="going">
+          <div class="ring">
+            <svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true">
+              <circle cx="29" cy="29" r="26" fill="none" stroke="#2C2821" stroke-width="2.5"/>
+              <circle cx="29" cy="29" r="26" fill="none" stroke="#E9B44C" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="122.5" transform="rotate(-90 29 29)"/>
+            </svg>
+            <b>2</b>
+          </div>
+          <div class="txt">Going twice…</div>
+        </div>
+      </div>
+      <div class="bstrip caps">Budget <span>$400</span> · Within <span>5 days</span> · Must-have <span>anc, 30h-battery</span><span class="s-hide"> · <span>7</span> paddles raised</span></div>
+    </div>
+
+    <div class="list">
+      <div class="cols caps">
+        <div>No.</div><div>Paddle</div><div>Merchant</div><div class="r">Delivered</div><div class="hide-s">Arrives</div><div>Status</div>
+      </div>
+
+      <div class="row top">
+        <div class="no">1</div>
+        <span class="chip" style="background:#E8EEFC;border-color:#BFCDF2;color:#2B4FA8">214</span>
+        <div class="who2"><div class="mn">Parcel &amp; Pine</div><div class="pd">Sennheiser Momentum 4 · 60-day returns</div></div>
+        <div class="dp r">$368.99</div><div class="ar hide-s">1 day</div>
+        <div><span class="badge ham">Hammer</span></div>
       </div>
 
       <div class="row">
-        <div class="rank num">#2</div>
-        <div class="who">
-          <span class="av" style="background:#E3F5EC;color:#12805C">NE</span>
-          <div class="wt"><div class="m">Northwind Electronics</div><div class="p">Sennheiser Momentum 4 Wireless</div></div>
-        </div>
-        <div class="price num r">$338.99</div><div class="days r hide-s">3 days</div><div class="merit num r hide-s">91.0</div>
-        <div class="r"><span class="badge ok">Verified ✓</span></div>
-      </div>
-
-      <div class="row hide-s">
-        <div class="rank num">#3</div>
-        <div class="who">
-          <span class="av" style="background:#E2F6F8;color:#0B7285">LU</span>
-          <div class="wt"><div class="m">Last Unit Labs</div><div class="p">Sony WH-1000XM5 Wireless Noise Cancelling</div></div>
-        </div>
-        <div class="price num r">$353.99</div><div class="days r hide-s">2 days</div><div class="merit num r hide-s">90.7</div>
-        <div class="r"><span class="badge ok">Verified ✓</span></div>
+        <div class="no">2</div>
+        <span class="chip" style="background:#E3F3EA;border-color:#BBDDC9;color:#1F6E4B">107</span>
+        <div class="who2"><div class="mn">Northwind Electronics</div><div class="pd">Sennheiser Momentum 4 Wireless</div></div>
+        <div class="dp r">$338.99</div><div class="ar hide-s">3 days</div>
+        <div><span class="badge ok">Verified</span></div>
       </div>
 
       <div class="row bribe">
-        <div class="rank num">#5</div>
-        <div class="who">
-          <span class="av" style="background:#FFF1DB;color:#A15C07">MA</span>
-          <div class="wt"><div class="m">MegaMart Ads Co. <span class="badge fee">Bribe ignored</span></div><div class="p">Offered $35.00 per sale<span class="fl"> to rank first</span></div></div>
-        </div>
-        <div class="price num r">$422.98</div><div class="days r hide-s">5 days</div><div class="merit num r hide-s">67.6</div>
-        <div class="r"><span class="badge ok">Verified ✓</span></div>
+        <div class="no">5</div>
+        <span class="chip" style="background:#F8ECD5;border-color:#E6CB9B;color:#87590F">352</span>
+        <div class="who2"><div class="mn">MegaMart Ads Co. <span class="badge fee">Bribe ignored</span></div><div class="pd">Offered $35 commission · still No. 5</div></div>
+        <div class="dp r">$422.98</div><div class="ar hide-s">5 days</div>
+        <div><span class="badge ok">Verified</span></div>
       </div>
 
-      <div class="row lied">
-        <div class="rank num">—</div>
-        <div class="who">
-          <span class="av" style="background:#FDE7E8;color:#D93036">DD</span>
-          <div class="wt"><div class="m">DealDrop Direct</div><div class="p">Checkout says <b class="num">$344.99</b> <span class="fl">(+$29.00 “Service &amp; handling fee”)</span><span class="sh">(+$29.00 hidden fee)</span></div></div>
-        </div>
-        <div class="price num r"><s>$315.99</s></div><div class="days r hide-s">4 days</div><div class="merit r hide-s">—</div>
-        <div class="r"><span class="badge lie">Lied ✗</span></div>
+      <div class="row out">
+        <div class="no">—</div>
+        <span class="chip" style="background:#F7E4E1;border-color:#E6BDB6;color:#8E2A22">489</span>
+        <div class="who2"><div class="mn">DealDrop Direct</div><div class="pd">Sennheiser Momentum 4 Wireless</div></div>
+        <div class="dp r">$315.99</div><div class="ar hide-s">4 days</div>
+        <div><span class="badge lie"><span class="fl">Withdrawn: misrepresentation</span><span class="sh">Withdrawn</span></span></div>
+        <div class="ev">Claimed $315.99 delivered · the checkout says <b>$344.99</b> <span class="fl">(+$29.00 “Service &amp; handling fee”)</span><span class="sh">(+$29.00 fee)</span></div>
       </div>
 
-      <div class="row lied">
-        <div class="rank num">—</div>
-        <div class="who">
-          <span class="av" style="background:#FFEBDD;color:#C2410C">SP</span>
-          <div class="wt"><div class="m">Specsmith</div><div class="p">Claims “anc”; <span class="fl">its own product page doesn't list it</span><span class="sh">page doesn't list it</span></div></div>
-        </div>
-        <div class="price num r dimmed">$74.98</div><div class="days r hide-s">3 days</div><div class="merit r hide-s">—</div>
-        <div class="r"><span class="badge lie">Lied ✗</span></div>
+      <div class="row out">
+        <div class="no">—</div>
+        <span class="chip" style="background:#F8E8DE;border-color:#EAC6AF;color:#9A4A1C">631</span>
+        <div class="who2"><div class="mn">Specsmith</div><div class="pd">JBL Tune 720BT Wireless Headphones</div></div>
+        <div class="dp r">$74.98</div><div class="ar hide-s">3 days</div>
+        <div><span class="badge lie"><span class="fl">Withdrawn: misrepresentation</span><span class="sh">Withdrawn</span></span></div>
+        <div class="ev">Claims “anc” · its own product page doesn't list it</div>
       </div>
-    </div>
-
-    <div class="bfoot">
-      <span><i style="background:#12805C"></i>Every bid checked against the real checkout</span>
-      <span><i style="background:#A15C07"></i>Fees only break ties</span>
-      <span class="s-hide"><i style="background:#2F5BEA"></i>Over-limit buys text your human</span>
     </div>
   </section>
 
