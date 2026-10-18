@@ -75,8 +75,8 @@ export function AuctionDrawer({ auctionId, focusBidId, onClose }: { auctionId: s
       }
     >
       <div ref={scroller}>
-        {!a && !err && <div className="shimmer h-40 rounded-xl" />}
-        {err && !a && <div className="rounded-lg border border-lie/40 bg-lie/10 p-4 text-sm text-lie">{err}</div>}
+        {!a && !err && <div className="shimmer h-40 rounded-[6px]" />}
+        {err && !a && <div className="rounded-[6px] border border-lie/40 bg-lie/10 p-4 text-sm text-lie">{err}</div>}
         {a && (
           <>
             {a.must_have.length > 0 && (
@@ -111,7 +111,7 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
   return (
     <div
       id={`bid-${b.id}`}
-      className={`scroll-mt-4 rounded-[14px] border p-4 ${
+      className={`scroll-mt-4 rounded-[6px] border p-4 ${
         win ? "border-[#f8c9b5] bg-accent-soft/60" : lied ? "border-[#f3c4c6] bg-lie-soft/50" : "border-line bg-panel"
       } ${focus ? "ring-[3px] ring-[rgba(242,86,29,0.25)]" : ""}`}
     >
@@ -145,7 +145,7 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
           </div>
 
           {b.bribe_ignored && (
-            <div className="mt-3 rounded-[10px] bg-fee-soft px-3 py-2 text-[13px] text-fee">
+            <div className="mt-3 rounded-[6px] bg-fee-soft px-3 py-2 text-[13px] text-fee">
               Bribe ignored: offered {money(b.fee_cents)} commission and still No. {b.rank ?? "—"}. Commission only breaks exact ties.
             </div>
           )}
@@ -162,7 +162,7 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
           )}
 
           {e && (
-            <div className="mt-3 rounded-[12px] border border-line bg-raised/60 p-3.5">
+            <div className="mt-3 rounded-[6px] border border-line bg-raised/60 p-3.5">
               <div className="mb-2 flex items-center gap-2">
                 <span className="text-[13px] font-semibold text-ink">Verifier evidence</span>
                 <span className="tnum text-[12px] text-dim">fetched in {e.fetched_ms} ms</span>
@@ -193,7 +193,7 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
 
 function Kv({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="rounded-[10px] border border-line bg-panel px-3 py-2">
+    <div className="rounded-[6px] border border-line bg-panel px-3 py-2">
       <div className="text-[12px] text-muted">{label}</div>
       <div className="mt-0.5 text-[15px] font-semibold">{value}</div>
     </div>
