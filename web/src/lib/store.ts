@@ -16,6 +16,7 @@ import type {
 import { api } from "./api";
 import { banner, toast } from "./fx";
 import { claimedTotal, money } from "./format";
+import { withdrawal } from "./lot";
 
 /**
  * Live state.
@@ -166,7 +167,11 @@ const T = {
   auction: (a: Auction) => tick("auction", a.id, `New lot from ${a.buyer_name}: “${a.need}” (budget ${money(a.budget_cents)})`, a.opened_at),
   bid: (b: Bid) => tick("bid", b.id, `${b.merchant_name} raised a paddle at ${money(claimedTotal(b))} for ${b.product_title}`, b.created_at),
   verified: (b: Bid, ts: number) => tick("verified", b.id, `Verified ${b.merchant_name}: ${money(claimedTotal(b))} matches the real checkout`, ts),
-  lie: (b: Bid, ts: number) => tick("lie", b.id, `Bid withdrawn · ${b.merchant_name}: ${b.evidence?.summary ?? "misrepresentation"}`, ts),
+  lie: (b: Bid, ts: number) => {
+    const w = withdrawal(b);
+    const text = `${w?.title ?? "Bid withdrawn"} · ${b.merchant_name}: ${w?.detail ?? "misrepresentation"}`;
+    return tick("lie", b.id, text.length > 200 ? `${text.slice(0, 199)}…` : text, ts);
+  },
   closed: (a: Auction, ts: number) => {
     const w = winnerOf(a);
     return tick(
@@ -224,12 +229,13 @@ function seedTicker(s: Snapshot): TickerItem[] {
 
 function fxFlagged(b: Bid) {
   const e = b.evidence;
-  const evidence = e?.summary
-    ? e.summary.replace(/;\s*checkout says/i, " · the checkout says").replace(/;\s*/g, " · ")
-    : e
-      ? `Claimed ${money(e.claimed_total_cents)} delivered · the checkout says ${money(e.actual_total_cents)}`
-      : "The claim didn't match the merchant's real checkout.";
-  banner({ kind: "lie", title: `Bid withdrawn · ${b.merchant_name}`, sub: evidence }, 5000);
+  const w = withdrawal(b);
+  let evidence: string;
+  if (w?.kind === "injection") evidence = w.detail; // quotes the snippet: never rewrite inside it
+  else if (e?.summary) evidence = e.summary.replace(/;\s*checkout says/i, " · the checkout says").replace(/;\s*/g, " · ");
+  else if (e) evidence = `Claimed ${money(e.claimed_total_cents)} delivered · the checkout says ${money(e.actual_total_cents)}`;
+  else evidence = "The claim didn't match the merchant's real checkout.";
+  banner({ kind: "lie", title: `${w?.title ?? "Bid withdrawn"} · ${b.merchant_name}`, sub: evidence }, w?.kind === "injection" ? 6500 : 5000);
 }
 
 function fxClosed(a: Auction) {
