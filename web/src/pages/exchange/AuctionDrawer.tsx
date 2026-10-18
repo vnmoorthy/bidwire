@@ -4,7 +4,7 @@ import type { Auction, Bid } from "@shared/types";
 import { Drawer } from "@/components/Drawer";
 import { ClientBadge } from "@/components/ClientBadge";
 import { KindBadge } from "@/components/KindBadge";
-import { MerchantAvatar } from "@/components/MerchantDot";
+import { PaddleChip } from "@/components/MerchantDot";
 import { Money } from "@/components/Money";
 import { BribeBadge, PickBadge, VerifyStamp } from "@/components/VerifyStamp";
 import { api, errMsg } from "@/lib/api";
@@ -57,7 +57,7 @@ export function AuctionDrawer({ auctionId, focusBidId, onClose }: { auctionId: s
       open={!!auctionId}
       onClose={onClose}
       width={780}
-      title={a ? <h2 className="text-[22px] font-semibold leading-7 tracking-[-0.01em]">“{a.need}”</h2> : "Auction"}
+      title={a ? <h2 className="serif text-[30px] italic leading-9">“{a.need}”</h2> : "Lot"}
       subtitle={
         a ? (
           <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -89,7 +89,7 @@ export function AuctionDrawer({ auctionId, focusBidId, onClose }: { auctionId: s
               </div>
             )}
             <div className="mb-3 card-title">
-              Full ranking <span className="font-normal text-muted">· {bids.length} bids</span>
+              Full ranking <span className="font-normal text-muted">· {bids.length} paddles</span>
             </div>
             <div className="flex flex-col gap-3">
               {bids.map((b) => (
@@ -117,11 +117,11 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
     >
       <div className="flex items-start gap-3">
         <div className="tnum w-8 shrink-0 pt-0.5 text-center text-[20px] font-semibold">
-          {lied ? <span className="text-lie">✗</span> : b.rank != null ? <span className={win ? "text-accent" : "text-ink"}>{b.rank}</span> : <span className="text-dim">–</span>}
+          {lied ? <span className="text-lie">✗</span> : b.rank != null ? <span className={`serif ${win ? "text-[#7d5f30]" : "text-ink"}`}>{b.rank}</span> : <span className="text-dim">–</span>}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <MerchantAvatar name={b.merchant_name} color={b.merchant_color} />
+            <PaddleChip id={b.merchant_id} color={b.merchant_color} />
             <span className="text-[16px] font-semibold">{b.merchant_name}</span>
             <KindBadge kind={b.merchant_kind} />
             {win && <PickBadge />}
@@ -140,13 +140,13 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
             <Kv label="Claimed total" value={<Money cents={claimedTotal(b)} className={lied && e && e.actual_total_cents !== e.claimed_total_cents ? "text-dim line-through" : ""} />} />
             <Kv label="Checkout total" value={e ? <Money cents={e.actual_total_cents} className={lied && e.actual_total_cents !== e.claimed_total_cents ? "text-lie" : "text-money"} /> : <span className="text-dim">pending</span>} />
             <Kv label="Ships in" value={<span className="tnum">{days(b.claimed_ship_days)}{e && e.actual_ship_days !== e.claimed_ship_days ? <span className="text-lie"> → {days(e.actual_ship_days)}</span> : null}</span>} />
-            <Kv label="Fee per sale" value={<Money cents={b.fee_cents} className="text-fee" />} />
+            <Kv label="Commission" value={<Money cents={b.fee_cents} className="text-fee" />} />
             <Kv label="Merit" value={<span className="tnum">{b.merit != null ? Math.round(b.merit) : "–"}<span className="text-dim">/100</span></span>} />
           </div>
 
           {b.bribe_ignored && (
             <div className="mt-3 rounded-[10px] bg-fee-soft px-3 py-2 text-[13px] text-fee">
-              Bribe ignored: offered {money(b.fee_cents)} per sale and still ranked #{b.rank ?? "—"}. Fees only break exact ties.
+              Bribe ignored: offered {money(b.fee_cents)} commission and still No. {b.rank ?? "—"}. Commission only breaks exact ties.
             </div>
           )}
 
