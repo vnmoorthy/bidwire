@@ -83,7 +83,7 @@ export default function Director() {
           <h1 className="serif mt-1 text-[46px] leading-[50px]">Auctioneer's desk</h1>
           <p className="mt-1 text-[16px] text-muted">The demo director: open lots, reset the room and keep the show on time. Everything here calls the real server. Keep this on your laptop; put the saleroom on the projector.</p>
         </div>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:ml-auto sm:gap-3">
           <a className="btn" href="/exchange" target="_blank" rel="noreferrer">
             Saleroom <ExternalLink size={14} />
           </a>
@@ -189,8 +189,8 @@ function ResetButton() {
     }
   };
   return (
-    <div className="flex items-center gap-3">
-      <button className={`btn ${armed ? "border-lie bg-lie text-white hover:bg-[#c2282e]" : "btn-danger"} min-w-[200px]`} onClick={click} disabled={busy}>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <button className={`btn ${armed ? "border-lie bg-lie text-white hover:bg-[#7a231c]" : "btn-danger"} min-w-[200px]`} onClick={click} disabled={busy}>
         {busy ? <LoaderCircle size={16} className="animate-spin" /> : <RotateCcw size={16} />}
         {busy ? "Resetting…" : armed ? "Click again to confirm" : "Reset demo"}
       </button>
@@ -215,7 +215,7 @@ function BotsToggle({ enabled }: { enabled: boolean }) {
     }
   };
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
       <button
         onClick={toggle}
         disabled={busy}
@@ -404,7 +404,7 @@ function RunOfShow() {
 function GavelToggle() {
   const [on, setOn] = useState(gavelSoundOn);
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
       <button
         onClick={() => {
           const next = !on;
