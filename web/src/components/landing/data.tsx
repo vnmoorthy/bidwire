@@ -21,9 +21,53 @@ export function deliveredCents(b: Bid): number {
   return b.evidence?.actual_total_cents ?? claimedTotal(b);
 }
 
+/* ------------------------------------------------------------------ auction-house vocabulary */
+
+function hash(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+/** A stable 3-digit paddle number for a merchant (100–999), derived from its id. */
+export function paddleNo(merchantId: string): number {
+  return 100 + (hash(merchantId ?? "") % 900);
+}
+
+/** Lot number: auctions are numbered in the order they opened (the store keeps the most recent ones). */
+export function lotNo(a: Auction, auctions: Auction[], total: number): number {
+  const i = auctions.findIndex((x) => x.id === a.id);
+  const n = i >= 0 ? total - i : total;
+  return Math.max(1, n);
+}
+
+export function lotLabel(n: number): string {
+  return `Lot ${String(n).padStart(2, "0")}`;
+}
+
+const DEPARTMENTS: Record<string, string> = {
+  headphones: "Audio",
+  chargers: "Power",
+  keyboards: "Keyboards",
+  backpacks: "Travel",
+  coffee: "Coffee",
+  monitors: "Displays",
+};
+
+export function department(category: string | null | undefined): string | null {
+  if (!category) return null;
+  return DEPARTMENTS[category] ?? category.replace(/[-_]+/g, " ").replace(/^\w/, (c) => c.toUpperCase());
+}
+
+export function capitalize(s: string): string {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+
+/* ------------------------------------------------------------------ picking what to show */
+
 /**
- * The auction to feature when nothing is live: the most recent one that tells the whole story
- * (ranked offers plus a caught lie), looking back a few auctions; otherwise the latest with bids.
+ * The lot to feature when nothing is live: the most recent one that tells the whole story
+ * (ranked offers plus a withdrawn liar), looking back a few lots; otherwise the latest with bids.
  */
 export function pickShowcase(auctions: Auction[]): Auction | null {
   const withBids = auctions.filter((a) => (a.bids?.length ?? 0) > 0);
@@ -33,7 +77,7 @@ export function pickShowcase(auctions: Auction[]): Auction | null {
 
 const STATUS_ORDER: Record<string, number> = { verified: 0, pending: 1, mismatch: 2 };
 
-/** Ranked/verified offers first (by rank, then by price while the auction is still open). */
+/** Ranked/verified offers first (by rank, then by delivered price while the lot is still open). */
 export function orderedOffers(a: Auction): Bid[] {
   return (a.bids ?? [])
     .filter((b) => b.verify_status !== "mismatch")
@@ -52,7 +96,16 @@ export function liedOffers(a: Auction): Bid[] {
   return (a.bids ?? []).filter((b) => b.verify_status === "mismatch").sort((x, y) => x.created_at - y.created_at);
 }
 
-/** Top offers plus (when one exists) a caught lie, so the card always tells the full story. */
+/** The offer leading the lot: No. 1 once ranked, otherwise the cheapest verified paddle so far. */
+export function leadingOffer(a: Auction): Bid | null {
+  const ok = orderedOffers(a);
+  const ranked = ok.find((b) => b.rank === 1);
+  if (ranked) return ranked;
+  const verified = ok.filter((b) => b.verify_status === "verified").sort((x, y) => deliveredCents(x) - deliveredCents(y));
+  return verified[0] ?? null;
+}
+
+/** Top offers plus (when one exists) a withdrawn liar, so the list always tells the full story. */
 export function cardRows(a: Auction, max = 4): Bid[] {
   const ok = orderedOffers(a);
   const lies = liedOffers(a);
@@ -62,7 +115,7 @@ export function cardRows(a: Auction, max = 4): Bid[] {
   return [...rows, ...lies.slice(0, fill)];
 }
 
-/** Short, human explanation of why a bid was excluded. */
+/** Short, human explanation of why a bid was withdrawn. */
 export function lieReason(b: Bid): { checkout: number | null; fee: string | null; text: string } {
   const e = b.evidence;
   const priceLie = !!e && e.actual_total_cents > e.claimed_total_cents + 50;
@@ -114,7 +167,7 @@ export function AgentBadge({ client, className = "" }: { client: string; classNa
     <span
       className={`inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-agent-soft pl-1 pr-2.5 text-[12px] font-semibold text-agent ${className}`}
     >
-      <span className="grid size-4 place-items-center rounded-full bg-agent text-white">
+      <span className="grid size-4 place-items-center rounded-full bg-agent text-panel">
         <c.Icon className="size-2.5" strokeWidth={3} aria-hidden />
       </span>
       {c.label}
