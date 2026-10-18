@@ -22,7 +22,7 @@ export function TrustSafety() {
     {
       Icon: ShieldCheck,
       title: "Checked against the live checkout",
-      body: "For every paddle, Bidwire fetches the merchant's product page and checkout quote. Drip pricing and stretched specs are withdrawn before an agent ever sees them.",
+      body: "For every paddle, Bidwire fetches the merchant's product page and checkout quote. Drip pricing, stretched specs and pitches that try to instruct your agent are withdrawn before it ever sees them.",
       fact: hydrated ? (
         <>
           <b className="font-semibold tabular-nums text-ink">{int(stats.lies_caught)}</b> misrepresentations caught so far
