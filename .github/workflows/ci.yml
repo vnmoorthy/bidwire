@@ -1,0 +1,27 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm --prefix web ci
+      - run: npm --prefix web run build
+      - name: Start Bidwire
+        run: |
+          npm start > server.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:8787/api/state > /dev/null && break; sleep 1; done
+      - name: End-to-end tests (MCP protocol + exchange + ledger)
+        run: npm test
+      - if: failure()
+        run: cat server.log
