@@ -189,7 +189,7 @@ function BidEvidence({ a, b, focus }: { a: Auction; b: Bid; focus: boolean }) {
                 {e.checks.map((c, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px]">
                     {c.ok ? <CircleCheck size={15} className="mt-[1px] shrink-0 text-money" /> : <CircleX size={15} className="mt-[1px] shrink-0 text-lie" />}
-                    <span className={`font-medium ${c.ok ? "text-ink" : "text-lie"}`}>{c.name}</span>
+                    <span className={`shrink-0 whitespace-nowrap font-medium ${c.ok ? "text-ink" : "text-lie"}`}>{c.name}</span>
                     <span className="min-w-0 text-muted [overflow-wrap:anywhere]">{c.detail}</span>
                   </li>
                 ))}
