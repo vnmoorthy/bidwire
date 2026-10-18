@@ -315,18 +315,23 @@ function BoardClock({ a, phase, strike, onThePhone }: { a: Auction; phase: Phase
   );
 }
 
-/** Presenter action: buy the hammer offer for the lot's agent when it didn't buy on its own (e.g. the room auction). */
+/**
+ * Presenter action: buy the hammer offer for the lot's agent when it didn't buy on its own (e.g. the room auction).
+ * Over the agent's limit, the same call texts the human and waits (up to 50s) for the approval, then completes the sale.
+ * After an approval that nobody completed, it finishes the purchase.
+ */
 function BuyAtHammer({ a, lot }: { a: Auction; lot: LotState }) {
   const [busy, setBusy] = useState(false);
   const hammer = lot.hammer;
-  if (!hammer || lot.sold) return null;
-  if (lot.approval && (lot.approval.status === "pending" || lot.approval.status === "denied" || lot.approval.status === "approved")) return null;
+  if (!hammer || lot.sold || busy) return null;
+  const st = lot.approval?.bid_id === hammer.id ? lot.approval.status : null;
+  if (st === "pending" || st === "denied") return null;
 
   const buy = async () => {
     setBusy(true);
     try {
       const r = await api.runTool("buy_offer", {
-        args: { offer_id: hammer.id, idempotency_key: `exchange-${a.id}`, wait_for_approval_seconds: 0 },
+        args: { offer_id: hammer.id, idempotency_key: `exchange-${a.id}`, wait_for_approval_seconds: 50 },
         buyer_id: a.buyer_id,
       });
       if (!r.ok) toastError("Purchase didn't go through", r.text?.slice(0, 200));
@@ -345,8 +350,8 @@ function BuyAtHammer({ a, lot }: { a: Auction; lot: LotState }) {
       className="inline-flex h-8 items-center gap-2 rounded-full border border-[rgba(233,180,76,0.6)] px-3.5 text-[13px] font-semibold normal-case tracking-normal text-board-amber transition-colors hover:bg-[rgba(233,180,76,0.12)] disabled:opacity-50"
       title={`Calls buy_offer as ${a.buyer_name}`}
     >
-      {busy ? <LoaderCircle size={14} className="animate-spin" /> : <Gavel size={14} />}
-      Buy at the hammer · {money(claimedTotal(hammer))}
+      <Gavel size={14} />
+      {st === "approved" ? "Complete the approved purchase" : "Buy at the hammer"} · {money(claimedTotal(hammer))}
     </button>
   );
 }
