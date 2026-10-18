@@ -88,7 +88,7 @@ Tested end to end with headless **Claude Code** over MCP: it called `find_offers
 
 **When an agent buys, nobody sees an ad.** Merchants lose the channel they pay to win customers through, and agents get no way to tell a good offer from a well-marketed one.
 
-**Bidwire is Google Ads rebuilt for agents.** There is still an auction per purchase and merchants still compete for it, but for an agent the ad *is* the offer, so it has to be true. Claims are checked against the merchant's own checkout, rank is earned on merit, and the merchant's fee (paid only when the agent buys) can break a tie and nothing more. The agent gets a short, ranked, verified answer it can act on in one call, and its human stays in control of the money.
+**Bidwire is Google Ads rebuilt for agents, run like an auction house.** Every purchase is a lot and merchants still compete for it, but for an agent the ad *is* the offer, so it has to be true. Claims are checked against the merchant's own checkout, rank is earned on merit, and the merchant's fee (paid only when the agent buys) can break a tie and nothing more. The agent gets a short, ranked, verified answer it can act on in one call, and its human stays in control of the money.
 
 ## How it works
 
@@ -209,7 +209,7 @@ npm start          # → http://localhost:8787
   Messaging   : simulated   Payments: built-in ledger
 ```
 
-On first start Bidwire creates `data/bidwire.db` and seeds 26 real products in 6 categories, 8 merchant bots and 4 buyer agents with prepaid wallets. Open `http://localhost:8787` for the site and `http://localhost:8787/exchange` for the live saleroom, then connect an agent:
+On first start Bidwire creates `data/bidwire.db` and seeds 26 real products in 6 categories, 8 merchant bots and 4 buyer agents with prepaid wallets. Open `http://localhost:8787` for the site and `http://localhost:8787/exchange` (also `/live`) for the live saleroom, then connect an agent:
 
 ```bash
 claude mcp add --transport http bidwire http://localhost:8787/mcp --header "Authorization: Bearer bw_buy_claude_demo"
