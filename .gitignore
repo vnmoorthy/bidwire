@@ -1,0 +1,16 @@
+node_modules/
+**/node_modules/
+.env
+.env.local
+data/
+*.db
+*.db-*
+dist/
+web/dist/
+.mcp-use/
+.DS_Store
+web/screenshots/
+docs/.tools/
+docs/deck/.tools/
+docs/deck/data/
+*.log
