@@ -58,7 +58,7 @@ export function Nav() {
           <Wordmark />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-1 xl:flex" aria-label="Primary">
           {LINKS.map((l) => (
             <a
               key={l.label}
@@ -66,7 +66,7 @@ export function Nav() {
               onClick={(e) => scrollToId(e, l.href)}
               target={l.external ? "_blank" : undefined}
               rel={l.external ? "noreferrer" : undefined}
-              className="inline-flex h-9 items-center gap-1 rounded-full px-3 text-[14px] font-medium text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/35"
+              className="inline-flex h-9 items-center gap-1 whitespace-nowrap rounded-full px-3 text-[14px] font-medium text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/35"
             >
               {l.label}
               {l.external && <ArrowUpRight className="size-3.5 text-dim" aria-hidden />}
@@ -88,7 +88,7 @@ export function Nav() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="ml-auto grid size-9 place-items-center rounded-full border border-line-strong bg-panel text-ink md:ml-0 lg:hidden"
+          className="ml-auto grid size-9 place-items-center rounded-full border border-line-strong bg-panel text-ink md:ml-0 xl:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -103,7 +103,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: EASE }}
-            className="absolute inset-x-0 top-full border-b border-line bg-panel shadow-[0_18px_40px_rgba(22,19,14,0.12)] lg:hidden"
+            className="absolute inset-x-0 top-full border-b border-line bg-panel shadow-[0_18px_40px_rgba(22,19,14,0.12)] xl:hidden"
           >
             <Container className="py-2">
               <nav className="flex flex-col" aria-label="Mobile">
