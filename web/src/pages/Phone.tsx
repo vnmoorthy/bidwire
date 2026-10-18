@@ -6,7 +6,7 @@ import { PhoneFrame } from "@/components/PhoneFrame";
 import { MerchantDot } from "@/components/MerchantDot";
 import { api, errMsg } from "@/lib/api";
 import { findBid, useLive, useNow } from "@/lib/store";
-import { claimedTotal, clock, money } from "@/lib/format";
+import { claimedTotal, clock, lotLabel, lotNumber, money } from "@/lib/format";
 import { useMedia } from "@/lib/useMedia";
 
 type Item = { kind: "msg"; ts: number; m: Message } | { kind: "approval"; ts: number; a: Approval };
@@ -36,7 +36,7 @@ export default function PhoneApp() {
       caption={
         <div>
           <div className="eyebrow">Human in the loop</div>
-          <h1 className="mt-2 text-[40px] font-semibold leading-tight tracking-tight">Over the limit? The agent texts its human.</h1>
+          <h1 className="serif mt-2 text-[52px] leading-[54px]">Over the limit? The agent asks its human.</h1>
           <p className="mt-4 text-[18px] leading-relaxed text-muted">
             Agents shop with a prepaid wallet and a per-purchase limit. Anything above it waits for a yes from a real person, by SMS or right here.
           </p>
@@ -232,6 +232,9 @@ function useApprovalContext(a: Approval) {
 
 function ApprovalCard({ a }: { a: Approval }) {
   const ctx = useApprovalContext(a);
+  const auctions = useLive((s) => s.auctions);
+  const totalLots = useLive((s) => s.stats.auctions);
+  const ctxLot = auctions.some((x) => x.id === a.auction_id) ? lotLabel(lotNumber(auctions, totalLots, a.auction_id)) : null;
   const [busy, setBusy] = useState<"approve" | "deny" | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const bid = ctx?.bid;
@@ -262,7 +265,7 @@ function ApprovalCard({ a }: { a: Approval }) {
     >
       <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
         <ShieldCheck size={15} className="text-accent" />
-        <span className="text-[13px] font-semibold text-ink">Approval needed</span>
+        <span className="text-[13px] font-semibold text-ink">Approval needed{ctxLot ? ` · ${ctxLot}` : ""}</span>
         <span className="ml-auto text-[12px] text-muted">Code <span className="font-mono">{a.code}</span></span>
       </div>
       <div className="px-4 py-3">
