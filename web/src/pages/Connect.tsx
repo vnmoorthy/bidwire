@@ -42,14 +42,14 @@ export default function Connect() {
       <p className="mt-1 max-w-[860px] text-[16px] text-muted">
         One MCP server is the door to the saleroom. Any agent that speaks MCP (Claude, ChatGPT, Codex, Cursor) can shop with a buyer key, or raise paddles with a merchant key.
       </p>
-      {err && <div className="mt-4 rounded-[10px] bg-lie-soft px-4 py-2 text-sm text-lie">{err}</div>}
+      {err && <div className="mt-4 rounded-[6px] bg-lie-soft px-4 py-2 text-sm text-lie">{err}</div>}
 
       <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
         <section className="panel p-5">
           <div className="serif flex items-center gap-2 text-[24px] leading-7">
             <Plug size={15} className="text-muted" /> MCP endpoint
           </div>
-          <div className="mt-3 flex flex-wrap items-center gap-3 rounded-[12px] border border-line bg-raised px-4 py-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3 rounded-[6px] border border-line bg-raised px-4 py-3">
             <span className="min-w-0 flex-1 break-all font-mono text-[17px] text-ink md:text-[19px]">{mcpUrl || "…"}</span>
             {mcpUrl && <CopyButton text={mcpUrl} />}
           </div>
@@ -72,7 +72,7 @@ export default function Connect() {
             {(info?.buyers ?? []).map((b) => (
               <BuyerKey key={b.id} b={b} />
             ))}
-            {!info && !err && <div className="shimmer h-24 rounded-xl" />}
+            {!info && !err && <div className="shimmer h-24 rounded-[6px]" />}
           </div>
           <MerchantKeyNote />
         </section>
@@ -111,7 +111,7 @@ function Snippets({ info }: { info: ConnectInfo | null }) {
           </div>
         </div>
       ) : (
-        <div className="shimmer mt-3 h-32 rounded-xl" />
+        <div className="shimmer mt-3 h-32 rounded-[6px]" />
       )}
     </div>
   );
@@ -121,7 +121,7 @@ function BuyerKey({ b }: { b: ConnectInfo["buyers"][number] }) {
   const [show, setShow] = useState(false);
   const buyer = useLive((s) => s.buyers.find((x) => x.id === b.id));
   return (
-    <div className="flex items-center gap-3 rounded-[12px] border border-line bg-panel px-3 py-2.5">
+    <div className="flex items-center gap-3 rounded-[6px] border border-line bg-panel px-3 py-2.5">
       <ClientBadge client={b.client} />
       <div className="min-w-0 flex-1">
         <div className="truncate text-[15px] font-medium">{b.name}</div>
@@ -143,7 +143,7 @@ function BuyerKey({ b }: { b: ConnectInfo["buyers"][number] }) {
 function MerchantKeyNote() {
   const saved = savedMerchantKey();
   return (
-    <div className="mt-4 rounded-[12px] bg-raised p-3.5 text-[13px] text-muted">
+    <div className="mt-4 rounded-[6px] bg-raised p-3.5 text-[13px] text-muted">
       <div className="mb-0.5 flex items-center gap-2 font-semibold text-ink">
         <Store size={14} className="text-muted" /> Merchant keys
       </div>
@@ -166,7 +166,7 @@ function ToolList({ tools }: { tools: ToolMeta[] | null }) {
         <Wrench size={15} className="text-muted" /> MCP tools
         <span className="tnum ml-auto font-sans text-[13px] font-normal text-muted">{tools?.length ?? 0} tools</span>
       </div>
-      {!tools && <div className="shimmer mt-3 h-48 rounded-xl" />}
+      {!tools && <div className="shimmer mt-3 h-48 rounded-[6px]" />}
       <div className="mt-3 space-y-5">
         {groups.map((g) => (
           <div key={g.role}>
@@ -174,7 +174,7 @@ function ToolList({ tools }: { tools: ToolMeta[] | null }) {
               <span className={`text-[14px] font-semibold ${ROLE_META[g.role]?.cls ?? "text-ink"}`}>{ROLE_META[g.role]?.label ?? g.role}</span>
               <span className="text-[12px] text-dim">{ROLE_META[g.role]?.blurb}</span>
             </div>
-            <div className="mt-2 divide-y divide-line rounded-xl border border-line">
+            <div className="mt-2 divide-y divide-line rounded-[6px] border border-line">
               {g.tools.map((t) => (
                 <details key={t.name} className="group px-3 py-2.5">
                   <summary className="flex cursor-pointer list-none items-start gap-3">
@@ -429,11 +429,11 @@ function Playground({ tools, buyers }: { tools: ToolMeta[] | null; buyers: Conne
           </span>
         )}
       </div>
-      {err && <div className="mt-3 rounded-[10px] bg-lie-soft px-3 py-2 text-sm text-lie">{err}</div>}
+      {err && <div className="mt-3 rounded-[6px] bg-lie-soft px-3 py-2 text-sm text-lie">{err}</div>}
       {res && (
         <div className="mt-3">
           {res.text && res.result !== undefined && res.result !== null && (
-            <div className="mb-2 flex items-start gap-2 rounded-[10px] bg-raised px-3 py-2 text-[13px] text-ink">
+            <div className="mb-2 flex items-start gap-2 rounded-[6px] bg-raised px-3 py-2 text-[13px] text-ink">
               <BookText size={14} className="mt-[2px] shrink-0 text-muted" />
               <span className="line-clamp-3 whitespace-pre-wrap">{res.text}</span>
             </div>
