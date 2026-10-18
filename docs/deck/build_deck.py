@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Bidwire pitch deck generator ("Ledger Light" brand: docs/DESIGN.md).
+Bidwire pitch deck generator ("Saleroom" brand: docs/DESIGN.md v3).
 
     python3 build_deck.py           # builds Bidwire.pptx and index.html
     python3 build_deck.py --pptx    # only the PowerPoint
@@ -147,7 +147,8 @@ def live_data():
         "bids": 7, "verified": 5, "excluded": 2, "bribe_rank": 5, "bribe_fee": "$35", "approval_amount": "$319.99",
         "approval_limit": "$300", "slow_days": 9, "deadline": 5,
         "lie1_merchant": "DealDrop Direct",
-        "lie1": "Claimed $34.99 delivered · checkout says $63.99 (+$29.00 “Service & handling fee”)",
+        "lie1": "Claimed $34.99 delivered · the checkout says $63.99 (+$29.00 “Service & handling fee”)",
+        "hammer": "$319.99", "hammer_merchant": "Last Unit Labs", "hammer_product": "Sennheiser Momentum 4 Wireless",
         "lie2_merchant": "Specsmith", "lie2": "Claims anc but the product page does not list it",
         "bribe_merchant": "MegaMart Ads Co.", "bribe_why": "Offered $35.00/sale to the exchange; fees never buy rank, so it stays #5",
         "soldout_next": "the next best verified offer",
@@ -189,6 +190,8 @@ def parse_runs(s, base):
                 st["font"] = MONO
             elif k == "sans":
                 st["font"] = SANS
+            elif k == "serif":
+                st["font"] = SERIF
             elif k == "i":
                 st["italic"] = True
             elif k.startswith("s") and k[1:].replace(".", "").isdigit():
@@ -389,44 +392,59 @@ def badge(shapes, x, y, label, color="neutral", size=10, mono=False, h=0.3, pad=
     return g, w
 
 
-def card(shapes, x, y, w, h, fill="panel", line="line", r=0.12, accent=None, bar="left", lift=False):
+def card(shapes, x, y, w, h, fill="panel", line="line", r=CARD_R, accent=None, bar="left", lift=False):
+    """Catalogue card: paper white, hairline rule, 6px radius, no shadow (DESIGN.md v3)."""
     g = group(shapes)
     b = box(g.shapes, x, y, w, h, fill=fill, line=line, lw=0.75, r=r)
-    effects(b, shadow=SHADOW_LIFT if lift else SHADOW_CARD)
+    if lift:
+        effects(b, shadow=SHADOW_LIFT)
     if accent:
         if bar == "left":
-            box(g.shapes, x, y + 0.2, 0.045, h - 0.4, fill=accent, r=0)
+            box(g.shapes, x, y, 0.045, h, fill=accent, r=0)
         else:
-            box(g.shapes, x + 0.22, y, w - 0.44, 0.04, fill=accent, r=0)
+            box(g.shapes, x, y, w, 0.045, fill=accent, r=0)
     return g
 
 
-def eyebrow(shapes, x, y, w, s, color="dim", size=8.5, align="l"):
-    return text(shapes, x, y, w, 0.24, s.upper(), size=size, bold=True, color=color, spacing=0.9, align=align, anchor="m")
-
-
-def placeholder_tag(shapes, x, y, w, name):
-    text(shapes, x, y, w, 0.2, "Placeholder: screenshots/%s.png" % name, size=7, color="dim", font=MONO, align="r", anchor="m")
-
-
-def logo(shapes, x, y, size, dark=True):
-    """Bidwire mark: ink rounded square, white rising wire, Signal Orange node."""
+def board(shapes, x, y, w, h, lift=True):
+    """The saleroom board: black lacquer panel with a thin gold inner rule."""
     g = group(shapes)
-    k = size / 32.0
-    box(g.shapes, x + 1 * k, y + 1 * k, 30 * k, 30 * k, fill="ink" if dark else "panel", line=None if dark else "line2", r=8 * k)
-    pts = [(7, 21.5), (11.5, 15), (15.5, 18.5), (20, 11), (25, 11)]
-    fb = g.shapes.build_freeform(pts[0][0], pts[0][1], scale=E(k))
-    fb.add_line_segments(pts[1:], close=False)
-    ff = fb.convert_to_shape(E(x), E(y))
-    strip_style(ff)
-    ff.fill.background()
-    ff.line.color.rgb = rgb("white" if dark else "ink")
-    ff.line.width = Pt(max(0.75, 2.6 * k * 72))
-    ln = ff.line._get_or_add_ln()
-    ln.set("cap", "rnd")
-    sf = ln.find(qn("a:solidFill"))
-    sf.addnext(etree.Element(qn("a:round")))
-    box(g.shapes, x + (25 - 3.3) * k, y + (11 - 3.3) * k, 6.6 * k, 6.6 * k, fill="accent", kind=MSO_SHAPE.OVAL)
+    b = box(g.shapes, x, y, w, h, fill="board", r=0.1)
+    if lift:
+        effects(b, shadow=SHADOW_LIFT)
+    box(g.shapes, x + 0.07, y + 0.07, w - 0.14, h - 0.14, fill=None, line="accent", lw=0.75, line_alpha=0.6, r=0.06)
+    return g
+
+
+def smallcaps(shapes, x, y, w, s, color="dim", size=8.5, align="l", h=0.24):
+    return text(shapes, x, y, w, h, s.upper(), size=size, bold=True, color=color, spacing=1.1, align=align, anchor="m")
+
+
+def placeholder_tag(shapes, x, y, w, name, color="dim"):
+    text(shapes, x, y, w, 0.2, "Placeholder: screenshots/%s.png" % name, size=7, color=color, font=MONO, align="r", anchor="m")
+
+
+GAVEL = [[(14.5, 12.5), (6.5, 20.5), (5.0, 21.12), (3.5, 20.5), (2.88, 19.0), (3.5, 17.5), (11.5, 9.5)],
+         [(16, 16), (22, 10)], [(8, 8), (14, 2)], [(9, 7), (17, 15)], [(21, 11), (13, 3)]]
+
+
+def logo(shapes, x, y, size, ring=None):
+    """Bidwire mark: a gavel (lucide Gavel geometry) in an ink circle."""
+    g = group(shapes)
+    box(g.shapes, x, y, size, size, fill="ink", kind=MSO_SHAPE.OVAL)
+    k = size * 0.54 / 24.0
+    ox, oy = x + size * 0.23, y + size * 0.23
+    for seg in GAVEL:
+        fb = g.shapes.build_freeform(seg[0][0], seg[0][1], scale=E(k))
+        fb.add_line_segments(seg[1:], close=False)
+        ff = fb.convert_to_shape(E(ox), E(oy))
+        strip_style(ff)
+        ff.fill.background()
+        ff.line.color.rgb = rgb("bg")
+        ff.line.width = Pt(max(0.6, 2.0 * k * 72))
+        ln = ff.line._get_or_add_ln()
+        ln.set("cap", "rnd")
+        ln.find(qn("a:solidFill")).addnext(etree.Element(qn("a:round")))
     return g
 
 
@@ -435,59 +453,65 @@ def logo(shapes, x, y, size, dark=True):
 # --------------------------------------------------------------------------------------------------------------
 def mock_exchange(g, x, y, w, h, L):
     s = g.shapes
-    box(s, x, y, w, h, fill="bg", r=0.04)
-    box(s, x, y, w, 0.34, fill="panel", r=0)
-    box(s, x, y + 0.34, w, 0.01, fill="line", r=0)
-    text(s, x + 0.18, y, 3, 0.34, "Bidwire  [[dim,n|Exchange]]", size=8.5, bold=True, anchor="m")
-    by = y + 0.5
-    box(s, x + 0.15, by, w - 0.3, 0.55, fill="red_soft", r=0.06)
-    box(s, x + 0.15, by + 0.1, 0.035, 0.35, fill="red", r=0)
-    text(s, x + 0.3, by + 0.04, w - 0.6, 0.24, "Caught lying · " + L["lie1_merchant"], size=9, bold=True, color="text", anchor="m")
-    text(s, x + 0.3, by + 0.27, w - 0.6, 0.22, L["lie1"], size=7, color="muted", anchor="m")
-    rows = [("#1", "Last Unit Labs", "#1 pick", "accent"), ("#2", "Parcel & Pine", "Verified", "green"),
-            ("#3", "Northwind Electronics", "Verified", "green"), ("#4", "Sundial Supply", "Verified", "green"),
-            ("#5", "MegaMart Ads Co.", "Bribe ignored", "amber"), ("—", "DealDrop Direct", "Lied", "red"),
-            ("—", "Specsmith", "Lied", "red")]
-    ty = by + 0.7
-    box(s, x + 0.15, ty, w - 0.3, y + h - ty - 0.12, fill="panel", line="line", r=0.06)
-    rh = (y + h - ty - 0.2) / len(rows)
+    box(s, x, y, w, h, fill="bg", r=0.03)
+    box(s, x, y, w, 0.32, fill="panel", r=0)
+    box(s, x, y + 0.32, w, 0.008, fill="line", r=0)
+    text(s, x + 0.18, y, 3, 0.32, "Bidwire  [[dim,sans,n,s7.5|Saleroom]]", size=10, font=SERIF, anchor="m")
+    bx, by, bw, bh = x + 0.15, y + 0.45, w * 0.62, h * 0.42
+    box(s, bx, by, bw, bh, fill="board", r=0.06)
+    box(s, bx + 0.05, by + 0.05, bw - 0.1, bh - 0.1, fill=None, line="accent", lw=0.5, line_alpha=0.6, r=0.04)
+    smallcaps(s, bx + 0.18, by + 0.1, bw - 0.3, "Lot · Headphones · Opened by Claude", color="accent", size=6)
+    text(s, bx + 0.18, by + 0.33, bw - 0.3, 0.2, "Best verified offer", size=7, color="board_dim", anchor="m")
+    text(s, bx + 0.18, by + 0.5, bw - 0.3, bh * 0.4, L["hammer"], size=24, font=SERIF, color="board_text", anchor="m")
+    text(s, bx + 0.18, by + bh - 0.36, bw - 0.3, 0.22, L["hammer_merchant"], size=7.5, color="board_text", anchor="m")
+    cx = bx + bw + 0.15
+    box(s, cx, by, x + w - 0.15 - cx, bh, fill="panel", line="line", r=0.04)
+    smallcaps(s, cx + 0.12, by + 0.08, 1.6, "Agent bidders", size=6)
+    for i, (t, col) in enumerate([("find_offers", "blue"), ("buy_offer", "blue"), ("check_approval", "blue")]):
+        text(s, cx + 0.12, by + 0.34 + i * 0.25, 1.8, 0.2, t, size=6.5, color=col, font=MONO, anchor="m")
+    rows = [("1", "Last Unit Labs", "Hammer", "accent"), ("2", "Parcel & Pine", "Verified", "green"),
+            ("3", "Northwind Electronics", "Verified", "green"), ("5", "MegaMart Ads Co.", "Bribe ignored", "amber"),
+            ("—", "DealDrop Direct", "Withdrawn", "red")]
+    ty = by + bh + 0.14
+    box(s, x + 0.15, ty, w - 0.3, y + h - ty - 0.12, fill="panel", line="line", r=0.04)
+    rh = (y + h - ty - 0.18) / len(rows)
     for i, (rk, name, tag, col) in enumerate(rows):
-        yy = ty + 0.04 + i * rh
+        yy = ty + 0.03 + i * rh
         if i:
-            box(s, x + 0.2, yy, w - 0.4, 0.008, fill="line", r=0)
-        text(s, x + 0.28, yy, 0.5, rh, rk, size=7.5, color="muted", anchor="m")
-        text(s, x + 0.7, yy, w * 0.5, rh, name, size=8, bold=True, anchor="m")
-        bw = est_w(tag, 7, False, True) + 0.18
-        box(s, x + w - 0.3 - bw, yy + rh / 2 - 0.09, bw, 0.18, fill=soft(col), r=0.09)
-        text(s, x + w - 0.3 - bw, yy + rh / 2 - 0.09, bw, 0.18, tag, size=7, bold=True, color=col, align="c", anchor="m")
+            box(s, x + 0.2, yy, w - 0.4, 0.006, fill="line", r=0)
+        text(s, x + 0.25, yy, 0.4, rh, rk, size=9, font=SERIF, color="text", anchor="m")
+        text(s, x + 0.6, yy, w * 0.5, rh, name, size=7.5, bold=True, anchor="m")
+        bw2 = est_w(tag, 6.5, False, True) + 0.16
+        box(s, x + w - 0.3 - bw2, yy + rh / 2 - 0.085, bw2, 0.17, fill=soft(col), r=0.085)
+        text(s, x + w - 0.3 - bw2, yy + rh / 2 - 0.085, bw2, 0.17, tag, size=6.5, bold=True, color=col, align="c", anchor="m")
 
 
 def mock_phone(g, x, y, w, h, L):
     s = g.shapes
     box(s, x, y, w, h, fill="panel", r=0.26)
-    text(s, x, y + 0.3, w, 0.25, "Bidwire", size=9, bold=True, align="c")
-    box(s, x + 0.14, y + 0.75, w - 0.5, 1.7, fill="raised", r=0.14)
-    text(s, x + 0.26, y + 0.85, w - 0.74, 1.55, "Your agent wants to buy Sennheiser Momentum 4 Wireless from Last Unit Labs for %s (your limit is %s). Reply YES 1234 to approve."
-         % (L["approval_amount"], L["approval_limit"]), size=7.5, color="text", line=1.05)
-    box(s, x + w - 0.95, y + 2.62, 0.8, 0.32, fill="ink", r=0.14)
-    text(s, x + w - 0.95, y + 2.62, 0.8, 0.32, "YES 1234", size=8, bold=True, color="white", align="c", anchor="m")
-    text(s, x + 0.15, y + 3.15, w - 0.3, 0.3, "Approved · purchase completed", size=7.5, bold=True, color="green", align="c")
+    text(s, x, y + 0.3, w, 0.25, "Bidwire", size=11, font=SERIF, align="c")
+    box(s, x + 0.14, y + 0.75, w - 0.5, 1.75, fill="raised", r=0.14)
+    text(s, x + 0.26, y + 0.85, w - 0.74, 1.6, "Your agent wants to bid %s on %s from %s (limit %s). Reply YES 1234 to approve."
+         % (L["hammer"], L["hammer_product"], L["hammer_merchant"], L["approval_limit"]), size=7.5, color="text", line=1.05)
+    box(s, x + w - 0.95, y + 2.66, 0.8, 0.32, fill="ink", r=0.16)
+    text(s, x + w - 0.95, y + 2.66, 0.8, 0.32, "YES 1234", size=8, bold=True, color="white", align="c", anchor="m")
+    text(s, x + 0.15, y + 3.2, w - 0.3, 0.3, "Approved · sold", size=8, bold=True, color="green", align="c")
 
 
 def mock_ledger(g, x, y, w, h, L):
     s = g.shapes
-    box(s, x, y, w, h, fill="panel", r=0.04)
-    rows = [("buyer:b_claude:wallet", "−$319.99", "red"), ("merchant:last-unit:revenue", "+$319.99", "green"),
-            ("merchant:last-unit:revenue", "−$5.00", "red"), ("platform:fees", "+$5.00", "green")]
+    box(s, x, y, w, h, fill="panel", r=0.03)
+    rows = [("buyer:b_claude:wallet", "−" + L["hammer"], "red"), ("merchant:revenue", "+" + L["hammer"], "green"),
+            ("merchant:revenue", "−$5.00", "red"), ("platform:fees", "+$5.00", "green")]
     box(s, x, y, w, 0.3, fill="raised", r=0)
-    text(s, x + 0.12, y, w - 0.24, 0.3, "Ledger · every transaction sums to $0.00", size=7, bold=True, color="muted", anchor="m")
+    smallcaps(s, x + 0.12, y + 0.03, w - 0.24, "Settlement ledger · every transaction sums to $0.00", size=6.5, color="muted")
     rh = (h - 0.4) / len(rows)
     for i, (acct, amt, col) in enumerate(rows):
         yy = y + 0.34 + i * rh
         if i:
-            box(s, x + 0.1, yy, w - 0.2, 0.008, fill="line", r=0)
+            box(s, x + 0.1, yy, w - 0.2, 0.006, fill="line", r=0)
         text(s, x + 0.15, yy, w * 0.66, rh, acct, size=6.5, color="text", font=MONO, anchor="m")
-        text(s, x + w - 1.0, yy, 0.85, rh, amt, size=7, color=col, bold=True, anchor="m", align="r")
+        text(s, x + w - 1.0, yy, 0.85, rh, amt, size=8, color=col, font=SERIF, anchor="m", align="r")
 
 
 # --------------------------------------------------------------------------------------------------------------
@@ -498,16 +522,16 @@ def browser(shapes, x, y, w, name, url, L, mock=mock_exchange, img_h=None, focus
     bar = 0.3
     g = group(shapes)
     s = g.shapes
-    outer = box(s, x, y, w, bar + ih + 0.01, fill="panel", line="line", lw=0.75, r=0.12)
+    outer = box(s, x, y, w, bar + ih + 0.01, fill="panel", line="line2", lw=0.75, r=0.08)
     effects(outer, shadow=SHADOW_LIFT)
     for i in range(3):
         box(s, x + 0.16 + i * 0.15, y + 0.11, 0.08, 0.08, fill="line2", kind=MSO_SHAPE.OVAL)
     box(s, x + w * 0.3, y + 0.065, w * 0.4, 0.17, fill="raised", r=0.085)
     text(s, x + w * 0.3, y + 0.065, w * 0.4, 0.17, url, size=7.5, color="muted", align="c", anchor="m")
-    box(s, x + 0.01, y + bar - 0.01, w - 0.02, 0.01, fill="line", r=0)
+    box(s, x + 0.01, y + bar - 0.01, w - 0.02, 0.008, fill="line", r=0)
     p = shot(name)
     if p:
-        picture(s, p, x + 0.01, y + bar, w - 0.02, ih, radius=0.06, focus=focus)
+        picture(s, p, x + 0.01, y + bar, w - 0.02, ih, radius=0.05, focus=focus)
     else:
         mock(g, x + 0.01, y + bar, w - 0.02, ih, L)
         placeholder_tag(s, x + 0.1, y + bar + ih - 0.24, w - 0.2, name)
@@ -631,19 +655,19 @@ def apply_motion(slide, motion, transition="fade", speed="med"):
 # --------------------------------------------------------------------------------------------------------------
 def chrome(slide, n, kicker, m):
     s = slide.shapes
-    logo(s, 0.75, 0.44, 0.28)
-    text(s, 1.11, 0.4, 2.5, 0.36, "Bidwire", size=13, bold=True, anchor="m", spacing=-0.2)
-    text(s, 6.583, 0.4, 6.0, 0.36, "%s   [[line2||]]   [[dim,n|%d / 10]]" % (kicker.upper(), n), size=8.5, bold=True, color="muted", align="r",
-         anchor="m", spacing=0.9)
-    text(s, 0.75, 7.0, 7.0, 0.26, "Bidwire · YC Make Something Agents Want · Oct 18, 2026", size=8.5, color="dim", anchor="m")
+    logo(s, 0.75, 0.42, 0.32)
+    text(s, 1.16, 0.38, 2.5, 0.4, "Bidwire", size=17, font=SERIF, anchor="m")
+    smallcaps(s, 6.583, 0.46, 6.0, "Lot %02d  ·  %s" % (n, kicker), size=8.5, align="r", color="dim")
+    box(s, 0.75, 0.9, W - 1.5, 0.008, fill="line", r=0)
+    text(s, 0.75, 7.0, 7.0, 0.26, "Bidwire · the auction house for AI agents · YC Make Something Agents Want · Oct 18, 2026", size=8.5, color="dim", anchor="m")
     text(s, 7.583, 7.0, 5.0, 0.26, GITHUB, size=8.5, color="dim", align="r", anchor="m")
     box(s, 0, 7.465, W, 0.035, fill="line", r=0)
     bar = box(s, 0, 7.465, W * n / 10.0, 0.035, fill="accent", r=0)
     m.add(bar, "wipe", 0, 600)
 
 
-def headline(slide, s, m, y=0.95, size=38, h=1.0, delay=60, sub=None, sub_y=None, sub_size=17):
-    t = text(slide.shapes, 0.75, y, 11.85, h, s, size=size, bold=True, line=0.98, spacing=-0.8)
+def headline(slide, s, m, y=1.08, size=40, h=1.0, delay=60, sub=None, sub_y=None, sub_size=17):
+    t = text(slide.shapes, 0.75, y, 11.85, h, s, size=size, font=SERIF, line=0.98, spacing=-0.4)
     m.add(t, "rise", delay, 600)
     if sub:
         st = text(slide.shapes, 0.75, sub_y or (y + h + 0.02), 11.85, 0.45, sub, size=sub_size, color="muted")
@@ -651,37 +675,39 @@ def headline(slide, s, m, y=0.95, size=38, h=1.0, delay=60, sub=None, sub_y=None
     return t
 
 
-def kpi_strip(shapes, x, y, w, h, items, m, delay, vertical=False, vsize=24):
-    """KPI tiles inside ONE card separated by dividers (DESIGN.md)."""
-    g = card(shapes, x, y, w, h)
+def kpi_strip(shapes, x, y, w, h, items, m, delay, vertical=False, vsize=24, on_board=False):
+    """KPI tiles inside ONE card separated by hairlines; numbers in serif. on_board=True draws the saleroom board."""
+    g = board(shapes, x, y, w, h) if on_board else card(shapes, x, y, w, h)
     m.add(g, "rise", delay, 500)
     n = len(items)
+    lab_col = "board_dim" if on_board else "muted"
+    rule = "2A2620" if on_board else "line"
     for i, (v, lab, col) in enumerate(items):
         if vertical:
             cy = y + i * h / n
             if i:
-                box(shapes, x + 0.2, cy, w - 0.4, 0.01, fill="line", r=0)
+                box(shapes, x + 0.25, cy, w - 0.5, 0.008, fill=rule, r=0)
             gg = group(shapes)
-            text(gg.shapes, x + 0.25, cy + 0.12, w - 0.4, 0.5, v, size=vsize, bold=True, color=col, anchor="m", spacing=-0.4)
-            text(gg.shapes, x + 0.25, cy + 0.62, w - 0.45, h / n - 0.68, lab, size=10, color="muted", line=1.02)
+            text(gg.shapes, x + 0.3, cy + 0.12, w - 0.5, 0.58, v, size=vsize, font=SERIF, color=col, anchor="m")
+            text(gg.shapes, x + 0.3, cy + 0.7, w - 0.55, h / n - 0.76, lab, size=10, color=lab_col, line=1.02)
         else:
             cx = x + i * w / n
             if i:
-                box(shapes, cx, y + 0.14, 0.01, h - 0.28, fill="line", r=0)
+                box(shapes, cx, y + 0.14, 0.008, h - 0.28, fill=rule, r=0)
             gg = group(shapes)
-            text(gg.shapes, cx + 0.25, y, w / n - 0.3, h, "[[%s,b,s%d|%s]]   %s" % (col, vsize, v, lab), size=11, color="muted", anchor="m")
+            text(gg.shapes, cx + 0.25, y, w / n - 0.3, h, "[[%s,serif,s%d|%s]]   %s" % (col, vsize, v, lab), size=11, color=lab_col, anchor="m")
         m.add(gg, "rise", delay + 150 + i * 110, 450)
 
 
 def weights_bar(shapes, x, y, w, h, Wt, m=None, delay=0, size=9):
-    order = [("price", "Price", "0E0E10", "FFFFFF"), ("specs", "Must-haves", "3A3A41", "FFFFFF"), ("delivery", "Delivery", "6E6E78", "FFFFFF"),
-             ("trust", "Trust", "A3A3AC", "0E0E10"), ("returns", "Ret.", "D6D6DB", "0E0E10")]
+    order = [("price", "Price", "16130E", "FFFDF7"), ("specs", "Must-haves", "3B352B", "FFFDF7"), ("delivery", "Delivery", "6E6658", "FFFDF7"),
+             ("trust", "Trust", "A89E89", "16130E"), ("returns", "Ret.", "D8CDB6", "16130E")]
     total = float(sum(Wt.values())) or 100.0
     cx = x
     for i, (k, lab, col, tc) in enumerate(order):
         ww = w * Wt.get(k, 0) / total
         g = group(shapes)
-        box(g.shapes, cx, y, ww - 0.025, h, fill=col, r=0.03)
+        box(g.shapes, cx, y, ww - 0.025, h, fill=col, r=0.02)
         txt = "%s %d" % (lab, Wt.get(k, 0)) if ww > 0.95 else "%d" % Wt.get(k, 0)
         text(g.shapes, cx, y, ww - 0.025, h, txt, size=size, bold=True, color=tc, align="c", anchor="m")
         if m is not None:
@@ -693,41 +719,43 @@ def weights_bar(shapes, x, y, w, h, Wt, m=None, delay=0, size=9):
 # Slides
 # --------------------------------------------------------------------------------------------------------------
 NOTES = {
-    1: "Hi, this is Bidwire: the ad exchange for AI agents. Here's the thing. When an agent shops, nobody sees an ad. "
+    1: "Hi, this is Bidwire: the auction house for AI agents. Here's the thing. When an agent shops, nobody sees an ad. "
        "No banner, no sponsored slot, no clever copy. So the only way a merchant can win an agent's purchase is with an offer "
-       "that's actually true. Bidwire is the marketplace that makes that happen, live, over MCP.",
+       "that's actually true. Bidwire is the saleroom where that happens, live, over MCP.",
     2: "Agents can already shop for us. But the commerce stack they land on was built to manipulate humans: sponsored slots, "
        "SEO games, drip pricing where $34.99 on the page becomes $63.99 at checkout, and specs nobody checks. Agents read those "
        "pages and get gamed. Merchants have the opposite problem: there is no ad slot inside a tool call, so they can't reach agents at all.",
-    3: "Our insight: for an agent, the ad IS the offer. So instead of buying attention, merchants bid with claims a machine can check: "
-       "delivered price, delivery time, features. We verify every claim, rank on merit with public weights, and fees can't buy rank. "
-       "The YC prompt was to rebuild a tool built for humans. Google became Exa for search; this is Google Ads, rebuilt for agents.",
-    4: "Here's the flow. The agent calls one tool, find_offers, with its need, budget and deadline. That opens a twelve-second live "
-       "auction where bots, people in this room and merchant agents bid. We fetch each merchant's real product page and checkout, run "
-       "five checks, exclude liars, and rank on merit. buy_offer pays from a prepaid wallet; over the limit, the human gets a text and "
-       "replies YES. Everything settles in a double-entry ledger.",
-    5: "This ran live today. One auction: seven bids, five verified, two excluded for lying. One hid a service fee at checkout, one "
-       "claimed noise cancelling on headphones that don't have it. A merchant offered thirty-five dollars a sale and stayed at number five. "
-       "A nine-day shipper got ranked down for missing a five-day deadline, and the $319.99 pick went to the human's phone for a YES. "
-       "If a merchant sells out mid-purchase, the agent gets the next best offer and recovers on its own.",
+    3: "Our insight: for an agent, the ad IS the offer. So instead of buying attention, merchants raise a paddle with claims a machine "
+       "can check: delivered price, delivery time, features. We verify every claim, rank on merit with public weights, and commission "
+       "can't buy rank. The YC prompt was to rebuild a tool built for humans: Google became Exa for search. This is Google Ads, rebuilt "
+       "for agents, as a live auction.",
+    4: "Here's how a lot sells. The agent calls one tool, find_offers, with its need, budget and deadline. That opens a twelve-second lot: "
+       "bots, people in this room and merchant agents raise paddles. We fetch each merchant's real product page and checkout, run five "
+       "checks, withdraw the liars, and rank on merit. Going once, going twice, sold: buy_offer pays from a prepaid wallet, and over the "
+       "limit the human gets a text and replies YES. Everything settles in a double-entry ledger.",
+    5: "This ran live today. One lot: seven paddles, five verified, two withdrawn for misrepresentation. One hid a service fee at "
+       "checkout, one claimed noise cancelling on headphones that don't have it. A merchant offered thirty-five dollars commission and "
+       "stayed at number five. A nine-day shipper got ranked down for missing a five-day deadline, and the $319.99 hammer price went to "
+       "the human's phone for a YES. If a merchant sells out mid-purchase, the agent gets the next best offer and recovers on its own.",
     6: "We built Bidwire as an MCP server on mcp-use from Manufact: twelve tools, three resources, two prompts. The happy path is two "
        "calls: find_offers, then buy_offer. Errors come back structured, with a hint that tells the agent what to call next. Buys take "
        "idempotency keys. The first call needs zero config: no key makes you a guest agent. And the same server works in Claude Code, "
        "Claude Desktop, ChatGPT, Codex and Cursor.",
-    7: "Trust is the product, so it's enforced in code. Every bid gets five checks against the merchant's own page and checkout; a liar is "
-       "excluded and loses trust for every agent. The ranking weights are public: price forty, must-haves twenty-five, delivery fifteen, "
-       "trust fifteen, returns five, fees zero. Spending limits come from the human, every transaction in the ledger sums to zero, and every "
-       "tool call is logged on the Agent Wire.",
-    8: "Business model: merchants pay a fee only when a verified sale happens. Pay-per-sale, no impressions, no clicks, and that fee is our "
-       "take. The wedge is DTC merchants and agent shopping apps; the long game is the trust layer for agent commerce. Why now: eighteen "
-       "months ago there was no MCP, no ACP, and no agent had a card. This year agents got wallets and protocols. Search ads are a "
-       "two-hundred-billion-dollar-plus business built on human attention, and agents don't look at ads.",
-    9: "All of this was built in twenty-four hours and it's running right now: an MCP server on mcp-use and Hono, SQLite, a live board "
-       "over server-sent events, real storefront pages with schema.org JSON-LD that the verifier fetches over HTTP, eight merchant bots "
-       "with honest and dishonest strategies, and Inkbox for approval texts and receipts. Every number on the right is counted from the code.",
+    7: "Trust is the product, so it's enforced in code. Every paddle gets five checks against the merchant's own page and checkout; a "
+       "liar is withdrawn and loses trust for every agent. The ranking weights are public: price forty, must-haves twenty-five, delivery "
+       "fifteen, trust fifteen, returns five, commission zero. Spending limits come from the human, every transaction in the settlement "
+       "ledger sums to zero, and every tool call is logged.",
+    8: "Business model: merchants pay commission only at the hammer, when a verified sale happens. Pay-per-sale, no impressions, no "
+       "clicks, and that commission is our take. The wedge is DTC merchants and agent shopping apps; the long game is the trust layer "
+       "for agent commerce. Why now: eighteen months ago there was no MCP, no ACP, and no agent had a card. This year agents got wallets "
+       "and protocols. Search ads are a two-hundred-billion-dollar-plus business built on human attention, and agents don't look at ads.",
+    9: "All of this was built in twenty-four hours and it's running right now: an MCP server on mcp-use and Hono, SQLite, a live "
+       "saleroom over server-sent events, real storefront pages with schema.org JSON-LD that the verifier fetches over HTTP, eight "
+       "merchant bots with honest and dishonest strategies, and Inkbox for approval texts and receipts. Every number on the right is "
+       "counted from the code.",
     10: "So that's Bidwire. When agents do the shopping, attention stops being for sale, and the truth becomes the only thing worth "
-        "bidding on. You can't bribe an agent. The code is on GitHub at vnmoorthy slash bidwire. The exchange is live right now: connect "
-        "your agent and buy something, or join from your phone and try to bribe it. Thank you.",
+        "bidding on. You can't bribe an agent. The code is on GitHub at vnmoorthy slash bidwire. The saleroom is live right now: "
+        "connect your agent and buy something, or raise a paddle from your phone and try to bribe it. Thank you.",
 }
 
 
@@ -736,41 +764,40 @@ def s1_title(prs, F, L, new_slide):
     m = Motion()
     sh = s.shapes
     g = group(sh)
-    pill = box(g.shapes, 0.8, 0.66, 4.55, 0.36, fill="panel", line="line", r=0.18)
+    box(g.shapes, 0.8, 0.66, 4.55, 0.36, fill="panel", line="line", r=0.18)
     box(g.shapes, 0.97, 0.795, 0.09, 0.09, fill="accent", kind=MSO_SHAPE.OVAL)
     text(g.shapes, 1.14, 0.66, 4.2, 0.36, "Live  ·  YC Make Something Agents Want  ·  Oct 18, 2026", size=9.5, color="muted", anchor="m")
     m.add(g, "fade", 0, 450)
-    m.add(logo(sh, 0.82, 1.55, 0.92), "zoom", 120, 500)
-    m.add(text(sh, 1.95, 1.36, 5.4, 1.3, "Bidwire", size=80, bold=True, anchor="m", spacing=-2.4), "rise", 200, 650)
-    m.add(text(sh, 0.8, 2.92, 6.3, 0.62, "The ad exchange for AI agents.", size=30, bold=True, spacing=-0.6), "rise", 380, 600)
-    m.add(text(sh, 0.8, 3.72, 6.1, 1.0, ["When agents shop, nobody sees an ad.", ("So merchants have to tell the truth.", {"color": "text"})],
-               size=20, color="muted", line=1.15), "rise", 560, 600)
-    chips = [("find_offers → buy_offer", "blue", True), ("Every bid verified", "green", False), ("Fees never buy rank", "amber", False),
-             ("Live 12-second auctions", "accent", False)]
-    cx, cy = 0.8, 5.0
+    m.add(logo(sh, 0.82, 1.5, 0.98), "zoom", 120, 500)
+    m.add(text(sh, 2.0, 1.3, 5.4, 1.36, "Bidwire", size=84, font=SERIF, anchor="m", spacing=-2.0), "rise", 200, 650)
+    m.add(text(sh, 0.8, 2.8, 6.4, 1.1, ["The auction house", "for [[i|AI agents.]]"], size=34, font=SERIF, spacing=-0.4, line=0.95), "rise", 380, 600)
+    m.add(text(sh, 0.8, 4.02, 6.1, 0.8, ["When agents shop, nobody sees an ad.", ("So merchants have to tell the truth.", {"color": "text"})],
+               size=18, color="muted", line=1.15), "rise", 560, 600)
+    chips = [("find_offers → buy_offer", "blue", True), ("Every bid verified", "green", False), ("Commission never buys rank", "amber", False),
+             ("12-second live lots", "accent", False)]
+    cx, cy = 0.8, 5.05
     for i, (lab, col, mono) in enumerate(chips):
         if i == 2:
-            cx, cy = 0.8, 5.42
+            cx, cy = 0.8, 5.47
         gch, wch = badge(sh, cx, cy, lab, col, size=10, mono=mono, h=0.32)
         m.add(gch, "rise", 800 + i * 90, 450)
         cx += wch + 0.1
     m.add(text(sh, 0.8, 6.3, 6.3, 0.3, "Built with mcp-use (Manufact) · Inkbox · MCP over streamable HTTP", size=9.5, color="dim"),
           "fade", 1250, 500)
 
-    fr = browser(sh, 7.35, 1.25, 6.55, "exchange-liar", "localhost:8787/exchange", L)
+    fr = browser(sh, 7.35, 1.2, 6.55, "exchange-liar", "localhost:8787/exchange", L)
     m.add(fr, "rise", 420, 800)
 
     cg = group(sh)
-    c = box(cg.shapes, 6.75, 4.78, 5.1, 1.5, fill="panel", line="line", r=0.14)
+    c = box(cg.shapes, 6.75, 4.8, 5.15, 1.48, fill="panel", line="line2", r=CARD_R)
     effects(c, shadow=SHADOW_LIFT)
-    box(cg.shapes, 6.97, 5.0, 0.42, 0.42, fill="red_soft", kind=MSO_SHAPE.OVAL)
-    text(cg.shapes, 6.97, 5.0, 0.42, 0.42, "✗", size=13, bold=True, color="red", align="c", anchor="m")
-    text(cg.shapes, 7.55, 4.95, 3.3, 0.3, "Caught lying · " + L["lie1_merchant"], size=13.5, bold=True, anchor="m")
-    text(cg.shapes, 7.55, 5.27, 4.15, 0.48, L["lie1"], size=10.5, color="muted", line=1.05)
-    text(cg.shapes, 7.55, 5.86, 4.15, 0.28, "Live run: a headless Claude Code agent over MCP saw it and bought the #1 verified offer.", size=8.5, color="dim")
-    bw = 0.78
-    bdg = box(cg.shapes, 10.85, 4.98, bw, 0.3, fill="red_soft", r=0.15)
-    text(cg.shapes, 10.85, 4.98, bw, 0.3, "Lied ✗", size=10, bold=True, color="red", align="c", anchor="m")
+    box(cg.shapes, 6.75, 4.8, 0.06, 1.48, fill="red", r=0)
+    text(cg.shapes, 7.0, 4.93, 3.6, 0.32, "Bid withdrawn · " + L["lie1_merchant"], size=15, font=SERIF, anchor="m")
+    text(cg.shapes, 7.0, 5.28, 4.7, 0.48, L["lie1"], size=10.5, color="muted", line=1.05)
+    text(cg.shapes, 7.0, 5.86, 4.7, 0.3, "Live run: a headless Claude Code agent over MCP saw this and bought the No. 1 verified offer.", size=8.5, color="dim")
+    bw = 1.12
+    box(cg.shapes, 10.6, 4.93, bw, 0.3, fill="red_soft", line="red", lw=1.0, r=0.04, rot=-3)
+    text(cg.shapes, 10.6, 4.93, bw, 0.3, "WITHDRAWN", size=9, bold=True, color="red", align="c", anchor="m", spacing=1.0, rot=-3)
     m.add(cg, "stamp", 1500, 350)
     s.notes_slide.notes_text_frame.text = NOTES[1]
     apply_motion(s, m, "fade")
@@ -781,37 +808,37 @@ def s2_problem(prs, F, L, new_slide):
     m = Motion()
     chrome(s, 2, "The problem", m)
     sh = s.shapes
-    headline(s, "Agents can shop now. [[muted|The web was built to manipulate humans.]]", m, size=38, h=1.05)
-    m.add(text(sh, 0.75, 2.2, 7, 0.26, "What the web does to shoppers", size=11, bold=True, color="muted", anchor="m"), "fade", 200, 400)
+    headline(s, "Agents can shop now. [[muted,i|The web was built to manipulate humans.]]", m, size=36, h=1.05)
+    m.add(smallcaps(sh, 0.75, 2.36, 7, "What the web does to shoppers"), "fade", 200, 400)
     cards = [("Ad", "Sponsored slots", "Placement goes to whoever pays the most."),
              ("SEO", "Ranking games", "Rank goes to whoever games the algorithm best."),
              ("+$29", "Drip pricing", "$34.99 on the page. $63.99 at checkout."),
              ("ANC?", "Fake specs", "“Noise cancelling” on headphones that don't have it.")]
     for i, (ic, t, d) in enumerate(cards):
         x = 0.75 + (i % 2) * 3.72
-        y = 2.58 + (i // 2) * 1.86
-        g = card(sh, x, y, 3.52, 1.68)
+        y = 2.68 + (i // 2) * 1.8
+        g = card(sh, x, y, 3.52, 1.64)
         gs = g.shapes
         iw = 0.58 if len(ic) < 4 else 0.72
-        box(gs, x + 0.25, y + 0.25, iw, 0.42, fill="red_soft", r=0.1)
-        text(gs, x + 0.25, y + 0.25, iw, 0.42, ic, size=11, bold=True, color="red", align="c", anchor="m")
-        text(gs, x + 0.25, y + 0.82, 3.1, 0.34, t, size=16, bold=True, anchor="m")
-        text(gs, x + 0.25, y + 1.17, 3.1, 0.42, d, size=11.5, color="muted", line=1.05)
+        box(gs, x + 0.25, y + 0.24, iw, 0.4, fill="red_soft", r=0.05)
+        text(gs, x + 0.25, y + 0.24, iw, 0.4, ic, size=11, bold=True, color="red", align="c", anchor="m")
+        text(gs, x + 0.25, y + 0.78, 3.1, 0.36, t, size=17, font=SERIF, anchor="m")
+        text(gs, x + 0.25, y + 1.15, 3.1, 0.45, d, size=11.5, color="muted", line=1.05)
         m.add(g, "rise", 300 + i * 100, 500)
     ag = group(sh)
-    box(ag.shapes, 8.14, 3.93, 0.44, 0.44, fill="panel", line="line2", kind=MSO_SHAPE.OVAL)
-    text(ag.shapes, 8.14, 3.93, 0.44, 0.44, "→", size=15, color="muted", align="c", anchor="m")
+    box(ag.shapes, 8.14, 3.98, 0.44, 0.44, fill="panel", line="line2", kind=MSO_SHAPE.OVAL)
+    text(ag.shapes, 8.14, 3.98, 0.44, 0.44, "→", size=15, color="muted", align="c", anchor="m")
     m.add(ag, "zoom", 800, 350)
-    m.add(text(sh, 8.85, 2.2, 3.8, 0.26, "What breaks", size=11, bold=True, color="muted", anchor="m"), "fade", 850, 400)
+    m.add(smallcaps(sh, 8.85, 2.36, 3.8, "What breaks"), "fade", 850, 400)
     breaks = [("blue", "Agents get gamed", "They read the same pages and trust the same claims. Nobody checks the checkout."),
               ("amber", "Merchants can't reach agents", "There's no ad slot inside a tool call. Banners and SEO never reach a shopping agent.")]
     for i, (col, t, d) in enumerate(breaks):
-        y = 2.58 + i * 1.86
-        g = card(sh, 8.85, y, 3.73, 1.68, accent=col)
-        text(g.shapes, 9.12, y + 0.24, 3.35, 0.36, t, size=16, bold=True, anchor="m")
-        text(g.shapes, 9.12, y + 0.66, 3.33, 0.9, d, size=11.5, color="muted", line=1.06)
+        y = 2.68 + i * 1.8
+        g = card(sh, 8.85, y, 3.73, 1.64, accent=col)
+        text(g.shapes, 9.12, y + 0.24, 3.35, 0.38, t, size=17, font=SERIF, anchor="m")
+        text(g.shapes, 9.12, y + 0.68, 3.33, 0.9, d, size=11.5, color="muted", line=1.06)
         m.add(g, "rise", 950 + i * 130, 500)
-    m.add(text(sh, 0.75, 6.32, 11.85, 0.45,
+    m.add(text(sh, 0.75, 6.38, 11.85, 0.45,
                "Agents need offers they can [[text,b|verify]]. Merchants need a way to [[text,b|compete]] for an agent's purchase.",
                size=17, color="muted"), "rise", 1300, 600)
     s.notes_slide.notes_text_frame.text = NOTES[2]
@@ -823,23 +850,23 @@ def s3_insight(prs, F, L, new_slide):
     m = Motion()
     chrome(s, 3, "The insight", m)
     sh = s.shapes
-    m.add(text(sh, 0.75, 0.98, 11.85, 1.0, "For an agent, [[accent|the ad is the offer.]]", size=54, bold=True, spacing=-1.6, anchor="m"), "rise", 60, 650)
-    m.add(text(sh, 0.75, 2.02, 11.85, 0.45, "So merchants bid with claims a machine can check, and we check every one.", size=19, color="muted"), "fade", 300, 500)
+    m.add(text(sh, 0.75, 1.05, 11.85, 1.0, "For an agent, [[accent,i|the ad is the offer.]]", size=58, font=SERIF, spacing=-1.0, anchor="m"), "rise", 60, 650)
+    m.add(text(sh, 0.75, 2.1, 11.85, 0.45, "So merchants raise a paddle with claims a machine can check, and we check every one.", size=19, color="muted"),
+          "fade", 300, 500)
     cols = [("1", "Bid with verifiable claims",
              "Delivered price, delivery days and features, checked against the merchant's own product page (schema.org JSON-LD) and live checkout."),
             ("2", "Rank on merit",
              "Verified offers are scored 0–100 with public weights. Agents can read the policy as an MCP resource."),
-            ("3", "Fees can't buy rank",
-             "A merchant pays its fee only when an agent buys, and the fee only breaks near-ties (under 0.5 merit points).")]
+            ("3", "Commission can't buy rank",
+             "A merchant pays commission only when an agent buys, and it only breaks near-ties (under 0.5 merit points).")]
     for i, (num, t, d) in enumerate(cols):
         x = 0.75 + i * 4.015
-        y = 2.78
-        g = card(sh, x, y, 3.8, 3.0)
+        y = 2.82
+        g = card(sh, x, y, 3.8, 2.98)
         gs = g.shapes
-        box(gs, x + 0.28, y + 0.28, 0.36, 0.36, fill="ink", kind=MSO_SHAPE.OVAL)
-        text(gs, x + 0.28, y + 0.28, 0.36, 0.36, num, size=11, bold=True, color="white", align="c", anchor="m")
-        text(gs, x + 0.28, y + 0.78, 3.3, 0.4, t, size=18, bold=True, anchor="m", spacing=-0.3)
-        text(gs, x + 0.28, y + 1.24, 3.26, 1.1, d, size=11.5, color="muted", line=1.1)
+        text(gs, x + 0.28, y + 0.18, 1.0, 0.6, num, size=34, font=SERIF, color="accent", anchor="m")
+        text(gs, x + 0.28, y + 0.82, 3.3, 0.4, t, size=19, font=SERIF, anchor="m")
+        text(gs, x + 0.28, y + 1.28, 3.26, 1.05, d, size=11.5, color="muted", line=1.1)
         m.add(g, "rise", 500 + i * 150, 550)
         vy = y + 2.38
         if i == 0:
@@ -853,10 +880,10 @@ def s3_insight(prs, F, L, new_slide):
         else:
             gc, wc = badge(sh, x + 0.28, vy, "Bribe ignored", "amber", size=9.5, h=0.32)
             m.add(gc, "stamp", 1550, 300)
-            m.add(text(sh, x + 0.28 + wc + 0.12, vy, 2.0, 0.32, "%s/sale, still #%s" % (L["bribe_fee"], L["bribe_rank"]), size=10, color="muted", anchor="m"),
-                  "fade", 1650, 300)
-    g = card(sh, 0.75, 6.06, 11.83, 0.62)
-    text(g.shapes, 1.0, 6.06, 11.4, 0.62,
+            m.add(text(sh, x + 0.28 + wc + 0.12, vy, 2.1, 0.32, "Offered %s commission · still No. %s" % (L["bribe_fee"], L["bribe_rank"]),
+                       size=9.5, color="muted", anchor="m"), "fade", 1650, 300)
+    g = card(sh, 0.75, 6.08, 11.83, 0.6)
+    text(g.shapes, 1.0, 6.08, 11.4, 0.6,
          "[[muted|YC prompt: rebuild a tool that was built for humans.]]      Search: Google → Exa      ·      Ads: Google Ads → [[text,b|Bidwire]]",
          size=13, color="text", anchor="m")
     m.add(g, "fade", 1850, 500)
@@ -867,48 +894,47 @@ def s3_insight(prs, F, L, new_slide):
 def s4_flow(prs, F, L, new_slide):
     s = new_slide()
     m = Motion()
-    chrome(s, 4, "How it works", m)
+    chrome(s, 4, "How a lot sells", m)
     sh = s.shapes
-    headline(s, "One tool call in. [[muted|A verified, merit-ranked purchase out.]]", m, size=34, h=0.65)
+    headline(s, "One tool call in. [[muted,i|A verified purchase out.]]", m, size=38, h=0.66)
     wt = F["weights"]
-    steps = [("blue", "find_offers", True, "The agent sends its need, budget, deadline and must-haves."),
-             ("blue", "Live auction", False, "About 12 seconds. Bots, people on phones and merchant agents bid."),
+    steps = [("blue", "find_offers", True, "The agent opens a lot: need, budget, deadline and must-haves."),
+             ("blue", "Paddles go up", False, "A 12-second live auction. Bots, people on phones and merchant agents bid."),
              ("green", "Verify", False, "Fetch the product page JSON-LD and the checkout quote. %d checks." % len(F["checks"])),
              ("green", "Rank on merit", False, "Price %d, must-haves %d, delivery %d, trust %d, returns %d." % (
                  wt.get("price", 40), wt.get("specs", 25), wt.get("delivery", 15), wt.get("trust", 15), wt.get("returns", 5))),
-             ("blue", "buy_offer", True, "Pays from the agent's prepaid wallet. Idempotent."),
+             ("blue", "buy_offer", True, "Going once, going twice, sold: paid from the agent's prepaid wallet."),
              ("amber", "Spending policy", False, "Over the limit? Inkbox texts the human: “Reply YES 1234”."),
-             ("green", "Ledger + receipt", False, "Double-entry. Every transaction sums to $0.")]
-    cw, gap, x0, y0, chh = 1.515, 0.205, 0.75, 1.95, 2.35
-    tags = {2: ("red", "Lied ✗", "Excluded. Trust −12 for every agent."),
-            3: ("amber", "Bribe ignored", "Fees only break near-ties."),
+             ("green", "Settlement ledger", False, "Double-entry. Every transaction sums to $0. Receipt sent.")]
+    cw, gap, x0, y0, chh = 1.515, 0.205, 0.75, 2.0, 2.35
+    tags = {2: ("red", "Withdrawn", "Misrepresentation: excluded, trust −12 for every agent."),
+            3: ("amber", "Bribe ignored", "Commission only breaks near-ties."),
             4: ("blue", "Sold out", "out_of_stock + next best offer. The agent recovers."),
             5: ("green", "Approved", "The human replies YES 1234.")}
     for i, (col, t, mono, d) in enumerate(steps):
         x = x0 + i * (cw + gap)
         g = card(sh, x, y0, cw, chh)
         gs = g.shapes
-        box(gs, x + 0.16, y0 + 0.18, 0.32, 0.32, fill=soft(col), kind=MSO_SHAPE.OVAL)
-        text(gs, x + 0.16, y0 + 0.18, 0.32, 0.32, str(i + 1), size=10, bold=True, color=col, align="c", anchor="m")
-        text(gs, x + 0.16, y0 + 0.62, cw - 0.26, 0.5, t, size=12 if mono else 13.5, bold=True, font=MONO if mono else SANS,
-             color="blue" if mono else "text", anchor="t", line=0.95)
-        text(gs, x + 0.16, y0 + 1.15, cw - 0.28, 1.15, d, size=10, color="muted", line=1.08)
+        text(gs, x + 0.16, y0 + 0.12, 0.6, 0.5, str(i + 1), size=24, font=SERIF, color="accent", anchor="m")
+        text(gs, x + 0.16, y0 + 0.66, cw - 0.26, 0.5, t, size=12 if mono else 15, font=MONO if mono else SERIF,
+             bold=mono, color="blue" if mono else "text", anchor="t", line=0.95)
+        text(gs, x + 0.16, y0 + 1.16, cw - 0.28, 1.15, d, size=10, color="muted", line=1.08)
         m.add(g, "rise", 250 + i * 140, 450)
         if i < len(steps) - 1:
             a = arrow(sh, x + cw + 0.03, y0 + chh / 2, x + cw + gap - 0.025, y0 + chh / 2, color="line2", lw=1.5)
             m.add(a, "wipe", 350 + i * 140, 220)
         if i in tags:
             tc, tt, td = tags[i]
-            ln = arrow(sh, x + cw / 2, y0 + chh + 0.03, x + cw / 2, y0 + chh + 0.33, color="line2", lw=1.0, head=False, dash=MSO_LINE_DASH_STYLE.DASH)
+            ln = arrow(sh, x + cw / 2, y0 + chh + 0.03, x + cw / 2, y0 + chh + 0.31, color="line2", lw=1.0, head=False, dash=MSO_LINE_DASH_STYLE.DASH)
             tg = group(sh)
-            box(tg.shapes, x, y0 + chh + 0.35, cw, 1.12, fill=soft(tc), r=0.12)
-            text(tg.shapes, x + 0.14, y0 + chh + 0.45, cw - 0.22, 0.26, tt, size=10, bold=True, color=tc, anchor="m")
-            text(tg.shapes, x + 0.14, y0 + chh + 0.74, cw - 0.24, 0.7, td, size=9.5, color="text", line=1.05)
+            box(tg.shapes, x, y0 + chh + 0.33, cw, 1.12, fill=soft(tc), r=CARD_R)
+            text(tg.shapes, x + 0.14, y0 + chh + 0.43, cw - 0.22, 0.26, tt, size=10, bold=True, color=tc, anchor="m")
+            text(tg.shapes, x + 0.14, y0 + chh + 0.72, cw - 0.24, 0.7, td, size=9.5, color="text", line=1.05)
             m.add(ln, "fade", 1450 + (i - 2) * 140, 250)
             m.add(tg, "rise", 1500 + (i - 2) * 140, 400)
-    kpi_strip(sh, 0.75, 6.15, 11.83, 0.66, [("2", "calls for the agent", "text"), ("~12 s", "live auction", "text"),
-                                             (str(len(F["checks"])), "checks per bid", "green"), ("0%", "of rank for sale", "amber")],
-              m, 2100, vsize=20)
+    kpi_strip(sh, 0.75, 6.17, 11.83, 0.64, [("2", "calls for the agent", "text"), ("~12 s", "per lot", "text"),
+                                             (str(len(F["checks"])), "checks per paddle", "green"), ("0%", "of rank for sale", "amber")],
+              m, 2100, vsize=21)
     s.notes_slide.notes_text_frame.text = NOTES[4]
     apply_motion(s, m, "fade")
 
@@ -918,31 +944,31 @@ def s5_demo(prs, F, L, new_slide):
     m = Motion()
     chrome(s, 5, "Live demo highlights", m)
     sh = s.shapes
-    headline(s, "Live today: [[muted|liars caught, bribes ignored, a human in the loop.]]", m, size=30, h=0.55)
-    m.add(text(sh, 0.75, 1.58, 6.6, 0.26, "Exchange board · caught lying", size=10.5, bold=True, color="muted", anchor="m"), "fade", 150, 400)
-    fr = browser(sh, 0.75, 1.9, 6.6, "exchange-liar", "localhost:8787/exchange", L)
+    headline(s, "Live today: [[muted,i|liars withdrawn, bribes ignored.]]", m, size=34, h=0.6)
+    m.add(smallcaps(sh, 0.75, 1.66, 6.6, "The saleroom · bid withdrawn"), "fade", 150, 400)
+    fr = browser(sh, 0.75, 1.95, 6.6, "exchange-liar", "localhost:8787/exchange", L)
     m.add(fr, "rise", 200, 700)
-    ev = [("amber", "Bribe ignored", L["bribe_merchant"], L["bribe_why"]),
+    ev = [("amber", "Bribe ignored", L["bribe_merchant"], "Offered %s commission · still No. %s. Fees never buy rank." % (L["bribe_fee"], L["bribe_rank"])),
           ("blue", "Sold out, recovered", "buy_offer", "out_of_stock + next_offer: the agent buys %s on its own." % L["soldout_next"])]
     for i, (col, tag, who, d) in enumerate(ev):
         x = 0.75 + i * 3.36
-        g = card(sh, x, 6.05, 3.24, 0.86)
+        g = card(sh, x, 6.1, 3.24, 0.82)
         bw = est_w(tag, 8.5, False, True) + 0.24
-        box(g.shapes, x + 0.15, 6.15, bw, 0.24, fill=soft(col), r=0.12)
-        text(g.shapes, x + 0.15, 6.15, bw, 0.24, tag, size=8.5, bold=True, color=col, align="c", anchor="m")
-        text(g.shapes, x + 0.25 + bw, 6.15, 3.24 - bw - 0.35, 0.24, who, size=8.5, bold=True, color="muted", font=MONO if who == "buy_offer" else SANS, anchor="m")
-        text(g.shapes, x + 0.15, 6.44, 2.98, 0.45, d, size=9, color="text", line=1.03)
+        box(g.shapes, x + 0.15, 6.2, bw, 0.24, fill=soft(col), r=0.12)
+        text(g.shapes, x + 0.15, 6.2, bw, 0.24, tag, size=8.5, bold=True, color=col, align="c", anchor="m")
+        text(g.shapes, x + 0.25 + bw, 6.2, 3.24 - bw - 0.35, 0.24, who, size=8.5, bold=True, color="muted", font=MONO if who == "buy_offer" else SANS, anchor="m")
+        text(g.shapes, x + 0.15, 6.48, 2.98, 0.42, d, size=9, color="text", line=1.03)
         m.add(g, "rise", 950 + i * 130, 450)
-    m.add(text(sh, 7.62, 1.58, 2.6, 0.26, "Approver phone · SMS", size=10.5, bold=True, color="muted", anchor="m"), "fade", 300, 400)
-    pg, pw = phone(sh, 7.62, 1.9, 5.0, "phone-approval", L)
+    m.add(smallcaps(sh, 7.62, 1.66, 2.6, "Approver phone · SMS"), "fade", 300, 400)
+    pg, pw = phone(sh, 7.62, 1.95, 4.97, "phone-approval", L)
     m.add(pg, "rise", 350, 700)
     sx = 7.62 + pw + 0.28
-    kpi_strip(sh, sx, 1.9, 12.583 - sx, 5.0,
-              [("%s → %s" % (L["bids"], L["verified"]), "bids → verified", "green"),
-               (str(L["excluded"]), "excluded for lying: a hidden fee and a fake ANC claim", "red"),
-               ("#%s" % L["bribe_rank"], "where the %s/sale bribe stayed" % L["bribe_fee"], "amber"),
-               (L["approval_amount"], "over the %s limit, so the human texted YES" % L["approval_limit"], "blue")],
-              m, 1100, vertical=True, vsize=26)
+    kpi_strip(sh, sx, 1.95, 12.583 - sx, 4.97,
+              [("%s → %s" % (L["bids"], L["verified"]), "paddles raised → verified", "board_text"),
+               (str(L["excluded"]), "withdrawn: a hidden fee and a fake ANC claim", "board_text"),
+               ("No. %s" % L["bribe_rank"], "where the %s commission bribe stayed" % L["bribe_fee"], "board_amber"),
+               (L["approval_amount"], "over the %s limit: the human texted YES" % L["approval_limit"], "board_text")],
+              m, 1100, vertical=True, vsize=26, on_board=True)
     s.notes_slide.notes_text_frame.text = NOTES[5]
     apply_motion(s, m, "fade")
 
@@ -965,18 +991,18 @@ def s6_agents(prs, F, L, new_slide):
     m = Motion()
     chrome(s, 6, "Built for agents · Manufact track", m)
     sh = s.shapes
-    headline(s, "One MCP server. Two calls. [[muted|Every client.]]", m, size=34, h=0.62)
+    headline(s, "One MCP server. Two calls. [[muted,i|Every client.]]", m, size=36, h=0.62)
     lx, lw_ = 0.75, 5.3
-    lp = card(sh, lx, 1.75, lw_, 5.08)
+    lp = card(sh, lx, 1.85, lw_, 4.98)
     m.add(lp, "rise", 200, 500)
-    text(lp.shapes, lx + 0.25, 1.9, 4.8, 0.3, "The MCP surface", size=12, bold=True, anchor="m")
+    smallcaps(lp.shapes, lx + 0.25, 1.98, 4.8, "The MCP surface")
     kx = lx + 0.25
     for i, (v, lab) in enumerate([(len(F["tools"]), "tools"), (len(F["resources"]), "resources"), (len(F["prompts"]), "prompts")]):
         if i:
-            box(lp.shapes, kx - 0.2, 2.35, 0.01, 0.55, fill="line", r=0)
-        text(lp.shapes, kx, 2.28, 1.6, 0.7, "[[text,b,s30|%d]]  %s" % (v, lab), size=11, color="muted", anchor="m")
+            box(lp.shapes, kx - 0.2, 2.38, 0.008, 0.55, fill="line", r=0)
+        text(lp.shapes, kx, 2.3, 1.6, 0.7, "[[text,serif,s34|%d]]  %s" % (v, lab), size=11, color="muted", anchor="m")
         kx += 1.65
-    yb = 3.12
+    yb = 3.15
     m.add(text(sh, lx + 0.25, yb, 4.8, 0.24, "Buyer agents · %d" % len(F["buyer_tools"]), size=9.5, bold=True, color="muted", anchor="m"), "fade", 400, 300)
     yb = flow_badges(sh, lx + 0.25, yb + 0.3, lw_ - 0.45, F["buyer_tools"], "blue", m=m, delay=450)
     m.add(text(sh, lx + 0.25, yb + 0.14, 4.8, 0.24, "Merchant agents · %d" % len(F["merchant_tools"]), size=9.5, bold=True, color="muted", anchor="m"),
@@ -984,36 +1010,33 @@ def s6_agents(prs, F, L, new_slide):
     yb = flow_badges(sh, lx + 0.25, yb + 0.44, lw_ - 0.45, F["merchant_tools"], "neutral", m=m, delay=800)
     m.add(text(sh, lx + 0.25, yb + 0.14, 4.8, 0.24, "Resources and prompts", size=9.5, bold=True, color="muted", anchor="m"), "fade", 950, 300)
     yb = flow_badges(sh, lx + 0.25, yb + 0.44, lw_ - 0.45, F["resources"] + F["prompts"], "neutral", m=m, delay=1000, outline=True)
-    m.add(text(sh, lx + 0.25, 6.38, 4.8, 0.3, "Built on mcp-use (Manufact) · TypeScript · streamable HTTP at /mcp", size=9, color="dim", anchor="m"),
+    m.add(text(sh, lx + 0.25, 6.4, 4.8, 0.3, "Built on mcp-use (Manufact) · TypeScript · streamable HTTP at /mcp", size=9, color="dim", anchor="m"),
           "fade", 1200, 400)
     rx = lx + lw_ + 0.25
     rw = 12.583 - rx
-    cg = group(sh)
-    cb = box(cg.shapes, rx, 1.75, rw, 2.6, fill="code_bg", r=0.14)
-    effects(cb, shadow=SHADOW_LIFT)
-    text(cg.shapes, rx + 0.25, 1.82, rw - 0.5, 0.34, "Two calls from any MCP client", size=9.5, bold=True, color="code_dim", anchor="m")
-    box(cg.shapes, rx, 2.2, rw, 0.01, fill="2A2A30", r=0)
+    cg = board(sh, rx, 1.85, rw, 2.55)
+    smallcaps(cg.shapes, rx + 0.3, 2.0, rw - 0.6, "Two calls from any MCP client", color="accent", size=8)
     m.add(cg, "rise", 300, 500)
-    code = ["[[code_dim|→]] [[code_fn,b|find_offers]]({ need: [[code_str|\"noise cancelling headphones\"]],",
+    code = ["[[board_dim|→]] [[code_fn,b|find_offers]]({ need: [[code_str|\"noise cancelling headphones\"]],",
             "                budget_usd: [[code_num|400]], deliver_within_days: [[code_num|5]] })",
-            "[[code_dim|← %s bids → %s verified · %s excluded for lying · ranked]]" % (L["bids"], L["verified"], L["excluded"]),
-            "[[code_dim|→]] [[code_fn,b|buy_offer]]({ offer_id: [[code_str|\"bid_…\"]] })",
-            "[[code_dim|← approval_required → human texts YES →]] [[code_str,b|purchased ✓]]"]
+            "[[board_dim|← %s paddles → %s verified · %s withdrawn · ranked]]" % (L["bids"], L["verified"], L["excluded"]),
+            "[[board_dim|→]] [[code_fn,b|buy_offer]]({ offer_id: [[code_str|\"bid_…\"]] })",
+            "[[board_dim|← approval_required → human texts YES →]] [[code_num,b|sold ✓]]"]
     for i, ln in enumerate(code):
-        t = text(sh, rx + 0.25, 2.35 + i * 0.38, rw - 0.4, 0.34, ln, size=10.5, color="code_text", font=MONO, anchor="m", wrap=False)
+        t = text(sh, rx + 0.3, 2.35 + i * 0.38, rw - 0.45, 0.34, ln, size=10.5, color="board_text", font=MONO, anchor="m", wrap=False)
         m.add(t, "wipe", 800 + i * 230, 380)
     feats = [("Zero-config first call", "No key = guest agent. Claude, ChatGPT and Codex auto-map to demo agents."),
              ("Errors with hints", "{ error, message, hint } tells the agent what to call next."),
              ("Idempotency keys", "Retries never double-buy. Same offer twice returns the same order."),
              ("Per-caller keys", "Bearer bw_buy_… for shoppers, bw_mer_… for merchant agents."),
-             ("Waits, doesn't poll", "find_offers waits for the auction; buy_offer waits for the human's YES."),
+             ("Waits, doesn't poll", "find_offers waits for the lot; buy_offer waits for the human's YES."),
              ("Every client", "Claude Code · Claude Desktop · ChatGPT · Codex · Cursor")]
     tw = (rw - 0.24) / 3.0
     for i, (t, d) in enumerate(feats):
         x = rx + (i % 3) * (tw + 0.12)
-        y = 4.55 + (i // 3) * 1.17
-        g = card(sh, x, y, tw, 1.06)
-        text(g.shapes, x + 0.16, y + 0.12, tw - 0.3, 0.3, t, size=11, bold=True, anchor="m")
+        y = 4.6 + (i // 3) * 1.15
+        g = card(sh, x, y, tw, 1.05)
+        text(g.shapes, x + 0.16, y + 0.12, tw - 0.3, 0.3, t, size=12.5, font=SERIF, anchor="m")
         text(g.shapes, x + 0.16, y + 0.43, tw - 0.3, 0.6, d, size=9, color="muted", line=1.03)
         m.add(g, "rise", 1900 + i * 90, 400)
     s.notes_slide.notes_text_frame.text = NOTES[6]
@@ -1025,46 +1048,47 @@ def s7_trust(prs, F, L, new_slide):
     m = Motion()
     chrome(s, 7, "Trust & safety", m)
     sh = s.shapes
-    headline(s, "Trust is enforced in code.", m, size=36, h=0.62, sub="Every claim checked. Every cent balanced. Every call logged.", sub_y=1.56)
-    lp = card(sh, 0.75, 2.2, 5.6, 4.66)
+    headline(s, "Trust is enforced in code.", m, size=40, h=0.66, sub="Every claim checked. Every cent balanced. Every call logged.", sub_y=1.74)
+    lp = card(sh, 0.75, 2.3, 5.6, 4.56)
     m.add(lp, "rise", 250, 500)
-    text(lp.shapes, 1.0, 2.36, 5, 0.3, "%d checks on every bid" % len(F["checks"]), size=12, bold=True, anchor="m")
+    smallcaps(lp.shapes, 1.0, 2.43, 5, "%d checks on every paddle" % len(F["checks"]))
     detail = {"Product page": "schema.org Offer found on the merchant's own page",
               "Checkout total": "claimed delivered price ≥ the real checkout total",
               "Delivery time": "claimed days ≥ the store's real ship days",
               "Features": "every claimed feature is listed on the page",
               "In stock": "available on the page and at checkout"}
     for i, name in enumerate(F["checks"][:5]):
-        y = 2.76 + i * 0.64
+        y = 2.8 + i * 0.62
         g = group(sh)
         box(g.shapes, 1.0, y + 0.08, 0.4, 0.4, fill="green_soft", kind=MSO_SHAPE.OVAL)
         text(g.shapes, 1.0, y + 0.08, 0.4, 0.4, "✓", size=12, bold=True, color="green", align="c", anchor="m")
-        text(g.shapes, 1.58, y + 0.03, 4.5, 0.28, "%d. %s" % (i + 1, name), size=13.5, bold=True, anchor="m")
-        text(g.shapes, 1.58, y + 0.3, 4.6, 0.26, detail.get(name, ""), size=10.5, color="muted", anchor="m")
+        text(g.shapes, 1.58, y + 0.03, 4.5, 0.3, "%d. %s" % (i + 1, name), size=14, font=SERIF, anchor="m")
+        text(g.shapes, 1.58, y + 0.31, 4.6, 0.26, detail.get(name, ""), size=10.5, color="muted", anchor="m")
         m.add(g, "slide", 450 + i * 120, 400)
     wg = group(sh)
-    box(wg.shapes, 1.0, 6.08, 5.1, 0.58, fill="red_soft", r=0.1)
-    text(wg.shapes, 1.18, 6.08, 4.85, 0.58, "[[red,b|Fail checks 1–4: excluded.]] Trust −12, visible to every agent on the exchange.", size=10.5,
+    box(wg.shapes, 1.0, 6.08, 5.1, 0.58, fill="red_soft", r=CARD_R)
+    box(wg.shapes, 1.0, 6.08, 0.05, 0.58, fill="red", r=0)
+    text(wg.shapes, 1.2, 6.08, 4.85, 0.58, "[[red,b|Fail checks 1–4: withdrawn, misrepresentation.]] Trust −12, visible to every agent.", size=10.5,
          color="text", anchor="m")
     m.add(wg, "rise", 1150, 400)
-    rp = card(sh, 6.6, 2.2, 5.98, 1.78)
+    rp = card(sh, 6.6, 2.3, 5.98, 1.7)
     m.add(rp, "rise", 400, 500)
-    text(rp.shapes, 6.85, 2.36, 5.5, 0.3, "Merit, not money · public weights", size=12, bold=True, anchor="m")
-    weights_bar(sh, 6.85, 2.78, 5.48, 0.42, F["weights"], m, 800, size=9)
+    smallcaps(rp.shapes, 6.85, 2.43, 5.5, "Merit, not money · public weights")
+    weights_bar(sh, 6.85, 2.82, 5.48, 0.42, F["weights"], m, 800, size=9)
     fg = group(sh)
-    box(fg.shapes, 6.85, 3.36, 0.5, 0.2, fill="panel", line="amber", lw=1.0, r=0.04, dash=MSO_LINE_DASH_STYLE.DASH)
-    text(fg.shapes, 7.48, 3.31, 4.9, 0.3, "[[amber,b|Merchant fee: 0.]] Paid only on a sale; only breaks ties under 0.5 points.", size=10, color="muted", anchor="m")
+    box(fg.shapes, 6.85, 3.42, 0.5, 0.2, fill="panel", line="amber", lw=1.0, r=0.03, dash=MSO_LINE_DASH_STYLE.DASH)
+    text(fg.shapes, 7.48, 3.37, 4.9, 0.3, "[[amber,b|Commission: 0.]] Paid only at the hammer; only breaks ties under 0.5 points.", size=10, color="muted", anchor="m")
     m.add(fg, "fade", 1450, 400)
-    fr = browser(sh, 6.6, 4.18, 3.72, "ledger", "localhost:8787/ledger", L, mock=mock_ledger, focus=(0.5, 0.0))
+    fr = browser(sh, 6.6, 4.2, 3.72, "ledger", "localhost:8787/ledger", L, mock=mock_ledger, focus=(0.5, 0.0))
     m.add(fr, "rise", 900, 550)
-    m.add(text(sh, 6.6, 6.55, 3.72, 0.3, "[[green,b|Double-entry ledger:]] every transaction sums to $0", size=9.5, color="muted", anchor="m"), "fade", 1350, 400)
+    m.add(text(sh, 6.6, 6.57, 3.72, 0.3, "[[green,b|Settlement ledger:]] every transaction sums to $0", size=9.5, color="muted", anchor="m"), "fade", 1350, 400)
     side = [("amber", "Spending policy", "Per-purchase and daily limits from the human. Above them: SMS “Reply YES 1234”."),
-            ("blue", "Keys + Agent Wire", "Per-caller keys. Every tool call logged: client, tool, args, ms, tokens.")]
+            ("blue", "Keys + audit trail", "Per-caller keys. Every tool call logged: client, tool, args, ms, tokens.")]
     for i, (col, t, d) in enumerate(side):
-        y = 4.18 + i * 1.36
-        g = card(sh, 10.5, y, 2.08, 1.25, accent=col)
-        text(g.shapes, 10.7, y + 0.13, 1.83, 0.3, t, size=11, bold=True, anchor="m")
-        text(g.shapes, 10.7, y + 0.43, 1.8, 0.8, d, size=9, color="muted", line=1.03)
+        y = 4.2 + i * 1.35
+        g = card(sh, 10.5, y, 2.08, 1.24, accent=col)
+        text(g.shapes, 10.7, y + 0.12, 1.83, 0.32, t, size=12.5, font=SERIF, anchor="m")
+        text(g.shapes, 10.7, y + 0.44, 1.8, 0.78, d, size=9, color="muted", line=1.03)
         m.add(g, "rise", 1100 + i * 130, 400)
     s.notes_slide.notes_text_frame.text = NOTES[7]
     apply_motion(s, m, "fade")
@@ -1075,50 +1099,50 @@ def s8_business(prs, F, L, new_slide):
     m = Motion()
     chrome(s, 8, "Business model · Why now", m)
     sh = s.shapes
-    headline(s, "Merchants pay [[muted|only when an agent buys.]]", m, size=36, h=0.62)
-    lp = card(sh, 0.75, 1.78, 5.95, 5.08)
+    headline(s, "Merchants pay [[muted,i|only at the hammer.]]", m, size=40, h=0.66)
+    lp = card(sh, 0.75, 1.92, 5.95, 4.94)
     m.add(lp, "rise", 200, 500)
-    text(lp.shapes, 1.0, 1.95, 5.4, 0.3, "Business model", size=12, bold=True, anchor="m")
+    smallcaps(lp.shapes, 1.0, 2.05, 5.4, "Business model")
     nodes = [("Agent wallet", "blue_soft", "blue"), ("Merchant", "raised", "text"), ("Bidwire", "ink", "white")]
     for i, (n, fill, tc) in enumerate(nodes):
         x = 1.0 + i * 1.9
         g = group(sh)
-        box(g.shapes, x, 2.42, 1.5, 0.6, fill=fill, r=0.3)
-        text(g.shapes, x, 2.42, 1.5, 0.6, n, size=12, bold=True, color=tc, align="c", anchor="m")
+        box(g.shapes, x, 2.5, 1.5, 0.58, fill=fill, r=0.29)
+        text(g.shapes, x, 2.5, 1.5, 0.58, n, size=12, bold=True, color=tc, align="c", anchor="m")
         m.add(g, "zoom", 450 + i * 220, 350)
         if i < 2:
-            a = arrow(sh, x + 1.53, 2.72, x + 1.87, 2.72, color="line2", lw=1.5)
+            a = arrow(sh, x + 1.53, 2.79, x + 1.87, 2.79, color="line2", lw=1.5)
             m.add(a, "wipe", 580 + i * 220, 220)
-            text(sh, x + 1.36, 3.06, 0.66, 0.24, ["price", "fee"][i], size=9, bold=True, color=["muted", "amber"][i], align="c", anchor="m")
-    m.add(text(sh, 1.0, 3.3, 5.45, 0.26, "The fee is charged only on a verified sale.", size=9.5, color="amber", align="r", anchor="m"), "fade", 1000, 400)
-    bullets = [("green", "CPA, not CPM.", "The fee a merchant bids is charged only when an agent buys a verified offer."),
-               ("amber", "That fee is our take rate.", "No impressions. No clicks. No pay-to-rank."),
+            text(sh, x + 1.2, 3.12, 0.98, 0.24, ["hammer price", "commission"][i], size=8.5, bold=True, color=["muted", "amber"][i], align="c", anchor="m")
+    m.add(text(sh, 1.0, 3.38, 5.45, 0.26, "Commission is charged only on a verified sale.", size=9.5, color="amber", align="r", anchor="m"), "fade", 1000, 400)
+    bullets = [("green", "CPA, not CPM.", "The commission a merchant bids is charged only when an agent buys a verified offer."),
+               ("amber", "That commission is our take rate.", "No impressions. No clicks. No pay-to-rank."),
                ("blue", "Wedge:", "DTC merchants and agent shopping apps."),
                ("accent", "Long game:", "the trust and reputation layer for agent commerce.")]
     for i, (col, b, d) in enumerate(bullets):
-        y = 3.78 + i * 0.74
+        y = 3.82 + i * 0.73
         g = group(sh)
         box(g.shapes, 1.0, y + 0.1, 0.1, 0.1, fill=col, kind=MSO_SHAPE.OVAL)
         text(g.shapes, 1.25, y, 5.2, 0.7, "[[text,b|%s]] %s" % (b, d), size=12.5, color="muted", line=1.08)
         m.add(g, "rise", 1100 + i * 120, 400)
-    rp = card(sh, 6.95, 1.78, 5.63, 5.08)
+    rp = card(sh, 6.95, 1.92, 5.63, 4.94)
     m.add(rp, "rise", 350, 500)
-    text(rp.shapes, 7.2, 1.95, 5.2, 0.3, "Why now", size=12, bold=True, anchor="m")
+    smallcaps(rp.shapes, 7.2, 2.05, 5.2, "Why now")
     tl = [("18 months ago", "line2", "No MCP. No ACP. No agent had a credit card or a login.", "YC kickoff"),
           ("This year", "blue", "Agents got wallets and protocols: MCP and ACP.", ""),
           ("Now", "accent", "Paul Graham: Amazon banning agents is the biggest opening since Amazon. People will want agents to buy things for them.", "paraphrased")]
-    vline = box(sh, 7.315, 2.55, 0.02, 2.2, fill="line", r=0)
+    vline = box(sh, 7.315, 2.6, 0.015, 2.15, fill="line", r=0)
     m.add(vline, "fade", 600, 300)
     for i, (when, col, d, src_) in enumerate(tl):
-        y = 2.4 + i * 1.02
+        y = 2.45 + i * 1.0
         g = group(sh)
         box(g.shapes, 7.23, y + 0.06, 0.19, 0.19, fill=col, line="panel", lw=2, kind=MSO_SHAPE.OVAL)
-        text(g.shapes, 7.62, y, 4.7, 0.3, when + ("   [[dim,n|%s]]" % src_ if src_ else ""), size=11, bold=True, color="text", anchor="m")
-        text(g.shapes, 7.62, y + 0.3, 4.75, 0.7, d, size=11.5, color="muted", line=1.06)
+        text(g.shapes, 7.62, y, 4.7, 0.32, when + ("   [[dim,sans,s9|%s]]" % src_ if src_ else ""), size=14, font=SERIF, color="text", anchor="m")
+        text(g.shapes, 7.62, y + 0.32, 4.75, 0.66, d, size=11.5, color="muted", line=1.06)
         m.add(g, "rise", 700 + i * 200, 450)
     cg = group(sh)
-    box(cg.shapes, 7.2, 5.55, 5.13, 1.08, fill="amber_soft", r=0.12)
-    text(cg.shapes, 7.42, 5.6, 4.75, 0.98,
+    box(cg.shapes, 7.2, 5.58, 5.13, 1.06, fill="amber_soft", r=CARD_R)
+    text(cg.shapes, 7.42, 5.62, 4.75, 0.98,
          "[[amber,b|Search ads are a ~$200B+/yr business]] built on human attention. Agents don't look at ads, so that spend has to compete on verifiable offers.",
          size=11, color="text", line=1.08, anchor="m")
     m.add(cg, "rise", 1450, 450)
@@ -1129,40 +1153,39 @@ def s8_business(prs, F, L, new_slide):
 def s9_built(prs, F, L, new_slide):
     s = new_slide()
     m = Motion()
-    chrome(s, 9, "What we built in 24h", m)
+    chrome(s, 9, "What we built in 24 hours", m)
     sh = s.shapes
-    headline(s, "Built in 24 hours. [[muted|Running live.]]", m, size=36, h=0.62)
-    m.add(text(sh, 0.75, 1.75, 2.0, 0.26, "Agents (MCP)", size=10, bold=True, color="muted", anchor="m"), "fade", 200, 300)
+    headline(s, "Built in 24 hours. [[muted,i|Running live.]]", m, size=40, h=0.66)
+    m.add(smallcaps(sh, 0.75, 1.9, 2.0, "Agents · MCP"), "fade", 200, 300)
     for i, c in enumerate(["Claude Code", "Claude Desktop", "ChatGPT", "Codex", "Cursor"]):
-        g, _ = badge(sh, 0.75, 2.07 + i * 0.42, c, "blue", size=10, h=0.33, w=1.95)
+        g, _ = badge(sh, 0.75, 2.2 + i * 0.4, c, "blue", size=10, h=0.32, w=1.95)
         m.add(g, "slide", 250 + i * 60, 300)
-    m.add(text(sh, 0.75, 4.25, 2.0, 0.26, "Merchants", size=10, bold=True, color="muted", anchor="m"), "fade", 550, 300)
+    m.add(smallcaps(sh, 0.75, 4.35, 2.0, "Merchants · paddles"), "fade", 550, 300)
     for i, c in enumerate(["%d bot personas" % len(F["personas"]), "People on phones", "Merchant agents"]):
-        g, _ = badge(sh, 0.75, 4.57 + i * 0.42, c, "neutral", size=10, h=0.33, w=1.95)
+        g, _ = badge(sh, 0.75, 4.65 + i * 0.4, c, "neutral", size=10, h=0.32, w=1.95)
         m.add(g, "slide", 600 + i * 60, 300)
-    for y in (3.1, 5.0):
+    for y in (3.16, 5.05):
         a = arrow(sh, 2.78, y, 3.12, y, color="line2", lw=1.5)
         m.add(a, "wipe", 850, 220)
-    sp = card(sh, 3.15, 1.75, 3.05, 5.1)
+    sp = card(sh, 3.15, 1.9, 3.05, 4.95, accent="ink", bar="top")
     m.add(sp, "rise", 800, 500)
-    box(sp.shapes, 3.15, 1.75, 3.05, 0.04, fill="ink", r=0)
-    text(sp.shapes, 3.35, 1.92, 2.7, 0.3, "Bidwire server", size=12.5, bold=True, anchor="m")
-    text(sp.shapes, 3.35, 2.2, 2.7, 0.3, "mcp-use v2 · Hono · TypeScript", size=9.5, color="muted", anchor="m")
+    text(sp.shapes, 3.35, 2.04, 2.7, 0.34, "Bidwire server", size=16, font=SERIF, anchor="m")
+    text(sp.shapes, 3.35, 2.36, 2.7, 0.28, "mcp-use v2 · Hono · TypeScript", size=9.5, color="muted", anchor="m")
     rows = [("/mcp", "%d tools · %d resources · %d prompts" % (len(F["tools"]), len(F["resources"]), len(F["prompts"]))),
             ("tools.ts", "one registry: MCP, browser playground, demo agent"),
-            ("exchange.ts", "auction · verify · rank · policy · ledger"),
+            ("exchange.ts", "lot · verify · rank · policy · ledger"),
             ("SQLite", "%d tables, plain rows" % len(F["tables"])),
             ("SSE bus", "%d live event types" % len(F["events"]))]
     for i, (k, d) in enumerate(rows):
-        y = 2.68 + i * 0.8
+        y = 2.78 + i * 0.79
         g = group(sh)
-        box(g.shapes, 3.35, y, 2.65, 0.68, fill="raised", r=0.08)
+        box(g.shapes, 3.35, y, 2.65, 0.68, fill="raised", r=0.04)
         text(g.shapes, 3.5, y + 0.05, 2.4, 0.28, k, size=10, bold=True, color="text", font=MONO, anchor="m")
         text(g.shapes, 3.5, y + 0.33, 2.42, 0.32, d, size=8.5, color="muted", anchor="m")
         m.add(g, "fade", 1000 + i * 100, 300)
-    outs = [("green", "Web app", "Landing · exchange · merchant phone · approver phone · ledger · connect · director", 1.75, 1.45),
-            ("blue", "Storefronts", "/store/:handle/:sku with schema.org JSON-LD + /quote. The verifier fetches them over HTTP.", 3.4, 1.55),
-            ("amber", "Inkbox", "Agent identity: approval SMS (“Reply YES 1234”) and email receipts.", 5.15, 1.32)]
+    outs = [("green", "Web app", "Landing · saleroom · paddle app · approver phone · settlement ledger · connect · auctioneer's desk", 1.9, 1.48),
+            ("blue", "Storefronts", "/store/:handle/:sku with schema.org JSON-LD + /quote. The verifier fetches them over HTTP.", 3.55, 1.5),
+            ("amber", "Inkbox", "Agent identity: approval SMS (“Reply YES 1234”) and email receipts.", 5.22, 1.27)]
     for i, (col, t, d, y, hh) in enumerate(outs):
         if i == 1:
             a = arrow(sh, 6.23, y + hh / 2 - 0.08, 6.5, y + hh / 2 - 0.08, color="line2", lw=1.5)
@@ -1172,27 +1195,27 @@ def s9_built(prs, F, L, new_slide):
             a = arrow(sh, 6.23, y + hh / 2, 6.5, y + hh / 2, color="line2", lw=1.5)
         m.add(a, "wipe", 1550 + i * 110, 220)
         g = card(sh, 6.52, y, 2.0, hh, accent=col)
-        text(g.shapes, 6.72, y + 0.13, 1.75, 0.3, t, size=12, bold=True, anchor="m")
-        text(g.shapes, 6.72, y + 0.43, 1.72, hh - 0.48, d, size=8.5, color="muted", line=1.04)
+        text(g.shapes, 6.72, y + 0.12, 1.75, 0.32, t, size=13, font=SERIF, anchor="m")
+        text(g.shapes, 6.72, y + 0.44, 1.72, hh - 0.48, d, size=8.5, color="muted", line=1.04)
         m.add(g, "rise", 1600 + i * 130, 400)
     nums = [(str(len(F["tools"])), "MCP tools"), ("%d + %d" % (len(F["resources"]), len(F["prompts"])), "resources + prompts"),
             (str(len(F["scenarios"])), "demo scenarios"), (str(len(F["personas"])), "merchant bot personas"),
             (str(len(F["checks"])), "verification checks"), (str(len(F["weights"])), "ranking factors"),
             (str(F["products"]), "real products in %d categories" % len(F["categories"])), (str(len(F["buyers"])), "buyer agents"),
             (str(len(F["tables"])), "SQLite tables"), ("{:,}".format(F["loc"]), "lines of TypeScript")]
-    m.add(text(sh, 8.85, 1.75, 3.7, 0.26, "Counted from the code", size=10, bold=True, color="muted", anchor="m"), "fade", 1800, 300)
-    ng = card(sh, 8.85, 2.07, 3.73, 4.78)
+    m.add(smallcaps(sh, 8.85, 1.9, 3.7, "Counted from the code"), "fade", 1800, 300)
+    ng = card(sh, 8.85, 2.2, 3.73, 4.65)
     m.add(ng, "rise", 1850, 450)
     for i, (v, lab) in enumerate(nums):
         x = 8.85 + (i % 2) * 1.865
-        y = 2.07 + (i // 2) * 0.956
+        y = 2.2 + (i // 2) * 0.93
         if i % 2:
-            box(sh, x, y + 0.15, 0.01, 0.66, fill="line", r=0)
+            box(sh, x, y + 0.15, 0.008, 0.63, fill="line", r=0)
         if i >= 2 and i % 2 == 0:
-            box(sh, 8.95, y, 3.53, 0.01, fill="line", r=0)
+            box(sh, 8.95, y, 3.53, 0.008, fill="line", r=0)
         g = group(sh)
-        text(g.shapes, x + 0.2, y + 0.1, 1.6, 0.46, v, size=22, bold=True, color="text", anchor="m", spacing=-0.4)
-        text(g.shapes, x + 0.2, y + 0.55, 1.6, 0.34, lab, size=8.5, color="muted", anchor="m")
+        text(g.shapes, x + 0.2, y + 0.08, 1.6, 0.5, v, size=25, font=SERIF, color="text", anchor="m")
+        text(g.shapes, x + 0.2, y + 0.56, 1.6, 0.32, lab, size=8.5, color="muted", anchor="m")
         m.add(g, "rise", 1950 + i * 70, 350)
     s.notes_slide.notes_text_frame.text = NOTES[9]
     apply_motion(s, m, "fade")
@@ -1203,26 +1226,23 @@ def s10_close(prs, F, L, new_slide):
     m = Motion()
     sh = s.shapes
     m.add(logo(sh, 0.85, 0.95, 0.66), "zoom", 0, 450)
-    m.add(text(sh, 1.7, 0.95, 4, 0.66, "Bidwire", size=26, bold=True, anchor="m", spacing=-0.6), "fade", 100, 400)
-    m.add(text(sh, 0.8, 1.95, 11.9, 1.45, "You can't bribe [[accent|an agent.]]", size=72, bold=True, spacing=-2.4, anchor="m"), "rise", 250, 700)
-    m.add(text(sh, 0.85, 3.5, 11.5, 0.5, "Bidwire is the ad exchange for AI agents: verified offers, merit ranking, pay per sale.", size=21, color="muted"),
-          "fade", 650, 500)
-    # GitHub as the primary (ink) action
-    gg = group(sh)
-    b = box(gg.shapes, 0.85, 4.45, 3.77, 1.42, fill="ink", r=0.14)
-    effects(b, shadow=SHADOW_LIFT)
-    text(gg.shapes, 1.1, 4.6, 3.3, 0.26, "GITHUB", size=8.5, bold=True, color="code_dim", spacing=0.9, anchor="m")
-    text(gg.shapes, 1.1, 4.92, 3.35, 0.8, GITHUB, size=14.5, bold=True, color="white", font=MONO, line=1.05)
+    m.add(text(sh, 1.7, 0.93, 4, 0.7, "Bidwire", size=30, font=SERIF, anchor="m"), "fade", 100, 400)
+    m.add(text(sh, 0.8, 1.95, 11.9, 1.45, "You can't bribe [[accent,i|an agent.]]", size=80, font=SERIF, spacing=-1.6, anchor="m"), "rise", 250, 700)
+    m.add(text(sh, 0.85, 3.5, 11.5, 0.5, "Verified offers. Merit ranking. Commission only at the hammer.",
+               size=21, color="muted"), "fade", 650, 500)
+    gg = board(sh, 0.85, 4.45, 3.77, 1.42)
+    smallcaps(gg.shapes, 1.1, 4.62, 3.3, "GitHub", color="accent", size=8.5)
+    text(gg.shapes, 1.1, 4.95, 3.35, 0.8, GITHUB, size=13, bold=True, color="board_text", font=MONO, line=1.05)
     m.add(gg, "rise", 950, 450)
     cards = [("Try it live", "Point any MCP client at /mcp. Two calls: [[mono,text|find_offers]] → [[mono,text|buy_offer]]."),
-             ("The ask", "Merchants: pilot pay-per-sale. Agent builders: plug in find_offers.")]
+             ("The ask", "Merchants: pilot pay-at-the-hammer. Agent builders: plug in find_offers.")]
     for i, (lab, body) in enumerate(cards):
         x = 0.85 + (i + 1) * 3.97
         g = card(sh, x, 4.45, 3.77, 1.42)
         if i == 0:
-            box(g.shapes, x + 0.25, 4.67, 0.09, 0.09, fill="accent", kind=MSO_SHAPE.OVAL)
-        text(g.shapes, x + 0.25 + (0.18 if i == 0 else 0), 4.6, 3.2, 0.26, lab.upper(), size=8.5, bold=True, color="dim", spacing=0.9, anchor="m")
-        text(g.shapes, x + 0.25, 4.92, 3.35, 0.85, body, size=13, color="text", line=1.08)
+            box(g.shapes, x + 0.25, 4.675, 0.09, 0.09, fill="accent", kind=MSO_SHAPE.OVAL)
+        smallcaps(g.shapes, x + 0.25 + (0.18 if i == 0 else 0), 4.6, 3.2, lab)
+        text(g.shapes, x + 0.25, 4.95, 3.35, 0.85, body, size=13, color="text", line=1.08)
         m.add(g, "rise", 1100 + i * 150, 450)
     m.add(text(sh, 0.85, 6.35, 11.8, 0.32, "Built at YC “Make Something Agents Want” · with mcp-use (Manufact) and Inkbox · by @vnmoorthy",
                size=10, color="dim", anchor="m"), "fade", 1500, 450)
@@ -1244,7 +1264,7 @@ def build_pptx(F, L, out):
 
     for fn in (s1_title, s2_problem, s3_insight, s4_flow, s5_demo, s6_agents, s7_trust, s8_business, s9_built, s10_close):
         fn(prs, F, L, new_slide)
-    prs.core_properties.title = "Bidwire: the ad exchange for AI agents"
+    prs.core_properties.title = "Bidwire: the auction house for AI agents"
     prs.core_properties.author = "Bidwire"
     prs.core_properties.subject = "YC Make Something Agents Want, Oct 18 2026"
     prs.save(out)
@@ -1274,15 +1294,16 @@ def build_html(F, L, out):
     with open(os.path.join(HERE, "index.src.html"), encoding="utf-8") as fh:
         html = fh.read()
     faces = []
-    fonts = [("Inter", w, "inter-latin-%d-normal.woff2" % w) for w in (400, 500, 600, 700, 800)]
-    fonts += [("JetBrains Mono", w, "jetbrains-mono-latin-%d-normal.woff2" % w) for w in (400, 500, 700)]
-    for fam, wt, fn in fonts:
+    fonts = [("Inter", w, "normal", "inter-latin-%d-normal.woff2" % w) for w in (400, 500, 600)]
+    fonts += [("JetBrains Mono", w, "normal", "jetbrains-mono-latin-%d-normal.woff2" % w) for w in (400, 500, 700)]
+    fonts += [("Instrument Serif", 400, st, "instrument-serif-latin-400-%s.woff2" % st) for st in ("normal", "italic")]
+    for fam, wt, style, fn in fonts:
         p = os.path.join(ASSET_DIR, "fonts", fn)
         if os.path.exists(p):
             with open(p, "rb") as fh:
                 b64 = base64.b64encode(fh.read()).decode("ascii")
-            faces.append("@font-face{font-family:'%s';font-style:normal;font-weight:%d;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2')}"
-                         % (fam, wt, b64))
+            faces.append("@font-face{font-family:'%s';font-style:%s;font-weight:%d;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2')}"
+                         % (fam, style, wt, b64))
     html = html.replace("/*{{FONTS}}*/", "\n".join(faces))
 
     def shot_sub(mo):
