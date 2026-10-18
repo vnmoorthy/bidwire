@@ -4,6 +4,7 @@ import {
   CircleCheck,
   CircleDashed,
   Clapperboard,
+  Gavel,
   ExternalLink,
   ListChecks,
   LoaderCircle,
@@ -16,6 +17,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { ClientBadge } from "@/components/ClientBadge";
+import { gavelSoundOn, playGavel, setGavelSound } from "@/lib/gavel";
 import { LivePill } from "@/components/LivePill";
 import { api, errMsg, type Scenario } from "@/lib/api";
 import { toast, toastError } from "@/lib/fx";
@@ -78,12 +80,12 @@ export default function Director() {
           <div className="eyebrow flex items-center gap-2">
             <Clapperboard size={13} /> Presenter
           </div>
-          <h1 className="mt-1 text-[32px] font-semibold leading-[38px] tracking-[-0.02em]">Demo director</h1>
-          <p className="mt-1 text-[16px] text-muted">Everything here calls the real server. Keep this on your laptop; put the Exchange on the projector.</p>
+          <h1 className="serif mt-1 text-[46px] leading-[50px]">Auctioneer's desk</h1>
+          <p className="mt-1 text-[16px] text-muted">The demo director: open lots, reset the room and keep the show on time. Everything here calls the real server. Keep this on your laptop; put the saleroom on the projector.</p>
         </div>
         <div className="ml-auto flex items-center gap-3">
-          <a className="btn" href="/" target="_blank" rel="noreferrer">
-            Exchange <ExternalLink size={14} />
+          <a className="btn" href="/exchange" target="_blank" rel="noreferrer">
+            Saleroom <ExternalLink size={14} />
           </a>
           <a className="btn" href="/phone" target="_blank" rel="noreferrer">
             Phone <ExternalLink size={14} />
@@ -99,10 +101,11 @@ export default function Director() {
         {/* controls */}
         <div className="flex flex-col gap-5">
           <section className="panel p-5">
-            <h2 className="card-title">Exchange controls</h2>
+            <h2 className="serif text-[26px] leading-7">The room</h2>
             <div className="mt-4 flex flex-col gap-4">
               <ResetButton />
               <BotsToggle enabled={!!config?.bots_enabled} />
+              <GavelToggle />
               <div>
                 <div className="flex items-center gap-2 text-[14px] font-medium">
                   <Timer size={16} className="text-muted" /> Auction window
@@ -113,7 +116,7 @@ export default function Director() {
             </div>
           </section>
           <section className="panel p-5">
-            <h2 className="card-title">Providers</h2>
+            <h2 className="serif text-[26px] leading-7">Providers</h2>
             <div className="mt-3 grid grid-cols-1 gap-2 text-[14px]">
               <Status ok={config?.providers.messaging === "inkbox"} icon={<MessageSquareText size={15} />} label="Messaging" value={config?.providers.messaging === "inkbox" ? "Inkbox (real SMS + email)" : "Simulated (on-screen phone)"} />
               <Status ok icon={<Wallet size={15} />} label="Payments" value={config ? `${config.providers.payments} (double-entry, prepaid wallets)` : "…"} />
@@ -133,7 +136,7 @@ export default function Director() {
         {/* scenarios + agent */}
         <div className="flex flex-col gap-5">
           <section className="panel p-5">
-            <h2 className="card-title">Scenarios</h2>
+            <h2 className="serif text-[26px] leading-7">Lots to run</h2>
             {scErr && <div className="mt-3 text-sm text-lie">{scErr}</div>}
             {!scenarios && !scErr && <div className="shimmer mt-3 h-40 rounded-xl" />}
             <div className="mt-3 flex flex-col gap-2">
@@ -311,7 +314,7 @@ function AgentForm({ buyers }: { buyers: ReturnType<typeof useLive.getState>["bu
 
   return (
     <section className="panel p-5">
-      <h2 className="card-title">Run demo agent</h2>
+      <h2 className="serif text-[26px] leading-7">Send in an agent</h2>
       <p className="mt-1 text-[13px] text-muted">Calls the real MCP tools: find_offers → buy_offer → check_approval. Progress shows in Agent activity.</p>
       <form onSubmit={submit} className="mt-3 grid grid-cols-2 gap-3">
         <label className="col-span-2 text-[13px] font-medium text-muted">
@@ -358,7 +361,7 @@ function RunOfShow() {
     <section className="panel h-fit p-5">
       <div className="flex items-center gap-2">
         <ListChecks size={15} className="text-muted" />
-        <h2 className="card-title">Run of show</h2>
+        <h2 className="serif text-[26px] leading-7">Run of show</h2>
         <span className="tnum ml-auto text-[13px] text-muted">
           {count}/{RUN_OF_SHOW.length}
         </span>
@@ -395,5 +398,31 @@ function RunOfShow() {
         <Power size={12} /> Checkboxes are saved in this browser.
       </div>
     </section>
+  );
+}
+
+function GavelToggle() {
+  const [on, setOn] = useState(gavelSoundOn);
+  return (
+    <div className="flex items-center gap-3">
+      <button
+        onClick={() => {
+          const next = !on;
+          setGavelSound(next);
+          setOn(next);
+          if (next) playGavel();
+        }}
+        className={`relative h-7 w-12 shrink-0 rounded-full border transition-colors ${on ? "border-ink bg-ink" : "border-line-strong bg-raised"}`}
+        aria-pressed={on}
+        aria-label="Toggle the gavel sound"
+      >
+        <span className={`absolute top-[3px] size-5 rounded-full bg-white shadow-[0_1px_3px_rgba(22,19,14,0.25)] transition-all ${on ? "left-[23px]" : "left-[3px]"}`} />
+      </button>
+      <div className="flex items-center gap-2 text-[14px] font-medium">
+        <Gavel size={16} className="text-muted" />
+        Gavel sound {on ? "on" : "off"}
+      </div>
+      <span className="text-[13px] text-muted">A knock when the hammer falls, on screens opened in this browser.</span>
+    </div>
   );
 }
