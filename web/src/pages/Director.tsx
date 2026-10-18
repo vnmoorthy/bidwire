@@ -138,10 +138,10 @@ export default function Director() {
           <section className="panel p-5">
             <h2 className="serif text-[26px] leading-7">Lots to run</h2>
             {scErr && <div className="mt-3 text-sm text-lie">{scErr}</div>}
-            {!scenarios && !scErr && <div className="shimmer mt-3 h-40 rounded-xl" />}
+            {!scenarios && !scErr && <div className="shimmer mt-3 h-40 rounded-[6px]" />}
             <div className="mt-3 flex flex-col gap-2">
               {(scenarios ?? []).map((s) => (
-                <div key={s.id} className="flex items-start gap-3 rounded-[12px] border border-line bg-panel p-3.5">
+                <div key={s.id} className="flex items-start gap-3 rounded-[6px] border border-line bg-panel p-3.5">
                   <div className="min-w-0 flex-1">
                     <div className="text-[15px] font-semibold">{s.title}</div>
                     <div className="mt-0.5 text-[13px] leading-snug text-muted">{s.description}</div>
@@ -267,7 +267,7 @@ function WindowPicker({ current }: { current: number | null }) {
 
 function Status({ ok, icon, label, value }: { ok: boolean; icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="flex items-center gap-2.5 rounded-[10px] border border-line bg-panel px-3 py-2">
+    <div className="flex items-center gap-2.5 rounded-[6px] border border-line bg-panel px-3 py-2">
       <span className={ok ? "text-money" : "text-muted"}>{icon}</span>
       <span className="font-medium">{label}</span>
       <span className={`ml-auto text-right text-[13px] ${ok ? "text-money" : "text-muted"}`}>{value}</span>
@@ -379,7 +379,7 @@ function RunOfShow() {
             <li key={i}>
               <button
                 onClick={() => setDone((d) => ({ ...d, [i]: !d[i] }))}
-                className={`flex w-full items-start gap-3 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-raised ${on ? "opacity-60" : ""}`}
+                className={`flex w-full items-start gap-3 rounded-[6px] px-2 py-1.5 text-left transition-colors hover:bg-raised ${on ? "opacity-60" : ""}`}
               >
                 {on ? <CircleCheck size={18} className="mt-[1px] shrink-0 text-money" /> : <CircleDashed size={18} className="mt-[1px] shrink-0 text-dim" />}
                 <span className="min-w-0">
