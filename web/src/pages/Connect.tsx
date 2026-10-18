@@ -46,7 +46,7 @@ export default function Connect() {
 
       <div className="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
         <section className="panel p-5">
-          <div className="flex items-center gap-2 card-title">
+          <div className="serif flex items-center gap-2 text-[24px] leading-7">
             <Plug size={15} className="text-muted" /> MCP endpoint
           </div>
           <div className="mt-3 flex flex-wrap items-center gap-3 rounded-[12px] border border-line bg-raised px-4 py-3">
@@ -65,7 +65,7 @@ export default function Connect() {
         </section>
 
         <section className="panel p-5">
-          <div className="flex items-center gap-2 card-title">
+          <div className="serif flex items-center gap-2 text-[24px] leading-7">
             <KeyRound size={15} className="text-muted" /> Buyer keys
           </div>
           <div className="mt-3 flex flex-col gap-2">
@@ -162,7 +162,7 @@ function ToolList({ tools }: { tools: ToolMeta[] | null }) {
   }, [tools]);
   return (
     <section className="panel p-5">
-      <div className="flex items-center gap-2 card-title">
+      <div className="serif flex items-center gap-2 text-[24px] leading-7">
         <Wrench size={15} className="text-muted" /> MCP tools
         <span className="tnum ml-auto text-[13px] font-normal text-muted">{tools?.length ?? 0} tools</span>
       </div>
@@ -361,7 +361,7 @@ function Playground({ tools, buyers }: { tools: ToolMeta[] | null; buyers: Conne
 
   return (
     <section className="panel flex flex-col p-5">
-      <div className="flex items-center gap-2 card-title">
+      <div className="serif flex items-center gap-2 text-[24px] leading-7">
         <Play size={15} className="text-muted" /> Playground
         <span className="ml-1 text-[13px] font-normal text-muted">Calls the same MCP tools, logged as client “playground”</span>
       </div>
