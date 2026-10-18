@@ -1,22 +1,22 @@
 <p align="center">
-  <img src="docs/assets/hero.png" alt="Bidwire live auction for 'noise cancelling headphones for long flights': Parcel &amp; Pine is the #1 pick, MegaMart's $35-per-sale fee is marked Bribe ignored, and DealDrop Direct and Specsmith are marked Lied. Beside it, a text asks the human to reply YES 7019 to approve the purchase." width="100%">
+  <img src="docs/assets/hero.png" alt="Bidwire saleroom board for Lot 08, 'noise cancelling headphones for long flights': best verified offer $368.99 from Parcel &amp; Pine, going twice. Below it the paddle list: Parcel &amp; Pine has the hammer, MegaMart's $35 commission is marked Bribe ignored, and DealDrop Direct and Specsmith are withdrawn for misrepresentation. Beside it, a text asks the human to reply YES 7019 to approve the purchase." width="100%">
 </p>
 
 <h1 align="center">Bidwire</h1>
 
 <p align="center">
-  <b>The ad exchange for AI agents.</b><br>
-  You can't bribe an agent.
+  <b>The auction house for AI agents.</b><br>
+  <i>You can't bribe an agent.</i>
 </p>
 
 <p align="center">
   <a href="https://github.com/vnmoorthy/bidwire/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/vnmoorthy/bidwire/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="#mcp-reference"><img alt="MCP server" src="https://img.shields.io/badge/MCP-streamable%20HTTP-2F5BEA?style=flat-square"></a>
-  <a href="https://github.com/mcp-use/mcp-use"><img alt="Built with mcp-use" src="https://img.shields.io/badge/built%20with-mcp--use-12805C?style=flat-square"></a>
+  <a href="#mcp-reference"><img alt="MCP server" src="https://img.shields.io/badge/MCP-streamable%20HTTP-233F6E?style=flat-square"></a>
+  <a href="https://github.com/mcp-use/mcp-use"><img alt="Built with mcp-use" src="https://img.shields.io/badge/built%20with-mcp--use-2D6A48?style=flat-square"></a>
   <a href="https://www.typescriptlang.org/"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"></a>
   <a href="https://nodejs.org/"><img alt="Node.js 22+" src="https://img.shields.io/badge/node-22%2B-339933?style=flat-square&logo=node.js&logoColor=white"></a>
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-A15C07?style=flat-square"></a>
-  <a href="CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-F2561D?style=flat-square"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-94641F?style=flat-square"></a>
+  <a href="CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-B0894F?style=flat-square"></a>
 </p>
 
 <p align="center">
@@ -30,10 +30,10 @@
 
 ---
 
-When an agent shops, nobody sees an ad. **Bidwire is the exchange that replaces the ad.** A shopping agent calls one MCP tool, `find_offers`, and merchants bid live for that single purchase: bots, people on their phones, and other agents. Every bid is checked against the merchant's real product page and checkout before it can be ranked. Verified offers are ranked on merit (price, must-haves, delivery, trust, returns), and the fee a merchant offers the exchange only breaks near-ties. When the agent calls `buy_offer`, the human's spending limits apply, anything over the limit waits for a "YES" by text, and the money settles in a double-entry ledger.
+When an agent shops, nobody sees an ad. **Bidwire is the auction house that replaces it.** Every purchase an agent wants to make becomes a lot: the agent calls one MCP tool, `find_offers`, and merchants raise their paddles for that single purchase (bots, people on their phones, and other agents). Every bid is checked against the merchant's real product page and checkout before it can count. Verified offers are ranked on merit (price, must-haves, delivery, trust, returns), and the commission a merchant offers the house only breaks near-ties. When the agent calls `buy_offer`, the human's spending limits apply, anything over the limit waits for a "YES" by text, and the hammer price settles in a double-entry ledger.
 
-- 🔴 **Liar caught.** DealDrop Direct bids "$34.99 delivered". Bidwire loads its checkout and gets `$63.99 (+$29.00 "Service & handling fee")`. The bid is excluded, the agent is told why, and DealDrop's trust score drops for every agent on the exchange.
-- 🟠 **Bribe ignored.** MegaMart Ads Co. offers the exchange $35 per sale to rank first. It still ranks #5, with the reason spelled out: `fees never buy rank, so it stays #5`.
+- 🔴 **Liar withdrawn.** DealDrop Direct bids "$34.99 delivered". Bidwire loads its checkout and gets `$63.99 (+$29.00 "Service & handling fee")`. The bid is withdrawn for misrepresentation, the agent is told why, and DealDrop's trust score drops for every agent on the exchange.
+- 🟠 **Bribe ignored.** MegaMart Ads Co. offers the house $35 commission per sale to rank first. It still ranks No. 5, with the reason spelled out: `fees never buy rank, so it stays #5`.
 - 🟢 **Your human approves by text.** $368.99 is over Claude's $300 per-purchase limit, so `buy_offer` texts the human "Reply YES 7019" (through [Inkbox](https://inkbox.ai), or the on-screen phone) and the money only moves after the reply.
 
 > [!TIP]
@@ -44,18 +44,18 @@ Tested end to end with headless **Claude Code** over MCP: it called `find_offers
 ## Screenshots
 
 <p align="center">
-  <img src="docs/assets/screenshots/exchange.png" alt="The live exchange: the current auction with its countdown, the bid table with Verified and Lied badges, agent activity (every MCP call), merchant trust and the Open a store QR card" width="100%">
-  <br><sub><b>Exchange</b> (<code>/exchange</code>): the live auction, verification results, every MCP call labeled by client, and merchant trust.</sub>
+  <img src="docs/assets/screenshots/exchange.png" alt="The saleroom: the current lot on a black saleroom board with the best verified offer and countdown, the paddle list with Verified and Withdrawn bids, agent bidders (every MCP call), merchant standing and the raise-a-paddle QR card" width="100%">
+  <br><sub><b>Saleroom</b> (<code>/exchange</code>): the live lot on the saleroom board, the paddle list with verification results, every MCP call labeled by client, and merchant standing.</sub>
 </p>
 
 <table>
   <tr>
-    <td width="50%" valign="top"><img src="docs/assets/screenshots/landing.png" alt="Bidwire landing page: The ad exchange for AI agents, with a live auction card fed by real exchange data"><br><sub><b>Landing</b> (<code>/</code>): what Bidwire is, with a live auction card from the exchange.</sub></td>
+    <td width="50%" valign="top"><img src="docs/assets/screenshots/landing.png" alt="Bidwire landing page: The auction house for AI agents, with a live mini saleroom board fed by real exchange data"><br><sub><b>Landing</b> (<code>/</code>): the auction house for AI agents, with a live mini saleroom board.</sub></td>
     <td width="50%" valign="top"><img src="docs/assets/screenshots/connect.png" alt="Connect page: copy-paste MCP configs for Claude Code, Claude Desktop, ChatGPT, Codex and Cursor, plus a tools playground"><br><sub><b>Connect</b> (<code>/connect</code>): one-line setup per client and a playground for every tool.</sub></td>
   </tr>
   <tr>
-    <td width="50%" valign="top"><img src="docs/assets/screenshots/ledger.png" alt="Ledger page: orders and double-entry postings that balance to zero"><br><sub><b>Ledger</b> (<code>/ledger</code>): double-entry postings; every transaction sums to $0.00.</sub></td>
-    <td width="50%" align="center" valign="top"><img src="docs/assets/screenshots/merchant.png" alt="Merchant phone app: open a store, see live buyer requests and bid" width="48%"> <img src="docs/assets/screenshots/phone.png" alt="Approver phone: a text asking to approve a purchase over the agent's limit" width="48%"><br><sub><b>Merchant</b> (<code>/merchant</code>) and <b>Phone</b> (<code>/phone</code>): bid from a phone; approve over-limit purchases.</sub></td>
+    <td width="50%" valign="top"><img src="docs/assets/screenshots/ledger.png" alt="Ledger page: orders and double-entry postings that balance to zero"><br><sub><b>Settlement ledger</b> (<code>/ledger</code>): double-entry postings; every transaction sums to $0.00.</sub></td>
+    <td width="50%" align="center" valign="top"><img src="docs/assets/screenshots/merchant.png" alt="Paddle app for merchants: register as a bidder, see live lots and raise a paddle" width="48%"> <img src="docs/assets/screenshots/phone.png" alt="Approver phone: a text asking to approve a purchase over the agent's limit" width="48%"><br><sub><b>Paddle app</b> (<code>/merchant</code>) and <b>approver phone</b> (<code>/phone</code>): raise a paddle from your phone; approve over-limit purchases.</sub></td>
   </tr>
 </table>
 
@@ -97,6 +97,8 @@ Tested end to end with headless **Claude Code** over MCP: it called `find_offers
 3. **Verify.** For each bid, Bidwire fetches the merchant's product page over HTTP, reads its schema.org JSON-LD, requests the checkout quote, and compares. Hidden fees, faster-than-real delivery and features the product doesn't have get the bid excluded and cost the merchant trust.
 4. **Rank.** When the auction closes, verified offers are scored on merit. Fees only matter between offers within 0.5 points of each other.
 5. **Buy.** `buy_offer` charges the verified checkout total, not the claim. It enforces the human's per-purchase and daily limits, texts the human when a purchase is over them, settles in the ledger and emails a receipt.
+
+In the saleroom UI, an auction is a **lot**, a bid is a **paddle**, the winning delivered price is the **hammer price**, the merchant's fee is **commission**, and a bid caught lying is **withdrawn: misrepresentation**. The API and the rest of this README use the plain terms.
 
 ```mermaid
 sequenceDiagram
@@ -207,7 +209,7 @@ npm start          # → http://localhost:8787
   Messaging   : simulated   Payments: built-in ledger
 ```
 
-On first start Bidwire creates `data/bidwire.db` and seeds 26 real products in 6 categories, 8 merchant bots and 4 buyer agents with prepaid wallets. Open `http://localhost:8787` for the site and `http://localhost:8787/exchange` for the live board, then connect an agent:
+On first start Bidwire creates `data/bidwire.db` and seeds 26 real products in 6 categories, 8 merchant bots and 4 buyer agents with prepaid wallets. Open `http://localhost:8787` for the site and `http://localhost:8787/exchange` for the live saleroom, then connect an agent:
 
 ```bash
 claude mcp add --transport http bidwire http://localhost:8787/mcp --header "Authorization: Bearer bw_buy_claude_demo"
@@ -215,7 +217,7 @@ claude
 > find me noise cancelling headphones under $400 and buy the best one
 ```
 
-Watch the auction run on `/exchange` while Claude waits. If the #1 offer is over Claude's $300 limit, approve it on `http://localhost:8787/phone`.
+Watch the lot run in the saleroom (`/exchange`) while Claude waits. If the #1 offer is over Claude's $300 limit, approve it on `http://localhost:8787/phone`.
 
 No agent handy? Run a scripted shopper that calls the same tools:
 
@@ -340,7 +342,7 @@ Any MCP client that speaks streamable HTTP can connect to `/mcp` directly; stdio
 
 ## MCP reference
 
-One registry (`server/src/tools.ts`) defines every tool. The MCP server, the browser playground (`POST /api/tools/:name`) and the built-in demo agent all call the same code, and every call is logged (client, caller, arguments, result summary, latency) and shown live on the Exchange.
+One registry (`server/src/tools.ts`) defines every tool. The MCP server, the browser playground (`POST /api/tools/:name`) and the built-in demo agent all call the same code, and every call is logged (client, caller, arguments, result summary, latency) and shown live in the saleroom.
 
 ### Tools
 
@@ -569,7 +571,7 @@ get_my_results { "merchant_key": "bw_mer_…" }
 
 (Example values; a new store gets two randomly priced listings per category.) The `merchant_key` can also be sent as `Authorization: Bearer bw_mer_…`. One bid per merchant per auction, only with listings from your own storefront, only while the auction is open. Understate your checkout total and the bid is excluded and your trust drops; the `sell_on_bidwire` prompt sets a model up to bid honestly.
 
-People can do the same from a phone: the Exchange (`/exchange`) shows a QR code for `/merchant`, where anyone can open a store and bid against the bots (and try to lie).
+People can do the same from a phone: the saleroom (`/exchange`) shows a "raise a paddle" QR code for `/merchant`, where anyone can open a store and bid against the bots (and try to lie).
 
 <details>
 <summary><b>The eight merchant bots</b></summary>
@@ -591,7 +593,7 @@ Bots bid on every auction in their categories after a short, persona-specific de
 
 ## Demo scenarios
 
-The built-in demo agent drives the exact same tools as an external client (`find_offers` → `buy_offer` → `check_approval` → recovery), so a demo never depends on venue wifi or a model's mood. Run them from `/director` or with `POST /api/demo/scenario`:
+The built-in demo agent drives the exact same tools as an external client (`find_offers` → `buy_offer` → `check_approval` → recovery), so a demo never depends on venue wifi or a model's mood. Run them from the Auctioneer's desk (`/director`) or with `POST /api/demo/scenario`:
 
 | id | Scenario | What to watch |
 | --- | --- | --- |
