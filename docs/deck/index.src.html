@@ -211,11 +211,12 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 .s5 h1{font-size:80px}
 .cap{position:absolute}
 .s5 .ex{position:absolute;left:108px;top:282px;width:950px}
-.s5 .ev{position:absolute;left:108px;top:878px;width:950px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.s5 .ev .card{padding:16px 20px;height:110px}
+.s5 .ev{position:absolute;left:108px;top:878px;width:950px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.s5 .ev .card{padding:14px 16px;height:110px}
 .s5 .ev .hd{display:flex;align-items:center;gap:10px}
 .s5 .ev .hd span:last-child{font-size:14px;font-weight:600;color:var(--muted)}
-.s5 .ev p{font-size:14.5px;line-height:1.4;margin-top:10px}
+.s5 .ev p{font-size:13.5px;line-height:1.38;margin-top:9px}
+.s5 .ev .b.sm{height:28px;font-size:12.5px;padding:0 11px}
 .s5 .ph5{position:absolute;left:1098px;top:282px;width:338px}
 .s5 .kcol{position:absolute;left:1474px;right:108px;top:282px;height:706px;display:flex;flex-direction:column;padding:12px 0}
 .kcol>div{flex:1;padding:16px 34px;border-top:1px solid #2A2620;display:flex;flex-direction:column;justify-content:center}
@@ -248,7 +249,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 /* ---------- slide 7 ---------- */
 .s7 .sub{top:244px}
 .s7 .checks{position:absolute;left:108px;top:330px;width:806px;height:654px;padding:28px 36px}
-.chk{display:flex;gap:22px;align-items:center;margin-top:36px}
+.chk{display:flex;gap:22px;align-items:center;margin-top:24px}
 .chk i{flex:none;width:52px;height:52px;border-radius:50%;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:20px}
 .chk b{display:block;font:400 29px/1.1 var(--serif)}
 .chk span{font-size:17px;color:var(--muted)}
@@ -401,10 +402,10 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
   <div class="wrap">
     <div class="lblrow sc r f" style="--d:220">What the web does to shoppers</div>
     <div class="sc r f" style="--d:900;grid-column:4;grid-row:1">What breaks</div>
-    <div class="card c4 r" style="--d:300;grid-column:1;grid-row:2"><span class="ico">Ad</span><h3>Sponsored slots</h3><p>Placement goes to whoever pays the most.</p></div>
-    <div class="card c4 r" style="--d:400;grid-column:2;grid-row:2"><span class="ico">SEO</span><h3>Ranking games</h3><p>Rank goes to whoever games the algorithm best.</p></div>
-    <div class="card c4 r" style="--d:500;grid-column:1;grid-row:3"><span class="ico">+$29</span><h3>Drip pricing</h3><p><s>$34.99</s> on the page. <em>$63.99</em> at checkout.</p></div>
-    <div class="card c4 r" style="--d:600;grid-column:2;grid-row:3"><span class="ico">ANC?</span><h3>Fake specs</h3><p>“Noise cancelling” on headphones that don't have it.</p></div>
+    <div class="card c4 r" style="--d:300;grid-column:1;grid-row:2"><span class="ico">Ad</span><h3>Sponsored slots &amp; SEO</h3><p>Placement goes to whoever pays, or games, the most.</p></div>
+    <div class="card c4 r" style="--d:400;grid-column:2;grid-row:2"><span class="ico">+$29</span><h3>Drip pricing</h3><p><s>$34.99</s> on the page. <em>$63.99</em> at checkout.</p></div>
+    <div class="card c4 r" style="--d:500;grid-column:1;grid-row:3"><span class="ico">ANC?</span><h3>Fake specs</h3><p>“Noise cancelling” on headphones that don't have it.</p></div>
+    <div class="card c4 r" style="--d:600;grid-column:2;grid-row:3"><span class="ico">SYS:</span><h3>Prompt injection</h3><p>“Ignore your previous instructions”, hidden in a product pitch.</p></div>
     <div class="arrowc r z" style="--d:820">→</div>
     <div class="card acc rb r" style="--d:950;--c:var(--agent);grid-row:2"><h3>Agents get gamed</h3><p>They read the same pages and trust the same claims. Nobody checks the checkout.</p></div>
     <div class="card acc rb r" style="--d:1080;--c:var(--fee);grid-row:3"><h3>Merchants can't reach agents</h3><p>There's no ad slot inside a tool call. Banners and SEO never reach a shopping agent.</p></div>
@@ -455,7 +456,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
     <div class="card step" style="--d:1090;--h:7200"><div class="sn">7</div><h4>Settlement ledger</h4><p>Double-entry. Every transaction sums to $0. Receipt sent.</p></div>
   </div>
   <div class="tags">
-    <div class="tag red r st" style="--d:1500;--rot:0deg;left:498px"><b>Withdrawn</b>Misrepresentation: excluded, trust −12 for every agent.</div>
+    <div class="tag red r st" style="--d:1500;--rot:0deg;left:498px"><b>Withdrawn</b>Misrepresentation or prompt injection. Trust −12 for every agent.</div>
     <div class="tag fee r st" style="--d:1650;--rot:0deg;left:747px"><b>Bribe ignored</b>Commission only breaks near-ties.</div>
     <div class="tag agent r st" style="--d:1800;--rot:0deg;left:996px"><b>Sold out</b>out_of_stock + next best offer. The agent recovers.</div>
     <div class="tag green r st" style="--d:1950;--rot:0deg;left:1245px"><b>Approved</b>The human replies YES 1234.</div>
@@ -493,8 +494,9 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
     </div>
   </div>
   <div class="ev">
-    <div class="card r" style="--d:900"><div class="hd"><span class="b fee sm">Bribe ignored</span><span>{{LIVE:bribe_merchant}}</span></div><p>Offered {{LIVE:bribe_fee}} commission · still No. {{LIVE:bribe_rank}}. Fees never buy rank.</p></div>
-    <div class="card r" style="--d:1020"><div class="hd"><span class="b agent sm">Sold out, recovered</span><span class="mono">buy_offer</span></div><p>out_of_stock + next_offer: the agent buys {{LIVE:soldout_next}} on its own.</p></div>
+    <div class="card r" style="--d:900"><div class="hd"><span class="b fee sm">Bribe ignored</span><span>{{LIVE:bribe_merchant}}</span></div><p>Offered {{LIVE:bribe_fee}} commission · still No. {{LIVE:bribe_rank}}.</p></div>
+    <div class="card r" style="--d:1000"><div class="hd"><span class="b red sm">Injection withdrawn</span><span>{{LIVE:inject_merchant}}</span></div><p>“Ignore your previous instructions” in a pitch. Pitches are data.</p></div>
+    <div class="card r" style="--d:1100"><div class="hd"><span class="b agent sm">Sold out</span><span class="mono">buy_offer</span></div><p>out_of_stock + next_offer: the agent recovers on its own.</p></div>
   </div>
   <div class="cap sc r f" style="--d:330;left:1098px;top:246px">Approver phone · SMS</div>
   <div class="ph5 r" style="--d:420">
@@ -511,7 +513,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
   </div>
   <div class="board kcol r" style="--d:1100">
     <div><strong><span class="count" data-to="{{LIVE:bids}}">{{LIVE:bids}}</span> → <span class="count" data-to="{{LIVE:verified}}">{{LIVE:verified}}</span></strong><span>paddles raised → verified</span></div>
-    <div><strong class="count" data-to="{{LIVE:excluded}}">{{LIVE:excluded}}</strong><span>withdrawn: a hidden fee and a fake ANC claim</span></div>
+    <div><strong class="count" data-to="{{LIVE:excluded}}">{{LIVE:excluded}}</strong><span>withdrawn: {{LIVE:excluded_desc}}</span></div>
     <div><strong style="color:var(--bamber)">No. <span class="count" data-to="{{LIVE:bribe_rank}}">{{LIVE:bribe_rank}}</span></strong><span>where the {{LIVE:bribe_fee}} commission bribe stayed</span></div>
     <div><strong>{{LIVE:approval_amount}}</strong><span>over the {{LIVE:approval_limit}} limit: the human texted YES</span></div>
   </div>
@@ -551,7 +553,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
     <div class="card r" style="--d:1300"><h4>Zero-config first call</h4><p>No key = guest agent. Claude, ChatGPT and Codex auto-map to demo agents.</p></div>
     <div class="card r" style="--d:1390"><h4>Errors with hints</h4><p><span class="mono" style="font-size:13px">{ error, message, hint }</span> tells the agent what to call next.</p></div>
     <div class="card r" style="--d:1480"><h4>Idempotency keys</h4><p>Retries never double-buy. Same offer twice returns the same order.</p></div>
-    <div class="card r" style="--d:1570"><h4>Per-caller keys</h4><p>Bearer bw_buy_… for shoppers, bw_mer_… for merchant agents.</p></div>
+    <div class="card r" style="--d:1570"><h4>Pitches are data</h4><p>Merchant pitches never reach the agent as instructions. Injections are withdrawn.</p></div>
     <div class="card r" style="--d:1660"><h4>Waits, doesn't poll</h4><p>find_offers waits for the lot; buy_offer waits for the human's YES.</p></div>
     <div class="card r" style="--d:1750"><h4>Every client</h4><p>Claude Code · Claude Desktop · ChatGPT · Codex · Cursor</p></div>
   </div>
@@ -570,7 +572,8 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
     <div class="chk r l" style="--d:760"><i>✓</i><div><b>3. Delivery time</b><span>claimed days ≥ the store's real ship days</span></div></div>
     <div class="chk r l" style="--d:880"><i>✓</i><div><b>4. Features</b><span>every claimed feature is listed on the page</span></div></div>
     <div class="chk r l" style="--d:1000"><i>✓</i><div><b>5. In stock</b><span>available on the page and at checkout</span></div></div>
-    <div class="warn r" style="--d:1250"><b>Fail checks 1–4: withdrawn, misrepresentation.</b> Trust −12, visible to every agent.</div>
+    <div class="chk r l" style="--d:1120"><i>✓</i><div><b>6. Pitch safety</b><span>the pitch is data: instructions aimed at the agent are withdrawn</span></div></div>
+    <div class="warn r" style="--d:1350"><b>Fail any check but stock: withdrawn.</b> Trust −12, visible to every agent.</div>
   </div>
   <div class="card merit r" style="--d:420">
     <div class="sc">Merit, not money · public weights</div>
