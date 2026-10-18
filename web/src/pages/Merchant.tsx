@@ -308,12 +308,12 @@ function MerchantHome({ saved, initialListings, onLeave }: { saved: Saved; initi
           <div className="mt-4 grid grid-cols-3 gap-2">
             <Mini label="Balance" value={<Money cents={merchant?.balance_cents ?? 0} />} />
             <Mini label="Earned" value={<Money cents={merchant?.earned_cents ?? 0} className="text-money" />} />
-            <Mini label="Fees paid" value={<Money cents={merchant?.fees_paid_cents ?? 0} className="text-fee" />} />
+            <Mini label="Commission" value={<Money cents={merchant?.fees_paid_cents ?? 0} className="text-fee" />} />
           </div>
           <div className="tnum mt-3 flex gap-4 px-1 text-[13px] text-muted">
-            <span>{merchant?.bids ?? 0} bids</span>
-            <span>{merchant?.wins ?? 0} wins</span>
-            <span className={merchant?.lies_caught ? "text-lie" : ""}>{merchant?.lies_caught ?? 0} lies caught</span>
+            <span>{merchant?.bids ?? 0} paddles raised</span>
+            <span>{merchant?.wins ?? 0} hammers</span>
+            <span className={merchant?.lies_caught ? "text-lie" : ""}>{merchant?.lies_caught ?? 0} withdrawn</span>
           </div>
         </div>
 
@@ -595,7 +595,7 @@ function BidSheet({
               <ClientBadge client={a.client} size="sm" />
               <span className="truncate text-[12px] text-muted">{a.buyer_name}</span>
             </div>
-            <div className="mt-1.5 text-[20px] font-semibold leading-snug tracking-[-0.01em]">{a.need}</div>
+            <div className="serif mt-1.5 text-[26px] italic leading-8">{a.need}</div>
             <div className="mt-1 text-[13px] text-muted">
               Budget <Money cents={a.budget_cents} smart className="text-ink" /> · {a.deliver_within_days ? `deliver within ${a.deliver_within_days} ${a.deliver_within_days === 1 ? "day" : "days"}` : "any delivery time"}
             </div>
@@ -772,7 +772,7 @@ function BidStatus({ b, a, feeCharged }: { b: Bid; a: Auction; feeCharged?: numb
         <div className="text-[13px] text-muted">Your paddle · {paddleNo(b.merchant_id)}</div>
         <div className={`tnum mt-1 text-[34px] font-semibold tracking-[-0.02em] ${lied ? "text-lie line-through" : ""}`}>{money(claimedTotal(b))}</div>
         <div className="text-[13px] text-muted">
-          {b.product_emoji} {b.product_title} · ships in {b.claimed_ship_days} {b.claimed_ship_days === 1 ? "day" : "days"} · {money(b.fee_cents)} fee per sale
+          {b.product_emoji} {b.product_title} · ships in {b.claimed_ship_days} {b.claimed_ship_days === 1 ? "day" : "days"} · {money(b.fee_cents)} commission
         </div>
         <div className="mt-4 flex justify-center">
           <VerifyStamp status={b.verify_status} size="lg" lieLabel="Withdrawn: misrepresentation" />
