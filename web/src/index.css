@@ -87,7 +87,7 @@
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: #ecdcb8;
+    background: #f5ebd6;
   }
   :focus-visible {
     outline: none;
@@ -313,7 +313,7 @@
     border-radius: 50%;
     background: #ffffff;
     border: 1px solid var(--color-line-strong);
-    box-shadow: 0 2px 6px rgba(14, 14, 16, 0.18);
+    box-shadow: 0 2px 6px rgba(22, 19, 14, 0.18);
     cursor: pointer;
   }
   input[type="range"].range.lie {
