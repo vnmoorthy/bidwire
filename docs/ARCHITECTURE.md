@@ -31,7 +31,7 @@ Bidwire is one Node.js process (22.13+) built on [mcp-use](https://github.com/mc
 | `/store/:handle/:sku` | `storefront.ts` | A merchant's public product page with schema.org JSON-LD. |
 | `/store/:handle/:sku/quote` | `storefront.ts` | The checkout quote: the real delivered total, fees included. |
 | `/llms.txt` | `http.ts` | A plain-text summary of the server for agents. |
-| everything else (GET) | `http.ts` | The built web app from `web/dist`, with an SPA fallback to `index.html`. |
+| everything else (GET) | `http.ts` | The built web app from `web/dist`, with an SPA fallback to `index.html`: `/` (landing), `/exchange` (the saleroom, also `/live`), `/merchant`, `/phone`, `/ledger`, `/connect`, `/director`. |
 
 ```text
 server/src/index.ts
