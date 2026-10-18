@@ -37,7 +37,7 @@ for (const [w, h, tag] of [[1440, 900, "desktop"], [390, 844, "phone"]]) {
 }
 
 // 2) Click every safe button on each product page (skip destructive/navigation ones).
-const SKIP = /reset|leave|delete|clear|log ?out|deny|decline|approve|place bid|buy|open my store|register|join/i;
+const SKIP = /reset|leave|delete|clear|log ?out|deny|decline|approve|place bid|buy|open my store|register|join|bots|window|seconds|\b\d+s\b|sound|run demo|start agent/i;
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 for (const r of ["/exchange", "/connect", "/ledger", "/director"]) {
   const page = await ctx.newPage(); watch(page, `click ${r}`);
