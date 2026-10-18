@@ -349,6 +349,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 #hint{position:fixed;right:20px;bottom:18px;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;z-index:21;transition:opacity .6s}
 #hint.off{opacity:0;pointer-events:none}
 @media print{#hint,#notes{display:none!important}}
+@media (prefers-reduced-motion: reduce){.slide .r,.slide.active .r,.slide.active .step{opacity:1!important;animation:none!important;transform:none!important;clip-path:none!important}.flow line,.marrow line{animation:none!important}}
 </style>
 </head>
 <body>
@@ -450,7 +451,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
     <svg class="flow r f" style="--d:350" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
     <div class="card step" style="--d:390;--h:1200"><div class="sn">2</div><h4>Paddles go up</h4><p>A 12-second live auction. Bots, people on phones and merchant agents bid.</p></div>
     <svg class="flow r f" style="--d:490" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:530;--h:2400"><div class="sn">3</div><h4>Verify</h4><p>Fetch the product page JSON-LD and the checkout quote. 5 checks.</p></div>
+    <div class="card step" style="--d:530;--h:2400"><div class="sn">3</div><h4>Verify</h4><p>Fetch the product page JSON-LD and the checkout quote. 6 checks.</p></div>
     <svg class="flow r f" style="--d:630" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
     <div class="card step" style="--d:670;--h:3600"><div class="sn">4</div><h4>Rank on merit</h4><p>Price 40, must-haves 25, delivery 15, trust 15, returns 5.</p></div>
     <svg class="flow r f" style="--d:770" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
@@ -469,7 +470,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
   <div class="card kpis r" style="--d:2150">
     <div><strong class="count" data-to="2">2</strong>calls for the agent</div>
     <div><strong>~<span class="count" data-to="12">12</span>s</strong>per lot</div>
-    <div><strong class="count" data-to="5" style="color:var(--green)">5</strong>checks per paddle</div>
+    <div><strong class="count" data-to="6" style="color:var(--green)">6</strong>checks per paddle</div>
     <div><strong style="color:var(--fee)"><span class="count" data-to="0">0</span>%</strong>of rank for sale</div>
   </div>
   <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
@@ -570,7 +571,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
   <h1 class="r" style="--d:60">Trust is enforced in code.</h1>
   <p class="sub r f" style="--d:240">Every claim checked. Every cent balanced. Every call logged.</p>
   <div class="card checks r" style="--d:300">
-    <div class="sc">5 checks on every paddle</div>
+    <div class="sc">6 checks on every paddle</div>
     <div class="chk r l" style="--d:520"><i>✓</i><div><b>1. Product page</b><span>schema.org Offer found on the merchant's own page</span></div></div>
     <div class="chk r l" style="--d:640"><i>✓</i><div><b>2. Checkout total</b><span>claimed delivered price ≥ the real checkout total</span></div></div>
     <div class="chk r l" style="--d:760"><i>✓</i><div><b>3. Delivery time</b><span>claimed days ≥ the store's real ship days</span></div></div>
@@ -652,7 +653,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
     <div class="sc r f" style="--d:200">Agents · MCP</div>
     <span class="b agent r l" style="--d:250">Claude Code</span><span class="b agent r l" style="--d:310">Claude Desktop</span><span class="b agent r l" style="--d:370">ChatGPT</span><span class="b agent r l" style="--d:430">Codex</span><span class="b agent r l" style="--d:490">Cursor</span>
     <div class="sc r f" style="--d:560;margin-top:26px">Merchants · paddles</div>
-    <span class="b r l" style="--d:610">8 bot personas</span><span class="b r l" style="--d:670">People on phones</span><span class="b r l" style="--d:730">Merchant agents</span>
+    <span class="b r l" style="--d:610">9 bot personas</span><span class="b r l" style="--d:670">People on phones</span><span class="b r l" style="--d:730">Merchant agents</span>
   </div>
   <svg class="ar flow r f" style="--d:850;top:448px" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
   <svg class="ar flow r f" style="--d:850;top:770px" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
@@ -675,14 +676,14 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
       <div class="nums">
         <div><strong class="count" data-to="12">12</strong><span>MCP tools</span></div>
         <div><strong>3 + 2</strong><span>resources + prompts</span></div>
-        <div><strong class="count" data-to="6">6</strong><span>demo scenarios</span></div>
-        <div><strong class="count" data-to="8">8</strong><span>merchant bot personas</span></div>
-        <div><strong class="count" data-to="5">5</strong><span>verification checks</span></div>
+        <div><strong class="count" data-to="8">8</strong><span>demo scenarios</span></div>
+        <div><strong class="count" data-to="9">9</strong><span>merchant bot personas</span></div>
+        <div><strong class="count" data-to="6">6</strong><span>verification checks</span></div>
         <div><strong class="count" data-to="5">5</strong><span>ranking factors</span></div>
         <div><strong class="count" data-to="26">26</strong><span>real products in 6 categories</span></div>
         <div><strong class="count" data-to="4">4</strong><span>buyer agents</span></div>
         <div><strong class="count" data-to="14">14</strong><span>SQLite tables</span></div>
-        <div><strong class="count" data-to="9241" data-sep="1">9,241</strong><span>lines of TypeScript</span></div>
+        <div><strong class="count" data-to="9305" data-sep="1">9,305</strong><span>lines of TypeScript</span></div>
       </div>
     </div>
   </div>
