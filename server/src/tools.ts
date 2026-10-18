@@ -3,7 +3,7 @@
 import { z } from "zod";
 import {
   BidwireError, openAuction, waitForClose, offersResult, getAuction, buyOffer, getApproval, waitForApproval, getOrder, receiptText,
-  reportOffer, getBuyer, joinMerchant, merchantByKey, merchantFeed, placeBid, getBid, logToolCall, auctionMs, listingsFor, fmt, getProduct,
+  reportOffer, getBuyer, joinMerchant, merchantByKey, merchantFeed, placeBid, getBid, logToolCall, auctionMs, listingsFor, fmt, getProduct, agentSafeEvidence,
 } from "./exchange.js";
 import { all } from "./db.js";
 import { CATEGORIES } from "./catalog.js";
@@ -125,7 +125,7 @@ export const TOOLS: ToolSpec[] = [
       if (!b) throw new BidwireError("offer_not_found", `No offer ${a.offer_id}.`, undefined, 404);
       return { offer_id: b.id, merchant: b.merchant_name, product: b.product_title, verify_status: b.verify_status, rank: b.rank, merit: b.merit,
         claimed_delivered_usd: (b.claimed_price_cents + b.claimed_shipping_cents) / 100, fee_per_sale_usd: b.fee_cents / 100, fee_affected_rank: false,
-        evidence: b.evidence, why: b.why };
+        evidence: agentSafeEvidence(b.evidence), why: b.why };
     },
   },
   // ---- merchant side ----
