@@ -24,7 +24,7 @@ Each beat below is a real feature you can click, and nothing is a slide pretendi
 1. Open `/director` and click **Reset demo**. Set **Bots: on**, **Auction window: 12s** and **Gavel sound: on**.
 2. Confirm the tunnel URL in the QR card loads on your own phone (`/merchant`).
 3. In Terminal, run `claude mcp list` and confirm `bidwire` is connected. Have `scripts/claude-shopper.sh` and `scripts/claude-merchant.sh` ready in two tabs.
-4. Optional: in ChatGPT, add the connector `<public URL>/mcp?key=bw_buy_chatgpt_demo`.
+4. Optional: in ChatGPT, add the connector **`https://gui-beatles-quantitative-payroll.trycloudflare.com/mcp?key=bw_buy_chatgpt_demo`**. That's the tunnel to this laptop, so ChatGPT's purchases show on the projector. The Manufact URL is a separate cloud exchange, used for the submission. Keep `cloudflared` running; if it restarts, the URL changes. Check the QR card for the current one.
 5. Optional, for real SMS: Inkbox keys in `.env`, and the judge's phone has texted START to the Inkbox number.
 6. Hand Judge A the approver phone (`/phone`, or their real phone). Ask Judge B to scan the QR and open a store.
 
