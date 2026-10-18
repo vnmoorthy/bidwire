@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Auction, Order } from "@shared/types";
 import { api, type ConnectInfo, type ToolMeta } from "@/lib/api";
-import { money } from "@/lib/format";
 import { useLive } from "@/lib/store";
 import { hasLie, isRanked, liedOffers, orderedOffers } from "./data";
-import { CodeLines, Container, CopyChip, Reveal, SectionHeading, cx, highlightLine } from "./ui";
+import { CodeLines, Container, CopyChip, Reveal, SectionHeading, SmallCaps, cx, highlightLine } from "./ui";
 
 /* ------------------------------------------------------------------ tools */
 
@@ -55,7 +54,7 @@ function rank(order: string[], name: string) {
 function ToolGroup({ title, tools }: { title: string; tools: { name: string; title: string }[] }) {
   return (
     <div>
-      <p className="text-[12px] font-semibold text-muted">{title}</p>
+      <SmallCaps className="text-muted">{title}</SmallCaps>
       <ul className="mt-3 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
         {tools.map((t) => (
           <li key={t.name} className="min-w-0">
@@ -200,7 +199,7 @@ function ExampleLines({ code }: { code: string }) {
           if (l.startsWith("→ ")) {
             node = (
               <>
-                <span className="text-accent">→</span> <span className="font-semibold">{l.slice(2)}</span>
+                <span className="text-accent">→</span> <span className="font-mono font-semibold">{l.slice(2)}</span>
                 <span className="text-dim"> · your agent</span>
               </>
             );
@@ -236,8 +235,8 @@ function CodeCard() {
   const real = example != null;
 
   return (
-    <div className="overflow-hidden rounded-[14px] border border-line bg-panel shadow-[0_1px_2px_rgba(14,14,16,0.04),0_24px_60px_-32px_rgba(14,14,16,0.16)]">
-      <div className="flex items-center justify-between gap-3 border-b border-line bg-[#FCFCFB] pr-3">
+    <div className="overflow-hidden rounded-[6px] border border-line bg-panel">
+      <div className="flex items-center justify-between gap-3 border-b border-line bg-raised/50 pr-3">
         <div role="tablist" aria-label="MCP client" className="no-scrollbar flex min-w-0 overflow-x-auto px-2">
           {TABS.map((t) => {
             const active = t.client === tab;
@@ -254,7 +253,7 @@ function CodeCard() {
                 )}
               >
                 {t.label}
-                {active && <span aria-hidden className="absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-ink" />}
+                {active && <span aria-hidden className="absolute inset-x-3 bottom-0 h-[2px] rounded-full bg-accent" />}
               </button>
             );
           })}
@@ -268,8 +267,8 @@ function CodeCard() {
 
       <div className="border-t border-line">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 pt-4">
-          <span className="text-[12px] font-semibold text-muted">Then two calls</span>
-          <span className="text-[12px] text-dim">{real ? "Replayed from a real auction on this exchange" : "Example"}</span>
+          <SmallCaps className="text-muted">Then two calls</SmallCaps>
+          <span className="text-[12px] text-dim">{real ? "Replayed from a real lot on this exchange" : "Example"}</span>
         </div>
         <div className="overflow-x-auto px-5 pb-5 pt-3">
           <div className="w-max min-w-full">
@@ -306,6 +305,3 @@ export function ForAgents() {
     </section>
   );
 }
-
-// Re-exported for the footer.
-export { money as _money };
