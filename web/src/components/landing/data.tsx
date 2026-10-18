@@ -92,8 +92,17 @@ export function orderedOffers(a: Auction): Bid[] {
     });
 }
 
+/** Withdrawn bids, the classic hidden-fee lie first (it tells the story best), then the rest by time. */
 export function liedOffers(a: Auction): Bid[] {
-  return (a.bids ?? []).filter((b) => b.verify_status === "mismatch").sort((x, y) => x.created_at - y.created_at);
+  const weight = (b: Bid) => {
+    const e = b.evidence;
+    if (e && e.actual_total_cents > e.claimed_total_cents + 50) return 0;
+    if (e?.checks?.some((c) => !c.ok && /pitch/i.test(c.name))) return 2;
+    return 1;
+  };
+  return (a.bids ?? [])
+    .filter((b) => b.verify_status === "mismatch")
+    .sort((x, y) => weight(x) - weight(y) || x.created_at - y.created_at);
 }
 
 /** The offer leading the lot: No. 1 once ranked, otherwise the cheapest verified paddle so far. */
@@ -116,20 +125,24 @@ export function cardRows(a: Auction, max = 4): Bid[] {
 }
 
 /** Short, human explanation of why a bid was withdrawn. */
-export function lieReason(b: Bid): { checkout: number | null; fee: string | null; text: string } {
+export function lieReason(b: Bid): { title: string; checkout: number | null; fee: string | null; text: string } {
   const e = b.evidence;
+  const failed = e?.checks?.filter((c) => !c.ok && c.name !== "In stock") ?? [];
+  // Pitches are data, never instructions: say what happened without repeating the injected text.
+  if (failed.some((c) => /pitch/i.test(c.name)))
+    return { title: "Prompt injection.", checkout: null, fee: null, text: "Its pitch tried to give the buying agent instructions." };
   const priceLie = !!e && e.actual_total_cents > e.claimed_total_cents + 50;
   if (e && priceLie) {
     const m = (e.summary ?? "").match(/\+\$([\d,]+\.\d{2}) ["“]([^"”]+)["”]/);
     return {
+      title: "Misrepresentation.",
       checkout: e.actual_total_cents,
       fee: m ? `+$${m[1]} “${m[2]}”` : null,
       text: `Checkout says ${money(e.actual_total_cents)}`,
     };
   }
-  const failed = e?.checks?.find((c) => !c.ok && c.name !== "In stock");
-  const raw = failed?.detail ?? e?.summary ?? "Claim didn't match the merchant's own checkout";
-  return { checkout: null, fee: null, text: raw.replace(/^Claims (\S+) but/, "Claims “$1” but") };
+  const raw = failed[0]?.detail ?? e?.summary ?? "Claim didn't match the merchant's own checkout";
+  return { title: "Misrepresentation.", checkout: null, fee: null, text: raw.replace(/^Claims (\S+) but/, "Claims “$1” but") };
 }
 
 export function findBribe(auctions: Auction[], prefer?: Auction | null): { auction: Auction; bid: Bid } | null {
