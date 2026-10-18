@@ -61,7 +61,7 @@ for (const r of ["/exchange", "/connect", "/ledger", "/director"]) {
   await page.goto(BASE + "/director", { waitUntil: "domcontentloaded" }); await sleep(1500);
   const card = page.locator("text=65W travel charger").first();
   if (await card.count()) {
-    const runBtn = page.locator(":is(div,li,article,section):has-text('65W travel charger') >> button:has-text('Run')").last();
+    const runBtn = page.getByText("65W travel charger", { exact: false }).first().locator("xpath=ancestor::*[.//button][1]//button").first();
     await runBtn.click({ timeout: 3000 }).catch(() => issues.push("[flow director] could not click Run on the travel-charger scenario"));
   } else issues.push("[flow director] scenario list not visible");
   await sleep(18000);
