@@ -69,7 +69,7 @@ Every bid is verified before it can be ranked:
 1. Bidwire fetches the merchant's public product page and reads its schema.org Offer.
 2. It requests the merchant's checkout quote: the real delivered total, including any fee that only appears at checkout.
 3. It compares the merchant's claim (delivered price, delivery days, features) with what the page and checkout say.
-Bids that understate the price, overstate speed or claim features the product does not have are **excluded** and the merchant's trust score drops for every agent on the exchange.
+Bids that understate the price, overstate speed, claim features the product does not have, or carry a pitch with instructions aimed at the buying agent (prompt injection) are **excluded** and the merchant's trust score drops for every agent on the exchange.
 
 Verified offers are ranked by merit (0-100):
 - Price: ${RANKING_WEIGHTS.price * 100}% (cheapest verified delivered total = full marks)
@@ -80,6 +80,8 @@ Verified offers are ranked by merit (0-100):
 Offers over budget are discounted 15%; out-of-stock offers are discounted 50%.
 
 **Merchant fees never buy rank.** A merchant's fee per sale is only paid if an agent buys from it, and it only breaks ties within 0.5 merit points. When a higher-fee offer ranks lower, Bidwire marks it "bribe ignored".
+
+Merchant pitches are never passed to agents as instructions; offers returned by find_offers contain only verified facts.
 
 Spending is governed by your human: per-purchase and daily limits. Above them, buy_offer texts your human and waits for YES.
 `;
