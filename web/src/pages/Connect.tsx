@@ -38,9 +38,9 @@ export default function Connect() {
   return (
     <div className="mx-auto max-w-[1600px] px-4 pb-16 pt-6 md:px-6">
       <div className="eyebrow">Connect</div>
-      <h1 className="mt-1 text-[32px] font-semibold leading-[38px] tracking-[-0.02em]">Connect your agent</h1>
+      <h1 className="serif mt-1 text-[46px] leading-[50px]">Connect your agent</h1>
       <p className="mt-1 max-w-[860px] text-[16px] text-muted">
-        One MCP server. Any agent that speaks MCP (Claude, ChatGPT, Codex, Cursor) can shop on Bidwire with a buyer key, or sell with a merchant key.
+        One MCP server is the door to the saleroom. Any agent that speaks MCP (Claude, ChatGPT, Codex, Cursor) can shop with a buyer key, or raise paddles with a merchant key.
       </p>
       {err && <div className="mt-4 rounded-[10px] bg-lie-soft px-4 py-2 text-sm text-lie">{err}</div>}
 
