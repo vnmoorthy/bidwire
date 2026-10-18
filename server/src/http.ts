@@ -1,6 +1,7 @@
 // HTTP API for the web app (live board, merchant phones, approver phone, ledger, playground, director),
 // storefront pages, llms.txt and the static web build. Mounted as Hono middleware on the mcp-use server.
 import { existsSync, readFileSync, statSync } from "node:fs";
+import { gzipSync } from "node:zlib";
 import { extname, join, resolve } from "node:path";
 import {
   BidwireError, snapshot, getAuction, merchantProfile, joinMerchant, getMerchant, merchantKey, placeBid, merchantFeed, listApprovals,
@@ -39,7 +40,7 @@ const routes: Route[] = [
   }],
   ["GET", /^\/api\/approvals$/, () => json(listApprovals())],
   ["POST", /^\/api\/approvals\/([\w-]+)\/decide$/, async (c, m) => { const b = await body(c); return json(decideApproval(m[1], b.decision === "deny" ? "deny" : "approve", String(b.via ?? "Bidwire phone"))); }],
-  ["POST", /^\/api\/phone\/reply$/, async (c) => { const b = await body(c); simulateInbound(String(b.text ?? "")); return json({ ok: true }); }],
+  ["POST", /^\/api\/phone\/reply$/, async (c) => { const b = await body(c); const t = String(b.text ?? "").trim(); if (!t) throw new BidwireError("empty_reply", "Type a reply such as YES 1234."); simulateInbound(t.slice(0, 160)); return json({ ok: true }); }],
   ["GET", /^\/api\/ledger$/, () => json(ledgerView())],
   ["GET", /^\/api\/meta\/tools$/, () => json(toolMeta())],
   ["POST", /^\/api\/tools\/([\w-]+)$/, async (c, m) => {
@@ -74,7 +75,18 @@ function connectInfo() {
   };
 }
 
+// Phones on venue wifi poll /api/state; gzip cuts that ~100KB snapshot to ~15KB.
+async function maybeGzip(c: C, res: Response): Promise<Response> {
+  const type = res.headers.get("Content-Type") ?? "";
+  if (!type.includes("application/json") || !(c.req.header("accept-encoding") ?? "").includes("gzip")) return res;
+  const buf = Buffer.from(await res.arrayBuffer());
+  if (buf.length < 2048) return new Response(buf, { status: res.status, headers: res.headers });
+  const headers = new Headers(res.headers); headers.set("Content-Encoding", "gzip"); headers.set("Vary", "Accept-Encoding");
+  return new Response(gzipSync(buf), { status: res.status, headers });
+}
+
 const WEB_DIST = resolve("web/dist");
+const UPDATING = `<!doctype html><meta http-equiv="refresh" content="1"><title>Bidwire</title><body style="font-family:Georgia,serif;background:#F4EFE4;color:#16130E;display:grid;place-items:center;height:100vh;margin:0"><p>Bidwire is updating… one moment.</p></body>`;
 const MIME: Record<string, string> = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".woff": "font/woff", ".json": "application/json", ".ico": "image/x-icon", ".txt": "text/plain; charset=utf-8", ".webp": "image/webp", ".gif": "image/gif" };
 
 export function mountHttp(server: any) {
@@ -82,7 +94,11 @@ export function mountHttp(server: any) {
     const path = new URL(c.req.url).pathname;
     for (const [method, re, h] of routes) {
       const m = path.match(re);
-      if (m && c.req.method === method) { try { return await h(c, m); } catch (e) { return fail(e); } }
+      if (m && c.req.method === method) {
+        let res: Response;
+        try { res = await h(c, m); } catch (e) { res = fail(e); }
+        return maybeGzip(c, res);
+      }
     }
     return json({ error: "not_found", message: `${c.req.method} ${path}` }, 404);
   });
@@ -100,13 +116,18 @@ export function mountHttp(server: any) {
     const path = new URL(c.req.url).pathname;
     if (c.req.method !== "GET" || path.startsWith("/mcp") || path.startsWith("/api") || path.startsWith("/inspector") || path.startsWith("/.well-known")) return next();
     if (!existsSync(WEB_DIST)) return path === "/" ? new Response(`<h1>Bidwire</h1><p>Web app not built yet. Run <code>npm run build</code>.</p><p>MCP endpoint: <code>/mcp</code></p>`, { headers: { "Content-Type": "text/html" } }) : next();
-    const file = join(WEB_DIST, path);
-    if (file.startsWith(WEB_DIST) && existsSync(file) && statSync(file).isFile()) {
-      const ext = extname(file);
-      return new Response(readFileSync(file), { headers: { "Content-Type": MIME[ext] ?? "application/octet-stream", "Cache-Control": path.includes("/assets/") ? "public, max-age=31536000, immutable" : "no-cache" } });
+    try {
+      const file = join(WEB_DIST, path);
+      if (file.startsWith(WEB_DIST) && existsSync(file) && statSync(file).isFile()) {
+        const ext = extname(file);
+        return new Response(readFileSync(file), { headers: { "Content-Type": MIME[ext] ?? "application/octet-stream", "Cache-Control": path.includes("/assets/") ? "public, max-age=31536000, immutable" : "no-cache" } });
+      }
+      if (extname(path)) return next();
+      return new Response(readFileSync(join(WEB_DIST, "index.html")), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" } });
+    } catch {
+      // The web build is being replaced (vite empties dist first): show a self-refreshing page instead of a 500.
+      return new Response(UPDATING, { status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Retry-After": "1", "Cache-Control": "no-store" } });
     }
-    if (extname(path)) return next();
-    return new Response(readFileSync(join(WEB_DIST, "index.html")), { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" } });
   });
 }
 
