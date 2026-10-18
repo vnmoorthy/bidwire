@@ -1,10 +1,11 @@
 import { animate, motion, useInView, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, Copy, LoaderCircle } from "lucide-react";
+import { ArrowRight, Check, Copy, Gavel, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { copyText } from "@/lib/format";
 
-/* Landing-page primitives. Self-contained so the marketing site does not depend on app chrome. */
+/* Landing-page primitives for the "Saleroom" system (docs/DESIGN.md v3).
+   Self-contained so the marketing site does not depend on app chrome. */
 
 export const GITHUB_URL = "https://github.com/vnmoorthy/bidwire";
 export const EASE = [0.16, 1, 0.3, 1] as const;
@@ -19,8 +20,19 @@ export function Container({ className, children }: { className?: string; childre
   return <div className={cx("mx-auto w-full max-w-[1248px] px-4 sm:px-6", className)}>{children}</div>;
 }
 
+/** Small caps label: Inter 600, 11–12px, tracking 0.12em. */
+export function SmallCaps({ children, className }: { children: ReactNode; className?: string }) {
+  return <span className={cx("text-[11px] font-semibold uppercase leading-4 tracking-[0.12em]", className)}>{children}</span>;
+}
+
+/** Section eyebrow: a short gold rule plus a small-caps label. */
 export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cx("text-[12px] font-semibold uppercase leading-4 tracking-[0.06em] text-dim", className)}>{children}</p>;
+  return (
+    <p className={cx("flex items-center gap-3", className)}>
+      <span aria-hidden className="h-px w-6 bg-accent" />
+      <SmallCaps className="text-muted">{children}</SmallCaps>
+    </p>
+  );
 }
 
 export function SectionHeading({
@@ -38,11 +50,11 @@ export function SectionHeading({
 }) {
   return (
     <div className={cx("max-w-[640px]", center && "mx-auto text-center", className)}>
-      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="mt-4 text-balance text-[30px] font-semibold leading-[36px] tracking-[-0.025em] text-ink md:text-[40px] md:leading-[48px]">
+      {eyebrow && <Eyebrow className={center ? "justify-center" : undefined}>{eyebrow}</Eyebrow>}
+      <h2 className="mt-5 text-balance font-serif text-[40px] font-normal leading-[42px] tracking-[-0.01em] text-ink md:text-[52px] md:leading-[54px]">
         {title}
       </h2>
-      {sub && <p className="mt-4 text-pretty text-[17px] leading-7 text-muted">{sub}</p>}
+      {sub && <p className="mt-5 text-pretty text-[17px] leading-7 text-muted">{sub}</p>}
     </div>
   );
 }
@@ -74,27 +86,38 @@ export function Reveal({
   );
 }
 
-/* ------------------------------------------------------------------ buttons */
+/** Ultra-subtle paper grain (SVG noise at ~3%), fixed behind the content. */
+export function PaperGrain() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-0 opacity-[0.035] mix-blend-multiply"
+      style={{
+        backgroundImage:
+          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+      }}
+    />
+  );
+}
 
-type Variant = "accent" | "primary" | "secondary" | "ghost";
+/* ------------------------------------------------------------------ buttons (pills) */
+
+type Variant = "primary" | "secondary" | "onDark" | "onDarkGhost";
 type Size = "sm" | "md" | "lg";
 
 const BTN_BASE =
-  "group inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[10px] font-semibold transition-[background-color,border-color,color,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/25 active:translate-y-px disabled:pointer-events-none disabled:opacity-60";
+  "group inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-[background-color,border-color,color,box-shadow] duration-150 ease-out focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/35 active:translate-y-px disabled:pointer-events-none disabled:opacity-60";
 
 const BTN_VARIANT: Record<Variant, string> = {
-  accent:
-    "bg-accent text-white shadow-[0_1px_2px_rgba(14,14,16,0.10),inset_0_1px_0_rgba(255,255,255,0.16)] hover:bg-[#E04C15]",
-  primary:
-    "bg-ink text-white shadow-[0_1px_2px_rgba(14,14,16,0.10),inset_0_1px_0_rgba(255,255,255,0.10)] hover:bg-[#2A2A2F]",
-  secondary:
-    "border border-line-strong bg-panel text-ink shadow-[0_1px_2px_rgba(14,14,16,0.04)] hover:border-[#C8C7BF] hover:bg-[#FBFBF9]",
-  ghost: "text-muted hover:text-ink",
+  primary: "bg-ink text-panel hover:bg-[#2B261E]",
+  secondary: "border border-line-strong bg-panel text-ink hover:border-[#BCAE92] hover:bg-[#FFFEFA]",
+  onDark: "bg-board-text text-ink hover:bg-white",
+  onDarkGhost: "border border-board-text/25 text-board-text hover:border-board-text/50 hover:bg-white/[0.04]",
 };
 
 const BTN_SIZE: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-[14px]",
-  md: "h-10 px-4 text-[14px]",
+  sm: "h-9 px-4 text-[14px]",
+  md: "h-10 px-5 text-[14px]",
   lg: "h-12 px-6 text-[15px]",
 };
 
@@ -151,15 +174,16 @@ export function Button({
 
 /* ------------------------------------------------------------------ badges and marks */
 
-export type Tone = "money" | "lie" | "accent" | "fee" | "agent" | "neutral";
+export type Tone = "money" | "lie" | "accent" | "fee" | "agent" | "neutral" | "hammer";
 
 const TONE: Record<Tone, string> = {
   money: "bg-money-soft text-money",
   lie: "bg-lie-soft text-lie",
-  accent: "bg-accent-soft text-accent",
+  accent: "bg-accent-soft text-[#7A5A2B]",
   fee: "bg-fee-soft text-fee",
   agent: "bg-agent-soft text-agent",
   neutral: "bg-raised text-muted",
+  hammer: "bg-ink text-board-amber",
 };
 
 export function Badge({ tone, children, className }: { tone: Tone; children: ReactNode; className?: string }) {
@@ -180,44 +204,41 @@ export function Spinner({ className }: { className?: string }) {
   return <LoaderCircle aria-hidden className={cx("size-3.5 animate-spin", className)} />;
 }
 
-/** The brand LIVE dot: the only element on the page that pulses continuously. */
-export function LiveDot({ className }: { className?: string }) {
+/** The small gold LIVE dot: the only element on the page that pulses continuously. */
+export function LiveDot({ className, color = "bg-accent" }: { className?: string; color?: string }) {
   return (
     <span className={cx("relative inline-flex size-2 shrink-0", className)} aria-hidden>
-      <span className="absolute inset-0 animate-ping rounded-full bg-accent opacity-40" style={{ animationDuration: "1.8s" }} />
-      <span className="relative inline-flex size-2 rounded-full bg-accent" />
+      <span className={cx("absolute inset-0 animate-ping rounded-full opacity-50", color)} style={{ animationDuration: "1.8s" }} />
+      <span className={cx("relative inline-flex size-2 rounded-full", color)} />
     </span>
   );
 }
 
-/** 22px ink rounded square with the bid line and the orange dot. */
-export function LogoMark({ size = 22, className }: { size?: number; className?: string }) {
+/** The mark: a small gavel in an ink circle. */
+export function LogoMark({ size = 28, className }: { size?: number; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden className={className}>
-      <rect x="0.5" y="0.5" width="31" height="31" rx="8" fill="#0E0E10" />
-      <path
-        d="M7 21.5 11.5 15l4 3.5L20 11h3.2"
-        fill="none"
-        stroke="#FFFFFF"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="25" cy="11" r="2.9" fill="#F2561D" />
-    </svg>
-  );
-}
-
-export function Wordmark({ className }: { className?: string }) {
-  return (
-    <span className={cx("inline-flex items-center gap-2", className)}>
-      <LogoMark size={22} />
-      <span className="text-[16px] font-semibold tracking-[-0.015em] text-ink">Bidwire</span>
+    <span
+      aria-hidden
+      className={cx("grid shrink-0 place-items-center rounded-full bg-ink text-board-text", className)}
+      style={{ width: size, height: size }}
+    >
+      <Gavel style={{ width: size * 0.5, height: size * 0.5 }} strokeWidth={2} />
     </span>
   );
 }
 
-/* ------------------------------------------------------------------ merchant avatar */
+export function Wordmark({ className, size = 26 }: { className?: string; size?: number }) {
+  return (
+    <span className={cx("inline-flex items-center gap-2.5", className)}>
+      <LogoMark size={Math.round(size * 1.08)} />
+      <span className="font-serif font-normal leading-none tracking-[-0.01em] text-ink" style={{ fontSize: size }}>
+        Bidwire
+      </span>
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ paddle chip */
 
 function parseHex(hex: string): [number, number, number] | null {
   let h = (hex ?? "").trim().replace(/^#/, "");
@@ -232,32 +253,31 @@ function mix(a: [number, number, number], b: [number, number, number], t: number
   return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
-const WHITE: [number, number, number] = [255, 255, 255];
-const INK: [number, number, number] = [14, 14, 16];
+const PAPER: [number, number, number] = [255, 253, 247];
+const INK: [number, number, number] = [22, 19, 14];
 
-/** Merchant colors were picked for a dark UI; tint them light and deepen the text for contrast. */
-export function tint(color: string): { bg: string; fg: string } {
+/** Merchant colors were picked for a dark UI; tint them for paper and deepen the text. */
+export function tint(color: string): { bg: string; fg: string; rule: string } {
   const rgb = parseHex(color);
-  if (!rgb) return { bg: "#F4F4F1", fg: "#5D5D66" };
-  return { bg: mix(rgb, WHITE, 0.84), fg: mix(rgb, INK, 0.5) };
+  if (!rgb) return { bg: "#EFE8D9", fg: "#6E6658", rule: "#CFC3AA" };
+  return { bg: mix(rgb, PAPER, 0.82), fg: mix(rgb, INK, 0.55), rule: mix(rgb, PAPER, 0.45) };
 }
 
-export function initials(name: string): string {
-  const words = (name ?? "")
-    .replace(/[^\p{L}\p{N}\s]/gu, " ")
-    .split(/\s+/)
-    .filter(Boolean);
-  if (!words.length) return "?";
-  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
-  return (words[0][0] + words[1][0]).toUpperCase();
-}
-
-export function MerchantAvatar({ name, color, size = 28, className }: { name: string; color: string; size?: number; className?: string }) {
+/** A rounded tag with the merchant's 3-digit paddle number, in the merchant's color. */
+export function PaddleChip({ n, color, className, size = "md" }: { n: number; color: string; className?: string; size?: "sm" | "md" }) {
   const t = tint(color);
-  const style: CSSProperties = { width: size, height: size, background: t.bg, color: t.fg, fontSize: size >= 28 ? 11 : 9.5 };
+  const style: CSSProperties = { background: t.bg, color: t.fg, boxShadow: `inset 0 0 0 1px ${t.rule}` };
   return (
-    <span className={cx("grid shrink-0 place-items-center rounded-full font-bold tracking-[0.02em]", className)} style={style} aria-hidden>
-      {initials(name)}
+    <span
+      className={cx(
+        "inline-grid shrink-0 place-items-center rounded-[6px] font-semibold tabular-nums tracking-[0.02em]",
+        size === "sm" ? "h-5 min-w-[34px] px-1 text-[10.5px]" : "h-7 min-w-[42px] px-1.5 text-[12px]",
+        className,
+      )}
+      style={style}
+      aria-label={`Paddle ${n}`}
+    >
+      {n}
     </span>
   );
 }
@@ -331,7 +351,7 @@ export function CopyChip({ text, label = "Copy", className }: { text: string; la
         }
       }}
       className={cx(
-        "inline-flex h-8 items-center gap-1.5 rounded-[8px] border border-line bg-panel px-2.5 text-[12px] font-semibold text-muted transition-colors hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/25",
+        "inline-flex h-8 items-center gap-1.5 rounded-full border border-line bg-panel px-3 text-[12px] font-medium text-muted transition-colors hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-accent/35",
         className,
       )}
       aria-label={done ? "Copied" : label}
@@ -373,16 +393,10 @@ export function highlightLine(line: string): ReactNode[] {
             {m[1]}
           </span>,
         );
-    } else if (m[3] !== undefined)
+    } else if (m[3] !== undefined || m[4] !== undefined)
       out.push(
         <span key={k} className="text-fee">
-          {m[3]}
-        </span>,
-      );
-    else if (m[4] !== undefined)
-      out.push(
-        <span key={k} className="text-fee">
-          {m[4]}
+          {m[3] ?? m[4]}
         </span>,
       );
     else if (m[5] !== undefined)
@@ -415,7 +429,7 @@ export function CodeLines({ code, className }: { code: string; className?: strin
 /** Small inline code token, e.g. `find_offers`. */
 export function Tool({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <code className={cx("rounded-[6px] border border-line bg-raised px-1.5 py-0.5 font-mono text-[0.86em] font-medium text-ink", className)}>
+    <code className={cx("rounded-[4px] border border-line bg-raised/70 px-1.5 py-px font-mono text-[0.84em] font-medium text-ink", className)}>
       {children}
     </code>
   );
