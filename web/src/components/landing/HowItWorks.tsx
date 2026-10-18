@@ -47,7 +47,7 @@ function FindVisual({ a, seconds, lot }: { a: Auction | null; seconds: number; l
       <span className="inline-flex h-8 items-center gap-2 rounded-full bg-board px-3.5 text-board-text">
         <LiveDot color="bg-board-amber" />
         <SmallCaps className="text-[10.5px] text-board-text/90">
-          {lot ? lotLabel(lot) : "Lot"} opens · {seconds}s
+          {lot ? lotLabel(lot) : "A lot"} opens for {seconds} seconds
         </SmallCaps>
       </span>
     </div>
