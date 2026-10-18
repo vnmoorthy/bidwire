@@ -45,7 +45,7 @@ await sleep(1500);
 // A. merchant opens a store
 if (await merchant.locator("#store-name").count()) {
   await merchant.fill("#store-name", "QA Gadget Hut");
-  await merchant.getByRole("button", { name: /open my store/i }).click();
+  await merchant.getByRole("button", { name: /register and take a paddle|open my store/i }).click();
 }
 await merchant.getByText(/your storefront/i).waitFor({ timeout: 10000 });
 await sleep(800);
@@ -61,13 +61,13 @@ await shot(desk, "exchange-bidding");
 
 // D. merchant bids, lying about the price
 try {
-  await merchant.getByRole("button", { name: /bid on this/i }).first().click({ timeout: 8000 });
+  await merchant.getByRole("button", { name: /raise paddle|bid on this/i }).first().click({ timeout: 8000 });
   await sleep(500);
   await shot(merchant, "bid-sheet");
   for (let i = 0; i < 25; i++) await merchant.getByRole("button", { name: /lower price by \$1/i }).click();
   await sleep(300);
   await shot(merchant, "bid-sheet-lying");
-  await merchant.getByRole("button", { name: /place bid/i }).click();
+  await merchant.getByRole("button", { name: /raise paddle at|place bid/i }).click();
   await sleep(2500);
   await shot(merchant, "bid-status");
 } catch (e) {
