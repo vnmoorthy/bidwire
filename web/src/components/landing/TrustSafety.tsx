@@ -1,7 +1,7 @@
 import { BookOpenCheck, MessageSquareText, ScrollText, ShieldCheck, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { int, money } from "@/lib/format";
+import { int, money, plural } from "@/lib/format";
 import { useLive } from "@/lib/store";
 import { Arrow, Container, Reveal, SectionHeading } from "./ui";
 
@@ -46,7 +46,8 @@ export function TrustSafety() {
       body: "Every sale and commission posts as balanced entries that sum to zero, so wallets, revenue and fees reconcile to the cent.",
       fact: hydrated ? (
         <>
-          <b className="font-semibold tabular-nums text-ink">{int(stats.orders)}</b> sales settled · {money(stats.platform_fees_cents)} commission
+          <b className="font-semibold tabular-nums text-ink">{int(stats.orders)}</b> {stats.orders === 1 ? "sale" : "sales"} settled ·{" "}
+          {money(stats.platform_fees_cents)} commission
         </>
       ) : null,
       link: { to: "/ledger", label: "Open the ledger" },
@@ -57,7 +58,8 @@ export function TrustSafety() {
       body: "Each MCP call is logged with the agent, its arguments, the result and the latency, so any purchase can be explained after the fact.",
       fact: hydrated ? (
         <>
-          <b className="font-semibold tabular-nums text-ink">{int(stats.tool_calls)}</b> tool calls from {int(stats.agents_seen)} agents
+          <b className="font-semibold tabular-nums text-ink">{int(stats.tool_calls)}</b> tool {stats.tool_calls === 1 ? "call" : "calls"} from{" "}
+          {plural(stats.agents_seen, "agent")}
         </>
       ) : null,
     },
