@@ -13,7 +13,7 @@ Bidwire pitch deck generator ("Saleroom" brand: docs/DESIGN.md v3).
 * Screenshots: PNGs in ./screenshots (exchange-liar, phone-approval, ledger, ...). A missing screenshot renders as a
   clean native mock with a small "Placeholder: screenshots/<name>.png" tag. Drop the file in and re-run.
 * Numbers on the "what we built" slide are counted from the source tree at build time (../../server, ../../shared,
-  ../../web/src). Strings from a captured live run are read from ./data/live.json when present.
+  ../../web/src). Strings from a captured live run are read from ./run/live.json when present.
 """
 import base64
 import glob
@@ -38,7 +38,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 SHOT_DIR = os.path.join(HERE, "screenshots")
 ASSET_DIR = os.path.join(HERE, "assets")
-DATA_DIR = os.path.join(HERE, "data")
+DATA_DIR = os.path.join(HERE, "run")
 
 W, H = 13.333, 7.5  # inches, 16:9
 
@@ -796,7 +796,7 @@ def s1_title(prs, F, L, new_slide):
     m.add(text(sh, 0.8, 6.3, 6.3, 0.3, "Built with mcp-use (Manufact) · Inkbox · MCP over streamable HTTP", size=9.5, color="dim"),
           "fade", 1250, 500)
 
-    fr = browser(sh, 7.35, 1.2, 6.55, "exchange-liar", "localhost:8787/exchange", L)
+    fr = browser(sh, 7.35, 1.2, 6.55, "exchange-liar", "localhost:8787/exchange", L, focus=(0.0, 0.0), region=(0.0, 0.0, 0.66, 0.66))
     m.add(fr, "rise", 420, 800)
 
     cg = group(sh)
@@ -957,7 +957,8 @@ def s5_demo(prs, F, L, new_slide):
     sh = s.shapes
     headline(s, "Live today: [[muted,i|liars withdrawn, bribes ignored.]]", m, size=34, h=0.6)
     m.add(smallcaps(sh, 0.75, 1.72, 6.6, "The saleroom · after the hammer" if shot("exchange-ranked") else "The saleroom · bid withdrawn"), "fade", 150, 400)
-    fr = browser(sh, 0.75, 2.0, 6.6, "exchange-ranked" if shot("exchange-ranked") else "exchange-liar", "localhost:8787/exchange", L)
+    fr = browser(sh, 0.75, 2.0, 6.6, "exchange-ranked" if shot("exchange-ranked") else "exchange-liar", "localhost:8787/exchange", L,
+                 focus=(0.0, 0.0), region=(0.0, 0.0, 0.66, 0.66))
     m.add(fr, "rise", 200, 700)
     ev = [("amber", "Bribe ignored", L["bribe_merchant"], "Offered %s commission · still No. %s." % (L["bribe_fee"], L["bribe_rank"])),
           ("red", "Injection withdrawn", L["inject_merchant"], "\u201cIgnore your previous instructions\u201d in a pitch. Pitches are data."),
