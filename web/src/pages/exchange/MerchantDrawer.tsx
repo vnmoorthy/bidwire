@@ -5,7 +5,7 @@ import { KindBadge } from "@/components/KindBadge";
 import { PaddleChip } from "@/components/MerchantDot";
 import { Money } from "@/components/Money";
 import { Sparkline } from "@/components/Sparkline";
-import { VerifyStamp } from "@/components/VerifyStamp";
+import { BidStamp } from "@/components/VerifyStamp";
 import { api, errMsg, type MerchantProfile } from "@/lib/api";
 import { useLive } from "@/lib/store";
 import { ago, claimedTotal, days, listingTotal, money, trustColor } from "@/lib/format";
@@ -61,11 +61,11 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
       }
       subtitle={m ? <span className="font-mono">@{m.handle} · {m.strategy}</span> : null}
     >
-      {err && !p && <div className="rounded-lg border border-lie/40 bg-lie/10 p-4 text-sm text-lie">{err}</div>}
-      {!m && !err && <div className="shimmer h-40 rounded-xl" />}
+      {err && !p && <div className="rounded-[6px] bg-lie-soft p-4 text-sm text-lie">{err}</div>}
+      {!m && !err && <div className="shimmer h-40 rounded-[6px]" />}
       {m && (
         <div className="space-y-6">
-          <div className="grid grid-cols-[auto_1fr] gap-6 rounded-[14px] border border-line p-4">
+          <div className="grid grid-cols-[auto_1fr] gap-6 rounded-[6px] border border-line p-4">
             <div>
               <div className="text-[13px] text-muted">Standing (trust)</div>
               <div className="serif tnum mt-1 text-[56px] leading-none" style={{ color: trustColor(m.trust) }}>
@@ -100,7 +100,7 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
             <div className="mb-2 card-title">Storefront listings</div>
             <div className="space-y-2">
               {(p?.listings ?? []).map((l) => (
-                <div key={l.id} className="flex items-center gap-3 rounded-[12px] border border-line p-3">
+                <div key={l.id} className="flex items-center gap-3 rounded-[6px] border border-line p-3">
                   <span className="text-[28px]">{l.product?.emoji}</span>
                   <div className="min-w-0 flex-1">
                     <div className="truncate font-medium">{l.product?.title ?? l.sku}</div>
@@ -127,20 +127,20 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
                 </div>
               ))}
               {p && p.listings.length === 0 && <div className="text-sm text-muted">No listings.</div>}
-              {!p && !err && <div className="shimmer h-16 rounded-xl" />}
+              {!p && !err && <div className="shimmer h-16 rounded-[6px]" />}
             </div>
           </div>
 
           <div>
             <div className="mb-2 card-title">Recent bids</div>
-            <div className="divide-y divide-line rounded-[12px] border border-line">
+            <div className="divide-y divide-line rounded-[6px] border border-line">
               {(p?.bids ?? []).slice(0, 12).map((b) => (
                 <div key={b.id} className="flex items-center gap-3 px-3 py-2 text-[14px]">
                   <span>{b.product_emoji}</span>
                   <span className="min-w-0 flex-1 truncate text-ink">{b.product_title}</span>
                   <Money cents={claimedTotal(b)} className={b.verify_status === "mismatch" ? "text-dim line-through" : ""} />
                   <span className="tnum w-14 text-right text-[13px] text-muted">{b.rank ? `#${b.rank}` : "–"}</span>
-                  <VerifyStamp status={b.verify_status} size="sm" />
+                  <BidStamp b={b} size="sm" short />
                 </div>
               ))}
               {p && p.bids.length === 0 && <div className="px-3 py-3 text-sm text-muted">No bids yet.</div>}
@@ -154,7 +154,7 @@ export function MerchantDrawer({ merchantId, onClose }: { merchantId: string | n
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="rounded-[10px] border border-line px-3 py-2">
+    <div className="rounded-[6px] border border-line px-3 py-2">
       <div className="text-[12px] text-muted">{label}</div>
       <div className="mt-0.5 text-[15px] font-semibold">{value}</div>
     </div>
