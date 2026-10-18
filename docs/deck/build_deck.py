@@ -150,6 +150,8 @@ def live_data():
         "lie1": "Claimed $34.99 delivered · the checkout says $63.99 (+$29.00 “Service & handling fee”)",
         "hammer": "$319.99", "hammer_merchant": "Last Unit Labs", "hammer_product": "Sennheiser Momentum 4 Wireless",
         "lie2_merchant": "Specsmith", "lie2": "Claims anc but the product page does not list it",
+        "excluded_desc": "a hidden fee and a fake ANC claim",
+        "inject_merchant": "InjectCo", "inject_why": "Pitch contained instructions aimed at the buying agent",
         "bribe_merchant": "MegaMart Ads Co.", "bribe_why": "Offered $35.00/sale to the exchange; fees never buy rank, so it stays #5",
         "soldout_next": "the next best verified offer",
     }
@@ -726,9 +728,10 @@ NOTES = {
     1: "Hi, this is Bidwire: the auction house for AI agents. Here's the thing. When an agent shops, nobody sees an ad. "
        "No banner, no sponsored slot, no clever copy. So the only way a merchant can win an agent's purchase is with an offer "
        "that's actually true. Bidwire is the saleroom where that happens, live, over MCP.",
-    2: "Agents can already shop for us. But the commerce stack they land on was built to manipulate humans: sponsored slots, "
-       "SEO games, drip pricing where $34.99 on the page becomes $63.99 at checkout, and specs nobody checks. Agents read those "
-       "pages and get gamed. Merchants have the opposite problem: there is no ad slot inside a tool call, so they can't reach agents at all.",
+    2: "Agents can already shop for us. But the commerce stack they land on was built to manipulate humans: sponsored slots and SEO, "
+       "drip pricing where $34.99 on the page becomes $63.99 at checkout, specs nobody checks, and now prompt injection: a pitch that "
+       "says 'ignore your previous instructions'. Agents read those pages and get gamed. Merchants have the opposite problem: there is "
+       "no ad slot inside a tool call, so they can't reach agents at all.",
     3: "Our insight: for an agent, the ad IS the offer. So instead of buying attention, merchants raise a paddle with claims a machine "
        "can check: delivered price, delivery time, features. We verify every claim, rank on merit with public weights, and commission "
        "can't buy rank. The YC prompt was to rebuild a tool built for humans: Google became Exa for search. This is Google Ads, rebuilt "
@@ -737,18 +740,19 @@ NOTES = {
        "bots, people in this room and merchant agents raise paddles. We fetch each merchant's real product page and checkout, run five "
        "checks, withdraw the liars, and rank on merit. Going once, going twice, sold: buy_offer pays from a prepaid wallet, and over the "
        "limit the human gets a text and replies YES. Everything settles in a double-entry ledger.",
-    5: "This ran live today. One lot: seven paddles, five verified, two withdrawn for misrepresentation. One hid a service fee at "
-       "checkout, one claimed noise cancelling on headphones that don't have it. A merchant offered thirty-five dollars commission and "
-       "stayed at number five. A nine-day shipper got ranked down for missing a five-day deadline, and the $319.99 hammer price went to "
-       "the human's phone for a YES. If a merchant sells out mid-purchase, the agent gets the next best offer and recovers on its own.",
+    5: "This ran live today. One lot: {bids} paddles, {verified} verified, {excluded} withdrawn: {excluded_desc}. A merchant offered "
+       "{bribe_fee} commission and stayed at number {bribe_rank}. A nine-day shipper got ranked down for missing a five-day deadline, and "
+       "the {approval_amount} hammer price was over the {approval_limit} limit, so it went to the human's phone for a YES. If a merchant "
+       "sells out mid-purchase, the agent gets the next best offer and recovers on its own.",
     6: "We built Bidwire as an MCP server on mcp-use from Manufact: twelve tools, three resources, two prompts. The happy path is two "
        "calls: find_offers, then buy_offer. Errors come back structured, with a hint that tells the agent what to call next. Buys take "
        "idempotency keys. The first call needs zero config: no key makes you a guest agent. And the same server works in Claude Code, "
        "Claude Desktop, ChatGPT, Codex and Cursor.",
-    7: "Trust is the product, so it's enforced in code. Every paddle gets five checks against the merchant's own page and checkout; a "
-       "liar is withdrawn and loses trust for every agent. The ranking weights are public: price forty, must-haves twenty-five, delivery "
-       "fifteen, trust fifteen, returns five, commission zero. Spending limits come from the human, every transaction in the settlement "
-       "ledger sums to zero, and every tool call is logged.",
+    7: "Trust is the product, so it's enforced in code. Every paddle gets six checks against the merchant's own page and checkout, "
+       "including pitch safety: a pitch is data, never instructions, so 'ignore your previous instructions' gets the bid withdrawn. A liar "
+       "loses trust for every agent. The ranking weights are public: price forty, must-haves twenty-five, delivery fifteen, trust fifteen, "
+       "returns five, commission zero. Spending limits come from the human, every transaction in the settlement ledger sums to zero, and "
+       "every tool call is logged.",
     8: "Business model: merchants pay commission only at the hammer, when a verified sale happens. Pay-per-sale, no impressions, no "
        "clicks, and that commission is our take. The wedge is DTC merchants and agent shopping apps; the long game is the trust layer "
        "for agent commerce. Why now: eighteen months ago there was no MCP, no ACP, and no agent had a card. This year agents got wallets "
@@ -761,6 +765,13 @@ NOTES = {
         "bidding on. You can't bribe an agent. The code is on GitHub at vnmoorthy slash bidwire. The saleroom is live right now: "
         "connect your agent and buy something, or raise a paddle from your phone and try to bribe it. Thank you.",
 }
+
+
+def note(n, L):
+    try:
+        return NOTES[n].format(**L)
+    except (KeyError, IndexError, ValueError):
+        return NOTES[n]
 
 
 def s1_title(prs, F, L, new_slide):
@@ -814,10 +825,10 @@ def s2_problem(prs, F, L, new_slide):
     sh = s.shapes
     headline(s, "Agents can shop now. [[muted,i|The web was built to manipulate humans.]]", m, size=36, h=1.05)
     m.add(smallcaps(sh, 0.75, 2.36, 7, "What the web does to shoppers"), "fade", 200, 400)
-    cards = [("Ad", "Sponsored slots", "Placement goes to whoever pays the most."),
-             ("SEO", "Ranking games", "Rank goes to whoever games the algorithm best."),
+    cards = [("Ad", "Sponsored slots & SEO", "Placement goes to whoever pays, or games, the most."),
              ("+$29", "Drip pricing", "$34.99 on the page. $63.99 at checkout."),
-             ("ANC?", "Fake specs", "“Noise cancelling” on headphones that don't have it.")]
+             ("ANC?", "Fake specs", "“Noise cancelling” on headphones that don't have it."),
+             ("SYS:", "Prompt injection", "“Ignore your previous instructions”, hidden in a product pitch.")]
     for i, (ic, t, d) in enumerate(cards):
         x = 0.75 + (i % 2) * 3.72
         y = 2.68 + (i // 2) * 1.8
@@ -911,7 +922,7 @@ def s4_flow(prs, F, L, new_slide):
              ("amber", "Spending policy", False, "Over the limit? Inkbox texts the human: “Reply YES 1234”."),
              ("green", "Settlement ledger", False, "Double-entry. Every transaction sums to $0. Receipt sent.")]
     cw, gap, x0, y0, chh = 1.515, 0.205, 0.75, 2.0, 2.35
-    tags = {2: ("red", "Withdrawn", "Misrepresentation: excluded, trust −12 for every agent."),
+    tags = {2: ("red", "Withdrawn", "Misrepresentation or prompt injection. Trust −12 for every agent."),
             3: ("amber", "Bribe ignored", "Commission only breaks near-ties."),
             4: ("blue", "Sold out", "out_of_stock + next best offer. The agent recovers."),
             5: ("green", "Approved", "The human replies YES 1234.")}
@@ -952,16 +963,17 @@ def s5_demo(prs, F, L, new_slide):
     m.add(smallcaps(sh, 0.75, 1.72, 6.6, "The saleroom · bid withdrawn"), "fade", 150, 400)
     fr = browser(sh, 0.75, 2.0, 6.6, "exchange-liar", "localhost:8787/exchange", L)
     m.add(fr, "rise", 200, 700)
-    ev = [("amber", "Bribe ignored", L["bribe_merchant"], "Offered %s commission · still No. %s. Fees never buy rank." % (L["bribe_fee"], L["bribe_rank"])),
-          ("blue", "Sold out, recovered", "buy_offer", "out_of_stock + next_offer: the agent buys %s on its own." % L["soldout_next"])]
+    ev = [("amber", "Bribe ignored", L["bribe_merchant"], "Offered %s commission · still No. %s." % (L["bribe_fee"], L["bribe_rank"])),
+          ("red", "Injection withdrawn", L["inject_merchant"], "\u201cIgnore your previous instructions\u201d in a pitch. Pitches are data."),
+          ("blue", "Sold out", "buy_offer", "out_of_stock + next_offer: the agent recovers on its own.")]
+    ew = (6.6 - 0.24) / 3.0
     for i, (col, tag, who, d) in enumerate(ev):
-        x = 0.75 + i * 3.36
-        g = card(sh, x, 6.1, 3.24, 0.82)
-        bw = est_w(tag, 8.5, False, True) + 0.24
-        box(g.shapes, x + 0.15, 6.2, bw, 0.24, fill=soft(col), r=0.12)
-        text(g.shapes, x + 0.15, 6.2, bw, 0.24, tag, size=8.5, bold=True, color=col, align="c", anchor="m")
-        text(g.shapes, x + 0.25 + bw, 6.2, 3.24 - bw - 0.35, 0.24, who, size=8.5, bold=True, color="muted", font=MONO if who == "buy_offer" else SANS, anchor="m")
-        text(g.shapes, x + 0.15, 6.48, 2.98, 0.42, d, size=9, color="text", line=1.03)
+        x = 0.75 + i * (ew + 0.12)
+        g = card(sh, x, 6.1, ew, 0.82)
+        bw = est_w(tag, 8, False, True) + 0.2
+        box(g.shapes, x + 0.12, 6.19, bw, 0.23, fill=soft(col), r=0.115)
+        text(g.shapes, x + 0.12, 6.19, bw, 0.23, tag, size=8, bold=True, color=col, align="c", anchor="m")
+        text(g.shapes, x + 0.12, 6.46, ew - 0.22, 0.44, "[[b%s|%s:]] %s" % (",mono" if who == "buy_offer" else "", who, d), size=8.5, color="text", line=1.03)
         m.add(g, "rise", 950 + i * 130, 450)
     m.add(smallcaps(sh, 7.62, 1.72, 2.6, "Approver phone · SMS"), "fade", 300, 400)
     pg, pw = phone(sh, 7.62, 2.0, 4.92, "phone-approval", L)
@@ -969,11 +981,11 @@ def s5_demo(prs, F, L, new_slide):
     sx = 7.62 + pw + 0.28
     kpi_strip(sh, sx, 2.0, 12.583 - sx, 4.92,
               [("%s → %s" % (L["bids"], L["verified"]), "paddles raised → verified", "board_text"),
-               (str(L["excluded"]), "withdrawn: a hidden fee and a fake ANC claim", "board_text"),
+               (str(L["excluded"]), "withdrawn: " + L["excluded_desc"], "board_text"),
                ("No. %s" % L["bribe_rank"], "where the %s commission bribe stayed" % L["bribe_fee"], "board_amber"),
                (L["approval_amount"], "over the %s limit: the human texted YES" % L["approval_limit"], "board_text")],
               m, 1100, vertical=True, vsize=26, on_board=True)
-    s.notes_slide.notes_text_frame.text = NOTES[5]
+    s.notes_slide.notes_text_frame.text = note(5, L)
     apply_motion(s, m, "fade")
 
 
@@ -1032,7 +1044,7 @@ def s6_agents(prs, F, L, new_slide):
     feats = [("Zero-config first call", "No key = guest agent. Claude, ChatGPT and Codex auto-map to demo agents."),
              ("Errors with hints", "{ error, message, hint } tells the agent what to call next."),
              ("Idempotency keys", "Retries never double-buy. Same offer twice returns the same order."),
-             ("Per-caller keys", "Bearer bw_buy_… for shoppers, bw_mer_… for merchant agents."),
+             ("Pitches are data", "Merchant pitches never reach the agent as instructions. Injections are withdrawn."),
              ("Waits, doesn't poll", "find_offers waits for the lot; buy_offer waits for the human's YES."),
              ("Every client", "Claude Code · Claude Desktop · ChatGPT · Codex · Cursor")]
     tw = (rw - 0.24) / 3.0
@@ -1060,9 +1072,11 @@ def s7_trust(prs, F, L, new_slide):
               "Checkout total": "claimed delivered price ≥ the real checkout total",
               "Delivery time": "claimed days ≥ the store's real ship days",
               "Features": "every claimed feature is listed on the page",
-              "In stock": "available on the page and at checkout"}
-    for i, name in enumerate(F["checks"][:5]):
-        y = 2.8 + i * 0.62
+              "In stock": "available on the page and at checkout",
+              "Pitch safety": "the pitch is data: instructions aimed at the agent are withdrawn"}
+    pitch = 0.62 if len(F["checks"]) <= 5 else 0.54
+    for i, name in enumerate(F["checks"][:6]):
+        y = 2.76 + i * pitch
         g = group(sh)
         box(g.shapes, 1.0, y + 0.08, 0.4, 0.4, fill="green_soft", kind=MSO_SHAPE.OVAL)
         text(g.shapes, 1.0, y + 0.08, 0.4, 0.4, "✓", size=12, bold=True, color="green", align="c", anchor="m")
@@ -1070,9 +1084,9 @@ def s7_trust(prs, F, L, new_slide):
         text(g.shapes, 1.58, y + 0.31, 4.6, 0.26, detail.get(name, ""), size=10.5, color="muted", anchor="m")
         m.add(g, "slide", 450 + i * 120, 400)
     wg = group(sh)
-    box(wg.shapes, 1.0, 6.08, 5.1, 0.58, fill="red_soft", r=CARD_R)
-    box(wg.shapes, 1.0, 6.08, 0.05, 0.58, fill="red", r=0)
-    text(wg.shapes, 1.2, 6.08, 4.85, 0.58, "[[red,b|Fail checks 1–4: withdrawn, misrepresentation.]] Trust −12, visible to every agent.", size=10.5,
+    box(wg.shapes, 1.0, 6.14, 5.1, 0.54, fill="red_soft", r=CARD_R)
+    box(wg.shapes, 1.0, 6.14, 0.05, 0.54, fill="red", r=0)
+    text(wg.shapes, 1.2, 6.14, 4.85, 0.54, "[[red,b|Fail any check but stock: withdrawn.]] Trust −12, visible to every agent.", size=10.5,
          color="text", anchor="m")
     m.add(wg, "rise", 1150, 400)
     rp = card(sh, 6.6, 2.3, 5.98, 1.7)
@@ -1333,7 +1347,7 @@ def build_html(F, L, out):
         return str(v).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
     html = re.sub(r"\{\{LIVE:([a-z0-9_]+)\}\}", lambda mo: esc(L.get(mo.group(1), "")), html)
-    html = html.replace("{{NOTES_JSON}}", json.dumps({str(k): v for k, v in NOTES.items()}).replace("</", "<\\/"))
+    html = html.replace("{{NOTES_JSON}}", json.dumps({str(k): note(k, L) for k in NOTES}).replace("</", "<\\/"))
     with open(out, "w", encoding="utf-8") as fh:
         fh.write(html)
     left = re.findall(r"\{\{[A-Z]+:[a-z0-9_-]+\}\}", html)
