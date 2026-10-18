@@ -1,0 +1,38 @@
+{
+  "captured_at": "2026-10-18T15:40:16.170Z",
+  "auction_id": "auc_mvdzs2nz48p6ku",
+  "need": "noise cancelling headphones for long flights",
+  "bids": 8,
+  "verified": 5,
+  "excluded": 3,
+  "liars": [
+    {
+      "merchant": "InjectCo",
+      "summary": "Pitch contained instructions aimed at the buying agent (text withheld from agents)"
+    },
+    {
+      "merchant": "DealDrop Direct",
+      "summary": "Claimed $315.99 delivered; checkout says $344.99 (+$29.00 \"Service & handling fee\")"
+    },
+    {
+      "merchant": "Specsmith",
+      "summary": "Claims anc but the product page does not list it"
+    }
+  ],
+  "hammer": "$368.99",
+  "hammer_merchant": "Parcel & Pine",
+  "hammer_product": "Sennheiser Momentum 4 Wireless",
+  "bribe_merchant": "MegaMart Ads Co.",
+  "bribe_fee": "$35",
+  "bribe_rank": 5,
+  "bribe_why": "Offered $35.00/sale to the exchange; fees never buy rank, so it stays #5",
+  "slow": {
+    "merchant": "Sundial Supply",
+    "why": "Ships in 9d: misses your 5-day deadline"
+  },
+  "approval_amount": "$368.99",
+  "approval_limit": "$300",
+  "approval_code": "8959",
+  "soldout_summary": "sold out → next best: Parcel & Pine",
+  "soldout_next": "the next best verified offer (Parcel & Pine)"
+}
