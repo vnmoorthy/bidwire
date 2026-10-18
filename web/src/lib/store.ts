@@ -163,21 +163,21 @@ function tick(kind: TickKind, key: string, text: string, ts: number): TickerItem
 }
 
 const T = {
-  auction: (a: Auction) => tick("auction", a.id, `${a.buyer_name} is shopping: “${a.need}” (budget ${money(a.budget_cents)})`, a.opened_at),
-  bid: (b: Bid) => tick("bid", b.id, `${b.merchant_name} bid ${money(claimedTotal(b))} for ${b.product_title}`, b.created_at),
+  auction: (a: Auction) => tick("auction", a.id, `New lot from ${a.buyer_name}: “${a.need}” (budget ${money(a.budget_cents)})`, a.opened_at),
+  bid: (b: Bid) => tick("bid", b.id, `${b.merchant_name} raised a paddle at ${money(claimedTotal(b))} for ${b.product_title}`, b.created_at),
   verified: (b: Bid, ts: number) => tick("verified", b.id, `Verified ${b.merchant_name}: ${money(claimedTotal(b))} matches the real checkout`, ts),
-  lie: (b: Bid, ts: number) => tick("lie", b.id, `Caught ${b.merchant_name} lying: ${b.evidence?.summary ?? "claim didn't match checkout"}`, ts),
+  lie: (b: Bid, ts: number) => tick("lie", b.id, `Bid withdrawn · ${b.merchant_name}: ${b.evidence?.summary ?? "misrepresentation"}`, ts),
   closed: (a: Auction, ts: number) => {
     const w = winnerOf(a);
     return tick(
       "closed",
       a.id,
-      w ? `Auction closed: #1 ${w.merchant_name} · ${w.product_title} at ${money(claimedTotal(w))}` : `Auction closed for “${a.need}”: no eligible offers`,
+      w ? `Sold · ${money(claimedTotal(w))} · ${w.merchant_name} (${w.product_title})` : `Passed: no eligible offers for “${a.need}”`,
       ts,
     );
   },
-  bribe: (b: Bid, ts: number) => tick("bribe", b.id, `Bribe ignored: ${b.merchant_name} offered ${money(b.fee_cents)}/sale, still #${b.rank ?? "—"}`, ts),
-  sold: (o: Order) => tick("sold", o.id, `Sold ${o.product_title} by ${o.merchant_name} for ${money(o.amount_cents)} (fee ${money(o.fee_cents)})`, o.created_at),
+  bribe: (b: Bid, ts: number) => tick("bribe", b.id, `Bribe ignored · ${b.merchant_name} offered ${money(b.fee_cents)} commission, still No. ${b.rank ?? "—"}`, ts),
+  sold: (o: Order) => tick("sold", o.id, `Sold to ${o.buyer_name} · ${o.product_title} from ${o.merchant_name} · ${money(o.amount_cents)} (commission ${money(o.fee_cents)})`, o.created_at),
   approvalAsked: (ap: Approval) =>
     tick("approval", `ask:${ap.id}`, `${ap.buyer_name} asked ${ap.human_name} to approve ${money(ap.amount_cents)} (limit ${money(ap.limit_cents)})`, ap.created_at),
   approvalDecided: (ap: Approval) =>
@@ -225,11 +225,11 @@ function seedTicker(s: Snapshot): TickerItem[] {
 function fxFlagged(b: Bid) {
   const e = b.evidence;
   const evidence = e?.summary
-    ? e.summary.replace(/;\s*/g, " · ")
+    ? e.summary.replace(/;\s*checkout says/i, " · the checkout says").replace(/;\s*/g, " · ")
     : e
-      ? `Claimed ${money(e.claimed_total_cents)} delivered · checkout says ${money(e.actual_total_cents)}`
+      ? `Claimed ${money(e.claimed_total_cents)} delivered · the checkout says ${money(e.actual_total_cents)}`
       : "The claim didn't match the merchant's real checkout.";
-  banner({ kind: "lie", title: `Caught lying · ${b.merchant_name}`, sub: evidence }, 5000);
+  banner({ kind: "lie", title: `Bid withdrawn · ${b.merchant_name}`, sub: evidence }, 5000);
 }
 
 function fxClosed(a: Auction) {
@@ -240,7 +240,7 @@ function fxClosed(a: Auction) {
     {
       kind: "bribe",
       title: `Bribe ignored · ${b.merchant_name}`,
-      sub: `Offered ${money(b.fee_cents)} per sale and still ranked #${b.rank ?? "—"}. Fees never buy rank: offers rank on price, specs, delivery, trust and returns.`,
+      sub: `Offered ${money(b.fee_cents)} commission and still No. ${b.rank ?? "—"}. Commission never buys rank: lots go on price, specs, delivery, trust and returns.`,
     },
     5000,
   );
@@ -248,7 +248,7 @@ function fxClosed(a: Auction) {
 }
 
 function fxOrder(o: Order) {
-  toast({ kind: "sold", title: "Sold", body: `${o.product_title} · ${o.merchant_name} → ${o.buyer_name}`, amount: o.amount_cents, fee: o.fee_cents }, 6500);
+  toast({ kind: "sold", title: `Sold to ${o.buyer_name}`, body: `${o.product_title} · ${o.merchant_name}`, amount: o.amount_cents, fee: o.fee_cents }, 6500);
 }
 
 function fxApprovalRequested(ap: Approval) {
