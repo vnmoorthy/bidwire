@@ -102,7 +102,7 @@ export default function Ledger() {
           {txns.length} transactions · Σ all accounts = <span className="font-mono tnum">{money(grand)}</span>
         </div>
       </div>
-      {err && <div className="mt-4 rounded-[10px] bg-lie-soft px-4 py-2 text-sm text-lie">{err}</div>}
+      {err && <div className="mt-4 rounded-[6px] bg-lie-soft px-4 py-2 text-sm text-lie">{err}</div>}
 
       <div className="card mt-6 grid grid-cols-2 gap-px overflow-hidden bg-line lg:grid-cols-5">
         <Kpi icon={<ShoppingBag size={16} />} label="Hammer total (GMV)" color="text-money" value={<AnimatedNumber value={stats.gmv_cents} format={(n) => money(Math.round(n))} />} />
