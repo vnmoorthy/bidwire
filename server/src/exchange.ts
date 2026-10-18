@@ -203,7 +203,7 @@ export function verifyBid(bidId: string): Promise<void> {
     const r = get("SELECT b.*, l.sku, m.handle, m.id AS mid FROM bids b JOIN listings l ON l.id = b.listing_id JOIN merchants m ON m.id = b.merchant_id WHERE b.id = ?", bidId);
     if (!r) return;
     const evidence = await inspectStorefront(r.handle, r.sku, {
-      claimed_total_cents: r.claimed_price_cents + r.claimed_shipping_cents, claimed_ship_days: r.claimed_ship_days, claimed_features: J<string[]>(r.claimed_features, []),
+      claimed_total_cents: r.claimed_price_cents + r.claimed_shipping_cents, claimed_ship_days: r.claimed_ship_days, claimed_features: J<string[]>(r.claimed_features, []), pitch: r.pitch,
     });
     const lied = evidence.checks.some((c) => !c.ok && c.name !== "In stock");
     run("UPDATE bids SET verify_status = ?, evidence = ? WHERE id = ?", lied ? "mismatch" : "verified", JSON.stringify(evidence), bidId);
@@ -220,7 +220,16 @@ export function verifyBid(bidId: string): Promise<void> {
 
 // Fetches the merchant's public product page (schema.org JSON-LD) and checkout quote over HTTP, exactly as it
 // would for any external store, then compares them with what the merchant claimed in its bid.
-export async function inspectStorefront(handle: string, sku: string, claim: { claimed_total_cents: number; claimed_ship_days: number; claimed_features: string[] }): Promise<VerifyEvidence> {
+// Merchant pitches are data, never instructions. A pitch that tries to steer the buying agent gets the bid withdrawn.
+const INJECTION = /(ignore|disregard|forget|override)\s+(all\s+|any\s+|your\s+|the\s+|previous\s+|prior\s+|earlier\s+)*(instructions?|rules|policy|prompt|ranking)|\bsystem\s*(note|prompt|message)?\s*:|you\s+must\s+(buy|purchase|choose|select|pick)|as an ai\b|jailbreak|do not (compare|verify|check)/i;
+export function pitchInjection(pitch: string): string | null {
+  const m = pitch.match(INJECTION);
+  if (!m) return null;
+  const at = Math.max(0, (m.index ?? 0) - 10);
+  return pitch.slice(at, at + 70).trim();
+}
+
+export async function inspectStorefront(handle: string, sku: string, claim: { claimed_total_cents: number; claimed_ship_days: number; claimed_features: string[]; pitch?: string }): Promise<VerifyEvidence> {
   const url = listingUrl(handle, sku);
   const local = `${config.internalUrl}/store/${handle}/${sku}`;
   const t0 = Date.now();
@@ -251,6 +260,10 @@ export async function inspectStorefront(handle: string, sku: string, claim: { cl
   const missing = claim.claimed_features.filter((f) => !pageFeatures.includes(f));
   checks.push({ name: "Features", ok: missing.length === 0, detail: missing.length ? `Claims ${missing.join(", ")} but the product page does not list ${missing.length > 1 ? "them" : "it"}` : `All claimed features are on the product page` });
   checks.push({ name: "In stock", ok: inStock, detail: inStock ? "Available" : "Out of stock at checkout" });
+  if (claim.pitch) {
+    const hit = pitchInjection(claim.pitch);
+    checks.push({ name: "Pitch safety", ok: !hit, detail: hit ? `Pitch contained instructions aimed at the buying agent ("${hit}…")` : "Pitch is plain marketing text" });
+  }
   const failed = checks.filter((c) => !c.ok && c.name !== "In stock");
   const summary = failed.length ? failed.map((c) => c.detail).join("; ") : `Verified: ${fmt(actualTotal)} delivered in ${shipDays}d${inStock ? "" : " (out of stock)"}`;
   return { url, fetched_ms: Date.now() - t0, claimed_total_cents: claim.claimed_total_cents, actual_total_cents: actualTotal, claimed_ship_days: claim.claimed_ship_days, actual_ship_days: shipDays, in_stock: inStock, checks, summary };
