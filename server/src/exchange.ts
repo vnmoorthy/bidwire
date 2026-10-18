@@ -222,6 +222,11 @@ export function verifyBid(bidId: string): Promise<void> {
 // would for any external store, then compares them with what the merchant claimed in its bid.
 // Merchant pitches are data, never instructions. A pitch that tries to steer the buying agent gets the bid withdrawn.
 const INJECTION = /(ignore|disregard|forget|override)\s+(all\s+|any\s+|your\s+|the\s+|previous\s+|prior\s+|earlier\s+)*(instructions?|rules|policy|prompt|ranking)|\bsystem\s*(note|prompt|message)?\s*:|you\s+must\s+(buy|purchase|choose|select|pick)|as an ai\b|jailbreak|do not (compare|verify|check)/i;
+export const AGENT_SAFE_PITCH_NOTE = "Pitch contained instructions aimed at the buying agent (text withheld from agents)";
+export function agentSafeEvidence(ev: VerifyEvidence | null): VerifyEvidence | null {
+  if (!ev) return ev;
+  return { ...ev, checks: ev.checks.map((c) => (c.name === "Pitch safety" && !c.ok ? { ...c, detail: AGENT_SAFE_PITCH_NOTE } : c)) };
+}
 export function pitchInjection(pitch: string): string | null {
   const m = pitch.match(INJECTION);
   if (!m) return null;
@@ -265,7 +270,8 @@ export async function inspectStorefront(handle: string, sku: string, claim: { cl
     checks.push({ name: "Pitch safety", ok: !hit, detail: hit ? `Pitch contained instructions aimed at the buying agent ("${hit}…")` : "Pitch is plain marketing text" });
   }
   const failed = checks.filter((c) => !c.ok && c.name !== "In stock");
-  const summary = failed.length ? failed.map((c) => c.detail).join("; ") : `Verified: ${fmt(actualTotal)} delivered in ${shipDays}d${inStock ? "" : " (out of stock)"}`;
+  // The summary is agent-facing (excluded reasons, get_offers), so it never quotes the merchant's pitch.
+  const summary = failed.length ? failed.map((c) => (c.name === "Pitch safety" ? AGENT_SAFE_PITCH_NOTE : c.detail)).join("; ") : `Verified: ${fmt(actualTotal)} delivered in ${shipDays}d${inStock ? "" : " (out of stock)"}`;
   return { url, fetched_ms: Date.now() - t0, claimed_total_cents: claim.claimed_total_cents, actual_total_cents: actualTotal, claimed_ship_days: claim.claimed_ship_days, actual_ship_days: shipDays, in_stock: inStock, checks, summary };
 }
 
