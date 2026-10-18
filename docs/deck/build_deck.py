@@ -42,26 +42,30 @@ DATA_DIR = os.path.join(HERE, "data")
 
 W, H = 13.333, 7.5  # inches, 16:9
 
-# "Ledger Light" tokens (docs/DESIGN.md). Aliases keep slide markup readable: cyan/blue = agent, amber = fee.
+# "Saleroom" tokens (docs/DESIGN.md v3). Aliases keep slide markup short: blue = agent navy, amber = bronze fee,
+# red = oxblood (withdrawn), green = catalogue green (verified), accent = gold.
 C = {
-    "bg": "FAFAF8", "panel": "FFFFFF", "raised": "F4F4F1", "line": "E9E8E3", "line2": "D9D8D1",
-    "text": "0E0E10", "ink": "0E0E10", "muted": "5D5D66", "dim": "9A9AA3", "white": "FFFFFF",
-    "accent": "F2561D", "accent_soft": "FFF0EA",
-    "green": "12805C", "green_soft": "E7F6EF",
-    "red": "D93036", "red_soft": "FDECEC",
-    "amber": "A15C07", "amber_soft": "FFF4E2",
-    "blue": "2F5BEA", "blue_soft": "EDF2FF",
-    "neutral": "5D5D66", "neutral_soft": "F4F4F1",
-    "code_bg": "0E0E10", "code_text": "E6E6E9", "code_dim": "8B8B94", "code_str": "7EE2B8", "code_num": "FFB08F", "code_fn": "9DB7FF",
+    "bg": "F4EFE4", "panel": "FFFDF7", "raised": "EFE8D9", "line": "E2D9C6", "line2": "CFC3AA",
+    "text": "16130E", "ink": "16130E", "muted": "6E6658", "dim": "9C937F", "white": "FFFDF7",
+    "accent": "B0894F", "accent_soft": "F5EBD6",
+    "green": "2D6A48", "green_soft": "E5F0E8",
+    "red": "8E2A22", "red_soft": "F6E3DF",
+    "amber": "94641F", "amber_soft": "F6EBD6",
+    "blue": "233F6E", "blue_soft": "E6ECF6",
+    "neutral": "6E6658", "neutral_soft": "EFE8D9",
+    "board": "0F0E0C", "board2": "1A1814", "board_text": "F3E9D2", "board_amber": "E9B44C", "board_dim": "8C8270",
+    "code_str": "B9D8A8", "code_num": "E9B44C", "code_fn": "F3E9D2",
 }
 C["cyan"] = C["blue"]
 C["cyan_soft"] = C["blue_soft"]
 SANS = "Inter"
+SERIF = "Georgia"  # Instrument Serif is the brand display face; PPTX uses Georgia (installed everywhere). HTML bundles Instrument Serif.
 MONO = "JetBrains Mono"
-PANOSE = {SANS: ("020B0502030000000004", "34"), MONO: ("02000009000000000000", "49")}
+PANOSE = {SANS: ("020B0502030000000004", "34"), MONO: ("02000009000000000000", "49"), SERIF: ("02040502050405020303", "18")}
 GITHUB = "github.com/vnmoorthy/bidwire"
-SHADOW_CARD = ("0E0E10", 0.07, 0.05, 0.012)
-SHADOW_LIFT = ("0E0E10", 0.13, 0.42, 0.12)
+SHADOW_CARD = None
+SHADOW_LIFT = ("16130E", 0.12, 0.42, 0.12)
+CARD_R = 0.06
 
 
 def E(inches):
