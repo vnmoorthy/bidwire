@@ -164,7 +164,7 @@ function ToolList({ tools }: { tools: ToolMeta[] | null }) {
     <section className="panel p-5">
       <div className="serif flex items-center gap-2 text-[24px] leading-7">
         <Wrench size={15} className="text-muted" /> MCP tools
-        <span className="tnum ml-auto text-[13px] font-normal text-muted">{tools?.length ?? 0} tools</span>
+        <span className="tnum ml-auto font-sans text-[13px] font-normal text-muted">{tools?.length ?? 0} tools</span>
       </div>
       {!tools && <div className="shimmer mt-3 h-48 rounded-xl" />}
       <div className="mt-3 space-y-5">
@@ -363,7 +363,7 @@ function Playground({ tools, buyers }: { tools: ToolMeta[] | null; buyers: Conne
     <section className="panel flex flex-col p-5">
       <div className="serif flex items-center gap-2 text-[24px] leading-7">
         <Play size={15} className="text-muted" /> Playground
-        <span className="ml-1 text-[13px] font-normal text-muted">Calls the same MCP tools, logged as client “playground”</span>
+        <span className="ml-1 font-sans text-[13px] font-normal text-muted">Calls the same MCP tools, logged as client “playground”</span>
       </div>
       <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
         <label className="text-[13px] font-medium text-muted">
