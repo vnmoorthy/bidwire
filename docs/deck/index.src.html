@@ -3,19 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#FAFAF8">
+<meta name="theme-color" content="#F4EFE4">
 <title>Bidwire pitch</title>
 <!-- Built from index.src.html by build_deck.py (fonts + screenshots inlined). Keys: ← → / space to navigate, N notes, F fullscreen. -->
 <style>
 /*{{FONTS}}*/
 :root{
-  --bg:#FAFAF8;--panel:#FFFFFF;--raised:#F4F4F1;--line:#E9E8E3;--line2:#D9D8D1;
-  --ink:#0E0E10;--muted:#5D5D66;--dim:#9A9AA3;
-  --accent:#F2561D;--accent-soft:#FFF0EA;
-  --green:#12805C;--green-soft:#E7F6EF;--red:#D93036;--red-soft:#FDECEC;--fee:#A15C07;--fee-soft:#FFF4E2;--agent:#2F5BEA;--agent-soft:#EDF2FF;
-  --shadow:0 1px 2px rgba(14,14,16,.05),0 1px 0 rgba(14,14,16,.03);
-  --lift:0 18px 44px rgba(14,14,16,.12),0 2px 6px rgba(14,14,16,.05);
+  --bg:#F4EFE4;--panel:#FFFDF7;--raised:#EFE8D9;--line:#E2D9C6;--line2:#CFC3AA;
+  --ink:#16130E;--muted:#6E6658;--dim:#9C937F;
+  --gold:#B0894F;--gold-soft:#F5EBD6;
+  --green:#2D6A48;--green-soft:#E5F0E8;--red:#8E2A22;--red-soft:#F6E3DF;--fee:#94641F;--fee-soft:#F6EBD6;--agent:#233F6E;--agent-soft:#E6ECF6;
+  --board:#0F0E0C;--board2:#1A1814;--btext:#F3E9D2;--bamber:#E9B44C;--bdim:#8C8270;
+  --lift:0 18px 40px rgba(22,19,14,.12);
   --sans:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --ease:cubic-bezier(.2,.7,.2,1);
 }
@@ -24,8 +25,10 @@ html,body{height:100%;background:var(--bg);overflow:hidden}
 body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;cursor:default}
 body.hide-cursor{cursor:none}
 #stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,1));overflow:hidden;background:var(--bg)}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;opacity:.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .25  0 0 0 0 .18  0 0 0 .55 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>")}
 .mono{font-family:var(--mono)}
-.num{font-variant-numeric:tabular-nums}
+.serif{font-family:var(--serif);font-weight:400}
 
 /* ---------- slide mechanics ---------- */
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s}
@@ -37,56 +40,55 @@ body.hide-cursor{cursor:none}
 .slide.active .r.f{animation-name:fade}
 .slide.active .r.l{animation-name:fromLeft}
 .slide.active .r.z{animation-name:zoomIn;animation-duration:.5s}
-.slide.active .r.st{animation:stamp .42s cubic-bezier(.3,1.4,.5,1) both;animation-delay:calc(var(--d,0) * 1ms)}
+.slide.active .r.st{animation:stamp .5s cubic-bezier(.3,1.3,.5,1) both;animation-delay:calc(var(--d,0) * 1ms)}
 .slide.active .r.dropin{animation-name:dropIn;animation-duration:.6s}
-.slide.active .r.g{animation:grow .7s var(--ease) both;animation-delay:calc(var(--d,0) * 1ms);transform-origin:left center}
-.slide.active .r.t{animation:typeIn .6s steps(28,end) both;animation-delay:calc(var(--d,0) * 1ms)}
+.slide.active .r.g{animation:grow .8s var(--ease) both;animation-delay:calc(var(--d,0) * 1ms);transform-origin:left center}
+.slide.active .r.t{animation:typeIn .6s steps(30,end) both;animation-delay:calc(var(--d,0) * 1ms)}
 .slide.leaving .r.g{transform:none}
-@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes fromLeft{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
-@keyframes zoomIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes fromLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+@keyframes zoomIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
 @keyframes dropIn{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
-@keyframes stamp{0%{opacity:0;transform:scale(1.6) rotate(-10deg)}70%{opacity:1}100%{opacity:1;transform:scale(1) rotate(var(--rot,-3deg))}}
+@keyframes stamp{0%{opacity:0;transform:scale(1.7) rotate(-9deg)}65%{opacity:1}100%{opacity:1;transform:scale(1) rotate(var(--rot,-3deg))}}
 @keyframes grow{from{opacity:1;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
 @keyframes typeIn{from{opacity:1;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
 
 /* ---------- chrome ---------- */
-.top{position:absolute;left:108px;right:108px;top:52px;height:52px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:20px;letter-spacing:-.01em}
-.brand svg{width:38px;height:38px}
-.kick{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:14px;align-items:center}
-.kick em{font-style:normal;font-weight:500;letter-spacing:.02em;color:var(--dim)}
-.kick i{width:1px;height:14px;background:var(--line2)}
-.foot{position:absolute;left:108px;right:108px;bottom:34px;display:flex;justify-content:space-between;font-size:13px;color:var(--dim)}
+.top{position:absolute;left:108px;right:108px;top:44px;height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:14px;font-family:var(--serif);font-size:30px}
+.brand svg{width:42px;height:42px}
+.kick{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.foot{position:absolute;left:108px;right:108px;bottom:32px;display:flex;justify-content:space-between;font-size:13px;color:var(--dim)}
 #bar{position:absolute;left:0;bottom:0;height:5px;width:100%;background:var(--line);z-index:5}
-#bar i{display:block;height:100%;width:10%;background:var(--accent);transition:width .6s var(--ease)}
+#bar i{display:block;height:100%;width:10%;background:var(--gold);transition:width .6s var(--ease)}
 
 /* ---------- type ---------- */
-h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height:1.07;font-weight:700;letter-spacing:-.028em}
-.mute{color:var(--muted)}
-.sub{position:absolute;left:108px;right:108px;font-size:25px;color:var(--muted);letter-spacing:-.005em}
-.lbl{font-size:16px;font-weight:600;color:var(--muted);margin-bottom:14px}
+h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);font-weight:400;font-size:86px;line-height:1.02;letter-spacing:-.012em}
+.mute{color:var(--muted);font-style:italic}
+.sub{position:absolute;left:108px;right:108px;font-size:25px;color:var(--muted)}
+.sc{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 
 /* ---------- primitives ---------- */
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);position:relative}
-.card.acc::before{content:"";position:absolute;left:-1px;top:26px;bottom:26px;width:4px;border-radius:0 3px 3px 0;background:var(--c,var(--ink))}
-.b{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 16px;border-radius:999px;font-size:15px;font-weight:600;white-space:nowrap;background:var(--raised);color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;position:relative}
+.card.acc::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:5px;border-radius:6px 0 0 6px;background:var(--c,var(--ink))}
+.b{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 17px;border-radius:999px;font-size:15px;font-weight:600;white-space:nowrap;background:var(--raised);color:var(--muted)}
 .b.agent{background:var(--agent-soft);color:var(--agent)}
 .b.green{background:var(--green-soft);color:var(--green)}
 .b.red{background:var(--red-soft);color:var(--red)}
 .b.fee{background:var(--fee-soft);color:var(--fee)}
-.b.accent{background:var(--accent-soft);color:var(--accent)}
+.b.gold{background:var(--gold-soft);color:#7d5f2f}
 .b.out{background:var(--panel);border:1px solid var(--line2);color:var(--muted)}
 .b.mono{font-family:var(--mono);font-weight:500;font-size:14px}
 .b.sm{height:32px;padding:0 13px;font-size:13.5px}
-.b.sm.mono{font-size:13px}
-.live{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--accent);position:relative}
-.live::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--accent);opacity:0;animation:ping 2s ease-out infinite}
-@keyframes ping{0%{opacity:.5;transform:scale(.6)}100%{opacity:0;transform:scale(1.6)}}
+.live{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gold);position:relative;flex:none}
+.live::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--gold);opacity:0;animation:ping 2.2s ease-out infinite}
+@keyframes ping{0%{opacity:.55;transform:scale(.6)}100%{opacity:0;transform:scale(1.7)}}
+.board{background:var(--board);border-radius:10px;color:var(--btext);position:relative;box-shadow:var(--lift)}
+.board::after{content:"";position:absolute;inset:9px;border:1px solid rgba(176,137,79,.6);border-radius:6px;pointer-events:none}
 
 /* browser + phone frames */
-.browser{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--lift);overflow:hidden}
+.browser{background:var(--panel);border:1px solid var(--line2);border-radius:10px;box-shadow:var(--lift);overflow:hidden}
 .chrome{height:44px;display:flex;align-items:center;gap:8px;padding:0 18px;border-bottom:1px solid var(--line);position:relative}
 .chrome i{width:11px;height:11px;border-radius:50%;background:var(--line2)}
 .chrome span{position:absolute;left:50%;transform:translateX(-50%);height:26px;line-height:26px;padding:0 22px;border-radius:13px;background:var(--raised);color:var(--muted);font-size:13px;min-width:300px;text-align:center}
@@ -99,88 +101,94 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
 .phone{background:var(--ink);border-radius:58px;padding:12px;box-shadow:var(--lift)}
 .phone .shot{aspect-ratio:390/844;border-radius:47px;background:var(--panel)}
 
-/* mock exchange (only visible when a screenshot is missing) */
-.mx{padding:18px 22px;font-size:13px}
-.mx .bar{height:40px;margin:-18px -22px 16px;padding:0 22px;display:flex;align-items:center;gap:10px;background:var(--panel);border-bottom:1px solid var(--line);font-weight:700}
-.mx .bar span{color:var(--dim);font-weight:500}
-.mx .lie{background:var(--red-soft);border-radius:10px;padding:10px 16px;border-left:4px solid var(--red);margin-bottom:14px}
-.mx .lie b{display:block;font-size:14px}.mx .lie small{color:var(--muted);font-size:12px}
-.mx table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.mx td{padding:9px 12px;border-top:1px solid var(--line);font-size:13px}
+/* mock saleroom (only visible when a screenshot is missing) */
+.mx{padding:16px 20px;font-size:13px;display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:auto 1fr;gap:14px}
+.mx .mb{padding:22px 26px;border-radius:8px}
+.mx .mb .sc{color:var(--gold);font-size:10.5px}
+.mx .mb small{display:block;color:var(--bdim);margin-top:12px;font-size:13px}
+.mx .mb strong{display:block;font:400 64px/1 var(--serif);color:var(--btext);margin-top:6px}
+.mx .mb em{font-style:normal;font-size:14px;color:var(--btext)}
+.mx .wire{padding:14px 16px}
+.mx .wire div{font:500 12px/2 var(--mono);color:var(--agent)}
+.mx table{grid-column:1/3;width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow:hidden;align-self:start}
+.mx td{padding:8px 12px;border-top:1px solid var(--line);font-size:13px}
 .mx tr:first-child td{border-top:0}
-.mx td:first-child{color:var(--dim);width:40px}.mx td:nth-child(2){font-weight:600}.mx td:last-child{text-align:right}
+.mx td:first-child{font:400 20px var(--serif);width:40px}.mx td:nth-child(2){font-weight:600}.mx td:last-child{text-align:right}
 .mx .b{height:24px;font-size:11.5px;padding:0 10px}
 
 /* ---------- slide 1 ---------- */
-.s1 .left{position:absolute;left:112px;top:92px;width:860px}
-.pill{display:inline-flex;align-items:center;gap:12px;height:46px;padding:0 22px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:15px;color:var(--muted);box-shadow:var(--shadow)}
-.word{display:flex;align-items:center;gap:26px;margin-top:62px}
-.word svg{width:134px;height:134px}
-.word span{font-size:124px;font-weight:700;letter-spacing:-.045em;line-height:1}
-.s1 h2{font-size:46px;font-weight:700;letter-spacing:-.025em;margin-top:44px}
-.lede{font-size:30px;line-height:1.38;color:var(--muted);margin-top:26px;letter-spacing:-.008em}
-.lede b{color:var(--ink);font-weight:600}
-.chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:42px;max-width:760px}
-.built{margin-top:46px;font-size:15px;color:var(--dim)}
-.s1 .right{position:absolute;left:1060px;top:178px;width:960px}
-.liar{position:absolute;left:968px;top:700px;width:760px;padding:26px 30px 24px 104px;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--lift)}
-.liar .x{position:absolute;left:30px;top:28px;width:56px;height:56px;border-radius:50%;background:var(--red-soft);color:var(--red);font-weight:800;font-size:24px;display:grid;place-items:center}
-.liar b{display:block;font-size:22px;letter-spacing:-.01em}
-.liar p{font-size:16.5px;color:var(--muted);margin-top:6px;line-height:1.45}
-.liar p s{color:var(--muted);text-decoration-color:var(--red);text-decoration-thickness:2px}
-.liar p em{font-style:normal;color:var(--red);font-weight:700}
+.s1 .left{position:absolute;left:112px;top:92px;width:880px}
+.pill{display:inline-flex;align-items:center;gap:12px;height:46px;padding:0 22px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:15px;color:var(--muted)}
+.word{display:flex;align-items:center;gap:28px;margin-top:58px}
+.word svg{width:140px;height:140px}
+.word span{font-family:var(--serif);font-size:168px;line-height:.9;letter-spacing:-.02em}
+.s1 h2{font-family:var(--serif);font-weight:400;font-size:80px;line-height:1;margin-top:40px;letter-spacing:-.01em}
+.s1 .b{height:44px;font-size:17px;padding:0 20px}.s1 .b.mono{font-size:16px}
+.s1 h2 i{color:var(--gold)}
+.lede{font-size:30px;line-height:1.42;color:var(--muted);margin-top:28px}
+.lede b{color:var(--ink);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;max-width:780px}
+.built{margin-top:40px;font-size:15px;color:var(--dim)}
+.s1 .right{position:absolute;left:1066px;top:170px;width:960px}
+.liar{position:absolute;left:968px;top:706px;width:780px;padding:24px 30px 22px 38px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;box-shadow:var(--lift)}
+.liar::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:6px;background:var(--red);border-radius:6px 0 0 6px}
+.liar b{display:block;font:400 30px/1.1 var(--serif)}
+.liar p{font-size:17px;color:var(--muted);margin-top:8px;line-height:1.45}
+.liar p s{text-decoration-color:var(--red);text-decoration-thickness:2px}
+.liar p em{font-style:normal;color:var(--red);font-weight:600}
 .liar small{display:block;margin-top:10px;font-size:13.5px;color:var(--dim)}
-.liar .stamp{position:absolute;right:26px;top:24px;--rot:-4deg;height:36px;font-size:16px;font-weight:700;border:2px solid var(--red);background:var(--red-soft)}
+.stamp{position:absolute;right:28px;top:24px;--rot:-4deg;padding:6px 14px;border:2px solid var(--red);border-radius:4px;color:var(--red);font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase;background:var(--red-soft)}
 
 /* ---------- slide 2 ---------- */
-.s2 .wrap{position:absolute;left:108px;right:108px;top:328px;display:grid;grid-template-columns:1fr 1fr 70px 538px;gap:22px 24px}
+.s2 h1{font-size:78px}
+.s2 .wrap{position:absolute;left:108px;right:108px;top:356px;display:grid;grid-template-columns:1fr 1fr 70px 538px;gap:20px 24px}
 .s2 .lblrow{grid-column:1/3}
-.s2 .c4{padding:30px 32px;height:240px}
-.ico{display:inline-grid;place-items:center;min-width:76px;height:56px;padding:0 14px;border-radius:12px;background:var(--red-soft);color:var(--red);font-weight:700;font-size:17px}
-.c4 h3{font-size:24px;font-weight:650;font-weight:600;margin-top:24px;letter-spacing:-.01em}
-.c4 p{font-size:18px;line-height:1.45;color:var(--muted);margin-top:8px}
+.s2 .c4{padding:28px 32px;height:232px}
+.ico{display:inline-grid;place-items:center;min-width:76px;height:52px;padding:0 14px;border-radius:6px;background:var(--red-soft);color:var(--red);font-weight:600;font-size:17px}
+.c4 h3,.rb h3{font-family:var(--serif);font-weight:400;font-size:32px;margin-top:20px;letter-spacing:-.005em}
+.rb h3{margin-top:0}
+.c4 p,.rb p{font-size:18px;line-height:1.45;color:var(--muted);margin-top:6px}
 .c4 p s{text-decoration-color:var(--red);text-decoration-thickness:2px}
-.c4 p em{font-style:normal;color:var(--red);font-weight:700}
+.c4 p em{font-style:normal;color:var(--red);font-weight:600}
 .s2 .arrowc{grid-column:3;grid-row:2/4;align-self:center;justify-self:center;width:64px;height:64px;border-radius:50%;border:1px solid var(--line2);background:var(--panel);display:grid;place-items:center;color:var(--muted);font-size:26px}
-.s2 .rb{grid-column:4;padding:34px 36px;height:240px}
-.rb h3{font-size:25px;font-weight:600;letter-spacing:-.01em}
-.rb p{font-size:18px;line-height:1.45;color:var(--muted);margin-top:12px}
-.s2 .bottom{position:absolute;left:108px;right:108px;top:902px;font-size:26px;color:var(--muted)}
-.s2 .bottom b{color:var(--ink)}
+.s2 .rb{grid-column:4;padding:34px 38px;height:232px}
+.rb p{margin-top:12px}
+.s2 .bottom{position:absolute;left:108px;right:108px;top:910px;font-size:26px;color:var(--muted)}
+.s2 .bottom b{color:var(--ink);font-weight:600}
 
 /* ---------- slide 3 ---------- */
-.s3 .big{position:absolute;left:104px;right:108px;top:130px;font-size:84px;font-weight:700;letter-spacing:-.035em;line-height:1.1}
-.s3 .big span{color:var(--accent)}
-.s3 .three{position:absolute;left:108px;right:108px;top:398px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
-.s3 .three .card{height:430px;padding:38px 40px}
-.n{width:50px;height:50px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;font-size:18px;display:grid;place-items:center}
-.three h3{font-size:30px;font-weight:650;font-weight:600;letter-spacing:-.018em;margin-top:30px}
-.three p{font-size:18.5px;line-height:1.5;color:var(--muted);margin-top:14px}
-.three .vis{position:absolute;left:40px;right:40px;bottom:38px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.s3 .big{position:absolute;left:104px;right:108px;top:140px;font-family:var(--serif);font-size:140px;letter-spacing:-.02em;line-height:1.05}
+.s3 .big span{color:var(--gold);font-style:italic}
+.s3 .three{position:absolute;left:108px;right:108px;top:412px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.s3 .three .card{height:420px;padding:30px 40px}
+.three .n{font:400 64px/1 var(--serif);color:var(--gold)}
+.three h3{font-family:var(--serif);font-weight:400;font-size:38px;margin-top:18px;letter-spacing:-.01em}
+.three p{font-size:18.5px;line-height:1.5;color:var(--muted);margin-top:12px}
+.three .vis{position:absolute;left:40px;right:40px;bottom:34px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .wbar{display:flex;width:100%;height:44px;gap:3px}
-.wbar div{display:grid;place-items:center;border-radius:6px;font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden}
+.wbar div{display:grid;place-items:center;border-radius:3px;font-size:13.5px;font-weight:600;color:#FFFDF7;white-space:nowrap;overflow:hidden}
 .three .note{font-size:15px;color:var(--muted)}
-.s3 .strip{position:absolute;left:108px;right:108px;top:872px;height:88px;display:flex;align-items:center;gap:56px;padding:0 36px;font-size:21px}
+.s3 .strip{position:absolute;left:108px;right:108px;top:878px;height:86px;display:flex;align-items:center;gap:56px;padding:0 36px;font-size:21px}
 .s3 .strip .k{color:var(--muted)}
-.s3 .strip b{font-weight:700}
+.s3 .strip b{font-weight:600}
 
 /* ---------- slide 4 ---------- */
-.s4 .pipe{position:absolute;left:108px;right:108px;top:286px;height:338px;display:flex;align-items:stretch}
-.step{width:209px;flex:none;padding:26px 22px;animation:none}
+.s4 .pipe{position:absolute;left:108px;right:108px;top:286px;height:346px;display:flex;align-items:stretch}
+.step{width:209px;flex:none;padding:22px 22px}
 .slide.active .step{animation:up .7s var(--ease) both,hl 8.4s ease-in-out infinite;animation-delay:calc(var(--d) * 1ms),calc(var(--h) * 1ms + 2600ms)}
-@keyframes hl{0%,100%{border-color:var(--line);box-shadow:var(--shadow)}4%,10%{border-color:var(--ink);box-shadow:0 10px 26px rgba(14,14,16,.12)}15%{border-color:var(--line);box-shadow:var(--shadow)}}
-.step .sn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:16px;background:var(--sc-soft);color:var(--sc)}
-.step h4{font-size:21px;font-weight:600;margin-top:22px;letter-spacing:-.01em;line-height:1.15;min-height:50px}
-.step h4.mono{font-family:var(--mono);font-weight:600;font-size:19px;color:var(--agent)}
-.step p{font-size:15.5px;line-height:1.45;color:var(--muted);margin-top:12px}
+@keyframes hl{0%,100%{border-color:var(--line);box-shadow:none}4%,10%{border-color:var(--gold);box-shadow:0 10px 26px rgba(22,19,14,.10)}15%{border-color:var(--line);box-shadow:none}}
+.step .sn{font:400 44px/1 var(--serif);color:var(--gold)}
+.step h4{font-family:var(--serif);font-weight:400;font-size:28px;margin-top:14px;line-height:1.05;min-height:60px}
+.step h4.mono{font-family:var(--mono);font-weight:600;font-size:19px;color:var(--agent);min-height:60px;padding-top:6px}
+.step p{font-size:15.5px;line-height:1.45;color:var(--muted);margin-top:10px}
 .flow{width:40px;flex:none;align-self:center;height:20px}
 .flow line{stroke:var(--line2);stroke-width:2.5;stroke-dasharray:5 5;animation:dash .9s linear infinite}
 .flow path{fill:var(--line2)}
 @keyframes dash{to{stroke-dashoffset:-20}}
-.s4 .tags{position:absolute;left:108px;top:624px;width:1704px;height:200px}
-.tag{position:absolute;width:209px;top:44px;padding:16px 18px;border-radius:14px;font-size:14.5px;line-height:1.4}
+.s4 .tags{position:absolute;left:108px;top:632px;width:1704px;height:200px}
+.tag{position:absolute;width:209px;top:44px;padding:16px 18px;border-radius:6px;font-size:14.5px;line-height:1.4}
 .tag::before{content:"";position:absolute;left:50%;top:-44px;height:40px;border-left:2px dashed var(--line2)}
-.tag b{display:block;font-size:16px;margin-bottom:4px}
+.tag b{display:block;font-size:16px;margin-bottom:4px;font-weight:600}
 .tag.red{background:var(--red-soft)}.tag.red b{color:var(--red)}
 .tag.fee{background:var(--fee-soft)}.tag.fee b{color:var(--fee)}
 .tag.agent{background:var(--agent-soft)}.tag.agent b{color:var(--agent)}
@@ -188,144 +196,149 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
 .kpis{display:flex;align-items:center}
 .kpis>div{flex:1;display:flex;align-items:baseline;gap:14px;padding:0 34px;border-left:1px solid var(--line);font-size:17px;color:var(--muted)}
 .kpis>div:first-child{border-left:0}
-.kpis strong{font-size:34px;font-weight:700;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
-.s4 .kpis{position:absolute;left:108px;right:108px;top:866px;height:96px}
+.kpis strong{font:400 46px/1 var(--serif);color:var(--ink)}
+.s4 .kpis{position:absolute;left:108px;right:108px;top:874px;height:96px}
+.going{display:block;font-family:var(--serif);font-size:19px;line-height:1.25;color:var(--ink)}
+.going i{white-space:nowrap;margin-right:6px}
+.going i{opacity:.2}
+.slide.active .going i{animation:going 6s linear infinite}
+.slide.active .going i:nth-child(2){animation-delay:.9s}
+.slide.active .going i:nth-child(3){animation-delay:1.8s}
+@keyframes going{0%,8%{opacity:.2}12%,70%{opacity:1}80%,100%{opacity:.2}}
+.going i:nth-child(3){color:var(--gold)}
 
 /* ---------- slide 5 ---------- */
-.s5 h1{font-size:46px}
-.cap{position:absolute;font-size:16px;font-weight:600;color:var(--muted)}
-.s5 .ex{position:absolute;left:108px;top:274px;width:950px}
-.s5 .ev{position:absolute;left:108px;top:866px;width:950px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.s5 .ev .card{padding:16px 20px;height:112px}
+.s5 h1{font-size:80px}
+.cap{position:absolute}
+.s5 .ex{position:absolute;left:108px;top:282px;width:950px}
+.s5 .ev{position:absolute;left:108px;top:878px;width:950px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.s5 .ev .card{padding:16px 20px;height:110px}
 .s5 .ev .hd{display:flex;align-items:center;gap:10px}
 .s5 .ev .hd span:last-child{font-size:14px;font-weight:600;color:var(--muted)}
 .s5 .ev p{font-size:14.5px;line-height:1.4;margin-top:10px}
-.s5 .ph5{position:absolute;left:1098px;top:274px;width:340px}
-.s5 .kcol{position:absolute;left:1476px;right:108px;top:274px;height:704px;display:flex;flex-direction:column}
-.kcol>div{flex:1;padding:22px 30px;border-top:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.s5 .ph5{position:absolute;left:1098px;top:282px;width:338px}
+.s5 .kcol{position:absolute;left:1474px;right:108px;top:282px;height:706px;display:flex;flex-direction:column;padding:12px 0}
+.kcol>div{flex:1;padding:16px 34px;border-top:1px solid #2A2620;display:flex;flex-direction:column;justify-content:center}
 .kcol>div:first-child{border-top:0}
-.kcol strong{font-size:44px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1.05}
-.kcol>div>span{font-size:16px;color:var(--muted);margin-top:8px;line-height:1.35}
+.kcol strong{font:400 62px/1 var(--serif);color:var(--btext)}
+.kcol>div>span{font-size:15.5px;color:var(--bdim);margin-top:10px;line-height:1.35}
 
 /* ---------- slide 6 ---------- */
-.s6 .surf{position:absolute;left:108px;top:252px;width:764px;height:732px;padding:30px 34px}
-.surf h3{font-size:19px;font-weight:600}
-.surf .k3{display:flex;margin:18px 0 26px}
+.s6 h1{font-size:82px}
+.s6 .surf{position:absolute;left:108px;top:268px;width:764px;height:716px;padding:28px 34px}
+.surf .k3{display:flex;margin:14px 0 6px}
 .surf .k3>div{padding:0 30px;border-left:1px solid var(--line);font-size:17px;color:var(--muted);display:flex;align-items:baseline;gap:10px}
 .surf .k3>div:first-child{padding-left:0;border-left:0}
-.surf .k3 strong{font-size:50px;font-weight:700;color:var(--ink);letter-spacing:-.03em}
-.grp{font-size:15.5px;font-weight:600;color:var(--muted);margin:30px 0 12px}
+.surf .k3 strong{font:400 64px/1 var(--serif);color:var(--ink)}
+.grp{font-size:16px;font-weight:600;color:var(--muted);margin:34px 0 14px}
+.surf .b.mono{height:42px;font-size:15.5px;padding:0 18px}
 .wrapb{display:flex;flex-wrap:wrap;gap:10px}
-.surf .foot6{position:absolute;left:34px;bottom:26px;font-size:14px;color:var(--dim)}
-.code{position:absolute;left:908px;right:108px;top:252px;height:340px;background:#0E0E10;border-radius:18px;box-shadow:var(--lift);overflow:hidden}
-.code .hd{height:50px;display:flex;align-items:center;gap:22px;padding:0 28px;border-bottom:1px solid #26262c;font-size:14.5px;color:#8B8B94;font-weight:600}
-.code .hd b{color:#E6E6E9;font-weight:600;border-bottom:2px solid var(--accent);padding:15px 0 13px}
-.code pre{font:500 19.5px/1.95 var(--mono);color:#E6E6E9;padding:22px 30px;white-space:pre}
+.surf .foot6{position:absolute;left:34px;bottom:24px;font-size:14px;color:var(--dim)}
+.code{position:absolute;left:908px;right:108px;top:268px;height:330px;overflow:hidden}
+.code .hd{height:56px;display:flex;align-items:center;gap:22px;padding:0 34px;border-bottom:1px solid #2A2620}
+.code .hd .sc{color:var(--gold)}
+.code pre{font:500 19.5px/1.95 var(--mono);color:var(--btext);padding:18px 34px;white-space:pre}
 .code pre div{width:max-content}
-.c-d{color:#8B8B94}.c-f{color:#9DB7FF;font-weight:700}.c-s{color:#7EE2B8}.c-n{color:#FFB08F}.c-ok{color:#7EE2B8;font-weight:700}
-.s6 .feats{position:absolute;left:908px;right:108px;top:620px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.feats .card{height:172px;padding:22px 24px}
-.feats h4{font-size:19px;font-weight:600}
-.feats p{font-size:15.5px;line-height:1.45;color:var(--muted);margin-top:10px}
+.c-d{color:var(--bdim)}.c-f{color:var(--btext);font-weight:700}.c-s{color:#B9D8A8}.c-n{color:var(--bamber)}.c-ok{color:var(--bamber);font-weight:700}
+.s6 .feats{position:absolute;left:908px;right:108px;top:626px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feats .card{height:170px;padding:20px 24px}
+.feats h4{font-family:var(--serif);font-weight:400;font-size:27px}
+.feats p{font-size:15.5px;line-height:1.45;color:var(--muted);margin-top:8px}
 
 /* ---------- slide 7 ---------- */
-.s7 .sub{top:224px}
-.s7 .checks{position:absolute;left:108px;top:318px;width:806px;height:662px;padding:30px 36px}
-.checks h3,.s7 .merit h3{font-size:19px;font-weight:600}
-.chk{display:flex;gap:22px;align-items:center;margin-top:31px}
+.s7 .sub{top:244px}
+.s7 .checks{position:absolute;left:108px;top:330px;width:806px;height:654px;padding:28px 36px}
+.chk{display:flex;gap:22px;align-items:center;margin-top:36px}
 .chk i{flex:none;width:52px;height:52px;border-radius:50%;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:20px}
-.chk b{display:block;font-size:22px;font-weight:600}
+.chk b{display:block;font:400 29px/1.1 var(--serif)}
 .chk span{font-size:17px;color:var(--muted)}
-.checks .warn{position:absolute;left:36px;right:36px;bottom:30px;padding:18px 22px;border-radius:12px;background:var(--red-soft);font-size:16px}
+.checks .warn{position:absolute;left:36px;right:36px;bottom:30px;padding:18px 22px;border-radius:6px;background:var(--red-soft);font-size:16.5px;border-left:5px solid var(--red)}
 .checks .warn b{color:var(--red)}
-.s7 .merit{position:absolute;left:950px;right:108px;top:318px;height:252px;padding:28px 36px}
-.merit .wbar{margin-top:26px;height:58px}
+.s7 .merit{position:absolute;left:950px;right:108px;top:330px;height:244px;padding:28px 36px}
+.merit .wbar{margin-top:24px;height:58px}
 .merit .wbar div{font-size:15px}
 .feebar{display:flex;align-items:center;gap:16px;margin-top:20px;font-size:16px;color:var(--muted)}
-.feebar i{width:76px;height:26px;border:2px dashed var(--fee);border-radius:6px}
+.feebar i{width:76px;height:26px;border:2px dashed var(--fee);border-radius:4px}
 .feebar b{color:var(--fee)}
-.s7 .ledg{position:absolute;left:950px;top:600px;width:536px}
-.s7 .ledcap{position:absolute;left:950px;top:930px;font-size:15px;color:var(--muted)}
+.s7 .ledg{position:absolute;left:950px;top:604px;width:536px}
+.s7 .ledcap{position:absolute;left:950px;top:932px;font-size:15px;color:var(--muted)}
 .s7 .ledcap b{color:var(--green)}
-.s7 .side{position:absolute;left:1512px;right:108px;top:600px;display:grid;gap:18px}
-.side .card{height:180px;padding:24px 24px}
-.side h4{font-size:18px;font-weight:600}
-.side p{font-size:14.5px;line-height:1.45;color:var(--muted);margin-top:10px}
+.s7 .side{position:absolute;left:1512px;right:108px;top:604px;display:grid;gap:18px}
+.side .card{height:180px;padding:22px 24px 22px 28px}
+.side h4{font-family:var(--serif);font-weight:400;font-size:27px}
+.side p{font-size:14.5px;line-height:1.45;color:var(--muted);margin-top:8px}
 
 /* ---------- slide 8 ---------- */
-.s8 .bm{position:absolute;left:108px;top:256px;width:856px;height:732px;padding:30px 36px}
-.s8 .wn{position:absolute;left:1000px;right:108px;top:256px;height:732px;padding:30px 36px}
-.bm h3,.wn h3{font-size:19px;font-weight:600}
-.money{display:flex;align-items:center;margin-top:44px}
+.s8 .bm{position:absolute;left:108px;top:268px;width:856px;height:716px;padding:30px 36px}
+.s8 .wn{position:absolute;left:1000px;right:108px;top:268px;height:716px;padding:30px 36px}
+.money{display:flex;align-items:center;margin-top:40px}
 .node{height:62px;padding:0 26px;border-radius:31px;display:grid;place-items:center;font-weight:600;font-size:18px;white-space:nowrap}
-.node.w{background:var(--agent-soft);color:var(--agent)}.node.m{background:var(--raised)}.node.bw{background:var(--ink);color:#fff}
+.node.w{background:var(--agent-soft);color:var(--agent)}.node.m{background:var(--raised)}.node.bw{background:var(--ink);color:var(--panel)}
 .marrow{flex:1;position:relative;height:62px}
-.marrow svg{position:absolute;left:8px;right:8px;top:21px;width:calc(100% - 16px);height:20px;overflow:visible}
+.marrow svg{position:absolute;left:8px;top:21px;width:calc(100% - 16px);height:20px;overflow:visible}
 .marrow line{stroke:var(--line2);stroke-width:2.5;stroke-dasharray:6 6;animation:dash 1s linear infinite}
 .marrow path{fill:var(--line2)}
-.marrow span{position:absolute;left:0;right:0;top:54px;text-align:center;font-size:14px;font-weight:600;color:var(--muted)}
+.marrow span{position:absolute;left:0;right:0;top:56px;text-align:center;font-size:14px;font-weight:600;color:var(--muted)}
 .marrow.fee span{color:var(--fee)}
-.feeonly{margin-top:40px;text-align:right;font-size:15px;color:var(--fee)}
-.bul{margin-top:24px}
-.bul div{display:flex;gap:16px;align-items:baseline;font-size:21.5px;line-height:1.45;color:var(--muted);margin-top:24px}
+.feeonly{margin-top:42px;text-align:right;font-size:15px;color:var(--fee)}
+.bul div{display:flex;gap:16px;align-items:baseline;font-size:22px;line-height:1.45;color:var(--muted);margin-top:30px}
 .bul i{flex:none;width:11px;height:11px;border-radius:50%;background:var(--c);transform:translateY(-2px)}
 .bul b{color:var(--ink);font-weight:600}
 .tl{position:relative;margin-top:30px;padding-left:44px}
 .tl::before{content:"";position:absolute;left:10px;top:12px;bottom:40px;width:2px;background:var(--line)}
 .slide.active .tl::before{animation:growY 1.2s var(--ease) both .6s;transform-origin:top}
 @keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-.tl>div{position:relative;margin-bottom:44px}
-.tl>div::before{content:"";position:absolute;left:-41px;top:5px;width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px var(--panel)}
-.tl b{font-size:19px;font-weight:700}
-.tl b em{font-style:normal;font-weight:500;color:var(--dim);margin-left:10px;font-size:15px}
-.tl p{font-size:21px;line-height:1.45;color:var(--muted);margin-top:8px}
-.wn .call{position:absolute;left:36px;right:36px;bottom:30px;padding:24px 28px;border-radius:14px;background:var(--fee-soft);font-size:20px;line-height:1.45}
+.tl>div{position:relative;margin-bottom:46px}
+.tl>div::before{content:"";position:absolute;left:-41px;top:9px;width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px var(--panel)}
+.tl b{font:400 30px/1.1 var(--serif)}
+.tl b em{font:500 14px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-left:12px;vertical-align:middle;font-style:normal}
+.tl p{font-size:20px;line-height:1.45;color:var(--muted);margin-top:6px}
+.wn .call{position:absolute;left:36px;right:36px;bottom:30px;padding:22px 28px;border-radius:6px;background:var(--fee-soft);font-size:19px;line-height:1.45;border-left:5px solid var(--fee)}
 .wn .call b{color:var(--fee)}
 
 /* ---------- slide 9 ---------- */
-.s9 .colA{position:absolute;left:108px;top:252px;width:280px}
-.colA .grp{margin:0 0 12px}
+.s9 .colA{position:absolute;left:108px;top:268px;width:280px}
+.colA .sc{margin:0 0 14px}
 .colA .b{width:280px;justify-content:center;height:44px;margin-bottom:12px;font-size:16px}
 .s9 .ar{position:absolute;left:398px;width:46px;height:20px}
-.s9 .srv{position:absolute;left:454px;top:252px;width:440px;height:730px;padding:28px 30px;overflow:hidden}
-.srv::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--ink)}
-.srv h3{font-size:21px;font-weight:600}
+.s9 .srv{position:absolute;left:454px;top:268px;width:440px;height:716px;padding:30px 30px;overflow:hidden}
+.srv::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:5px;background:var(--ink);border-radius:6px 6px 0 0}
+.srv h3{font:400 36px/1.1 var(--serif)}
 .srv .meta{font-size:15px;color:var(--muted);margin-top:4px}
-.srow{background:var(--raised);border-radius:12px;padding:13px 18px;margin-top:14px}
+.srow{background:var(--raised);border-radius:6px;padding:13px 18px;margin-top:14px}
 .srow b{font:600 16px var(--mono)}
 .srow span{display:block;font-size:14px;color:var(--muted);margin-top:4px}
-.s9 .outs{position:absolute;left:940px;top:252px;width:290px;display:grid;gap:22px}
-.outs .card{padding:22px 24px}
-.outs h4{font-size:19px;font-weight:600}
+.s9 .outs{position:absolute;left:940px;top:268px;width:290px;display:grid;gap:22px}
+.outs .card{padding:22px 24px 22px 28px}
+.outs h4{font:400 27px/1.1 var(--serif)}
 .outs p{font-size:14px;line-height:1.45;color:var(--muted);margin-top:8px}
-.s9 .numsw{position:absolute;left:1272px;right:108px;top:252px}
-.nums{display:grid;grid-template-columns:1fr 1fr;margin-top:0;height:690px}
-.nums>div{padding:20px 26px;border-top:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.s9 .numsw{position:absolute;left:1272px;right:108px;top:268px}
+.nums{display:grid;grid-template-columns:1fr 1fr;height:676px}
+.nums>div{padding:18px 26px;border-top:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
 .nums>div:nth-child(even){border-left:1px solid var(--line)}
 .nums>div:nth-child(-n+2){border-top:0}
-.nums strong{font-size:38px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1.05}
-.nums span{font-size:14px;color:var(--muted);margin-top:6px}
+.nums strong{font:400 52px/1 var(--serif)}
+.nums span{font-size:14px;color:var(--muted);margin-top:8px}
 
 /* ---------- slide 10 ---------- */
-.s10 .brandbig{position:absolute;left:124px;top:132px;display:flex;align-items:center;gap:18px;font-size:40px;font-weight:700;letter-spacing:-.02em}
-.s10 .brandbig svg{width:72px;height:72px}
-.s10 .huge{position:absolute;left:112px;right:100px;top:270px;font-size:134px;font-weight:700;letter-spacing:-.045em;line-height:1.05}
-.s10 .huge span{color:var(--accent)}
-.s10 .tag10{position:absolute;left:122px;top:506px;font-size:32px;color:var(--muted);letter-spacing:-.01em}
-.s10 .ctas{position:absolute;left:122px;right:108px;top:640px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-.ctas>div{height:206px;padding:30px 34px;border-radius:20px}
-.ctas .gh{background:var(--ink);color:#fff;box-shadow:var(--lift)}
-.ctas .lab{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:10px}
-.ctas .gh .lab{color:#8B8B94}
+.s10 .brandbig{position:absolute;left:124px;top:128px;display:flex;align-items:center;gap:20px;font:400 52px/1 var(--serif)}
+.s10 .brandbig svg{width:80px;height:80px}
+.s10 .huge{position:absolute;left:112px;right:100px;top:262px;font-family:var(--serif);font-size:178px;letter-spacing:-.02em;line-height:1}
+.s10 .huge span{color:var(--gold);font-style:italic}
+.s10 .tag10{position:absolute;left:122px;top:500px;font-size:32px;color:var(--muted)}
+.s10 .ctas{position:absolute;left:122px;right:108px;top:636px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.ctas>div{height:206px;padding:32px 36px}
+.ctas .sc{display:flex;align-items:center;gap:10px}
+.ctas .board .sc{color:var(--gold)}
 .ctas .v{font-size:22px;line-height:1.45;margin-top:22px}
-.ctas .gh .v{font:600 25px/1.4 var(--mono);color:#fff}
-.ctas code{font-family:var(--mono);font-size:19px;background:var(--raised);padding:2px 8px;border-radius:6px}
-.s10 .credit{position:absolute;left:122px;right:108px;top:936px;font-size:16px;color:var(--dim)}
+.ctas .board .v{font:600 25px/1.4 var(--mono);color:var(--btext)}
+.ctas code{font-family:var(--mono);font-size:19px;background:var(--raised);padding:2px 8px;border-radius:4px}
+.s10 .credit{position:absolute;left:122px;right:108px;top:938px;font-size:16px;color:var(--dim)}
 
 /* ---------- overlays ---------- */
-#notes{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(1100px,92vw);background:rgba(14,14,16,.94);color:#F2F2F4;border-radius:16px;padding:20px 26px;font-size:17px;line-height:1.55;z-index:20;box-shadow:0 18px 44px rgba(0,0,0,.25);display:none}
+#notes{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(1100px,92vw);background:rgba(15,14,12,.95);color:#F3E9D2;border-radius:10px;padding:20px 26px;font-size:17px;line-height:1.55;z-index:20;box-shadow:0 18px 44px rgba(0,0,0,.25);display:none}
 #notes.on{display:block}
-#notes b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9A9AA3;margin-bottom:6px}
+#notes b{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#B0894F;margin-bottom:6px}
 #hint{position:fixed;right:20px;bottom:18px;font-size:13px;color:var(--dim);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;z-index:21;transition:opacity .6s}
 #hint.off{opacity:0;pointer-events:none}
 @media print{#hint,#notes{display:none!important}}
@@ -333,8 +346,7 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="mark" viewBox="0 0 32 32"><rect x="1" y="1" width="30" height="30" rx="8" fill="#0E0E10"/><path d="M7 21.5 11.5 15l4 3.5L20 11h5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="11" r="3.3" fill="#F2561D"/></symbol>
-  <symbol id="arr" viewBox="0 0 40 20"><line x1="2" y1="10" x2="30" y2="10"/><path d="M29 4 38 10 29 16Z"/></symbol>
+  <symbol id="mark" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#16130E"/><g transform="translate(9.2 9.2) scale(.9)" fill="none" stroke="#F4EFE4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></g></symbol>
 </svg>
 
 <div id="stage">
@@ -344,13 +356,13 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
   <div class="left">
     <div class="pill r f" style="--d:0"><i class="live"></i>Live · YC Make Something Agents Want · Oct 18, 2026</div>
     <div class="word r" style="--d:120"><svg><use href="#mark"/></svg><span>Bidwire</span></div>
-    <h2 class="r" style="--d:300">The ad exchange for AI agents.</h2>
+    <h2 class="r" style="--d:300">The auction house<br>for <i>AI agents.</i></h2>
     <p class="lede r" style="--d:460">When agents shop, nobody sees an ad.<br><b>So merchants have to tell the truth.</b></p>
     <div class="chips">
       <span class="b agent mono r z" style="--d:700">find_offers → buy_offer</span>
       <span class="b green r z" style="--d:790">Every bid verified</span>
-      <span class="b fee r z" style="--d:880">Fees never buy rank</span>
-      <span class="b accent r z" style="--d:970">Live 12-second auctions</span>
+      <span class="b fee r z" style="--d:880">Commission never buys rank</span>
+      <span class="b gold r z" style="--d:970">12-second live lots</span>
     </div>
     <div class="built r f" style="--d:1150">Built with mcp-use (Manufact) · Inkbox · MCP over streamable HTTP</div>
   </div>
@@ -358,17 +370,15 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     <div class="browser">
       <div class="chrome"><i></i><i></i><i></i><span>localhost:8787/exchange</span></div>
       <figure class="shot">
-        <img src="{{SHOT:exchange-liar}}" alt="Bidwire live exchange board catching a lying merchant">
+        <img src="{{SHOT:exchange-liar}}" alt="The Bidwire saleroom withdrawing a lying merchant's bid">
         <div class="ph mx">
-          <div class="bar">Bidwire <span>Exchange</span></div>
-          <div class="lie"><b>Caught lying · {{LIVE:lie1_merchant}}</b><small>{{LIVE:lie1}}</small></div>
+          <div class="board mb"><div class="sc">Lot · Headphones · Opened by Claude</div><small>Best verified offer</small><strong>{{LIVE:hammer}}</strong><em>{{LIVE:hammer_merchant}}</em></div>
+          <div class="card wire"><div class="sc" style="font-size:10px;color:var(--dim)">Agent bidders</div><div>find_offers</div><div>buy_offer</div><div>check_approval</div></div>
           <table>
-            <tr><td>#1</td><td>Last Unit Labs</td><td><span class="b accent">#1 pick</span></td></tr>
-            <tr><td>#2</td><td>Parcel &amp; Pine</td><td><span class="b green">Verified</span></td></tr>
-            <tr><td>#3</td><td>Northwind Electronics</td><td><span class="b green">Verified</span></td></tr>
-            <tr><td>#4</td><td>Sundial Supply</td><td><span class="b green">Verified</span></td></tr>
-            <tr><td>#5</td><td>MegaMart Ads Co.</td><td><span class="b fee">Bribe ignored</span></td></tr>
-            <tr><td>—</td><td>DealDrop Direct</td><td><span class="b red">Lied</span></td></tr>
+            <tr><td>1</td><td>{{LIVE:hammer_merchant}}</td><td><span class="b gold">Hammer</span></td></tr>
+            <tr><td>2</td><td>Parcel &amp; Pine</td><td><span class="b green">Verified</span></td></tr>
+            <tr><td>5</td><td>MegaMart Ads Co.</td><td><span class="b fee">Bribe ignored</span></td></tr>
+            <tr><td>—</td><td>DealDrop Direct</td><td><span class="b red">Withdrawn</span></td></tr>
           </table>
           <div class="ph-tag">Placeholder: screenshots/exchange-liar.png</div>
         </div>
@@ -376,21 +386,20 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     </div>
   </div>
   <div class="liar r dropin" style="--d:1350">
-    <div class="x">✗</div>
-    <b>Caught lying · DealDrop Direct</b>
-    <p>Claimed <s>$34.99</s> delivered · checkout says <em>$63.99</em> (+$29.00 “Service &amp; handling fee”)</p>
-    <small>Live run: a headless Claude Code agent over MCP saw it, and bought the #1 verified offer.</small>
-    <span class="b red stamp r st" style="--d:1800">Lied ✗</span>
+    <b>Bid withdrawn · DealDrop Direct</b>
+    <p>Claimed <s>$34.99</s> delivered · the checkout says <em>$63.99</em> (+$29.00 “Service &amp; handling fee”)</p>
+    <small>Live run: a headless Claude Code agent over MCP saw this and bought the No. 1 verified offer.</small>
+    <span class="stamp r st" style="--d:1800">Withdrawn</span>
   </div>
 </section>
 
 <!-- ============================== 2. PROBLEM ============================== -->
 <section class="slide s2" data-n="2">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">The problem<i></i><em>2 / 10</em></div></header>
-  <h1 class="r" style="--d:60">Agents can shop now.<br><span class="mute">The web was built to manipulate humans.</span></h1>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 02 · The problem</div></header>
+  <h1 class="r" style="--d:60">Agents can shop now. <span class="mute">The web was built to manipulate humans.</span></h1>
   <div class="wrap">
-    <div class="lblrow lbl r f" style="--d:220">What the web does to shoppers</div>
-    <div class="lbl r f" style="--d:900;grid-column:4;grid-row:1">What breaks</div>
+    <div class="lblrow sc r f" style="--d:220">What the web does to shoppers</div>
+    <div class="sc r f" style="--d:900;grid-column:4;grid-row:1">What breaks</div>
     <div class="card c4 r" style="--d:300;grid-column:1;grid-row:2"><span class="ico">Ad</span><h3>Sponsored slots</h3><p>Placement goes to whoever pays the most.</p></div>
     <div class="card c4 r" style="--d:400;grid-column:2;grid-row:2"><span class="ico">SEO</span><h3>Ranking games</h3><p>Rank goes to whoever games the algorithm best.</p></div>
     <div class="card c4 r" style="--d:500;grid-column:1;grid-row:3"><span class="ico">+$29</span><h3>Drip pricing</h3><p><s>$34.99</s> on the page. <em>$63.99</em> at checkout.</p></div>
@@ -400,14 +409,14 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     <div class="card acc rb r" style="--d:1080;--c:var(--fee);grid-row:3"><h3>Merchants can't reach agents</h3><p>There's no ad slot inside a tool call. Banners and SEO never reach a shopping agent.</p></div>
   </div>
   <p class="bottom r" style="--d:1300">Agents need offers they can <b>verify</b>. Merchants need a way to <b>compete</b> for an agent's purchase.</p>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 3. INSIGHT ============================== -->
 <section class="slide s3" data-n="3">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">The insight<i></i><em>3 / 10</em></div></header>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 03 · The insight</div></header>
   <div class="big r" style="--d:60">For an agent, <span>the ad is the offer.</span></div>
-  <p class="sub r f" style="--d:300;top:262px">So merchants bid with claims a machine can check, and we check every one.</p>
+  <p class="sub r f" style="--d:300;top:300px">So merchants raise a paddle with claims a machine can check, and we check every one.</p>
   <div class="three">
     <div class="card r" style="--d:480"><div class="n">1</div><h3>Bid with verifiable claims</h3>
       <p>Delivered price, delivery days and features, checked against the merchant's own product page (schema.org JSON-LD) and live checkout.</p>
@@ -415,69 +424,67 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     <div class="card r" style="--d:620"><div class="n">2</div><h3>Rank on merit</h3>
       <p>Verified offers are scored 0–100 with public weights. Agents can read the policy as an MCP resource.</p>
       <div class="vis"><div class="wbar r g" style="--d:1150">
-        <div style="flex:{{FACT:w_price}};background:#0E0E10">Price {{FACT:w_price}}</div><div style="flex:{{FACT:w_specs}};background:#3A3A41">{{FACT:w_specs}}</div><div style="flex:{{FACT:w_delivery}};background:#6E6E78">{{FACT:w_delivery}}</div><div style="flex:{{FACT:w_trust}};background:#A3A3AC;color:#0E0E10">{{FACT:w_trust}}</div><div style="flex:{{FACT:w_returns}};background:#D6D6DB;color:#0E0E10">{{FACT:w_returns}}</div>
+        <div style="flex:{{FACT:w_price}};background:#16130E">Price {{FACT:w_price}}</div><div style="flex:{{FACT:w_specs}};background:#3B352B">{{FACT:w_specs}}</div><div style="flex:{{FACT:w_delivery}};background:#6E6658">{{FACT:w_delivery}}</div><div style="flex:{{FACT:w_trust}};background:#A89E89;color:#16130E">{{FACT:w_trust}}</div><div style="flex:{{FACT:w_returns}};background:#D8CDB6;color:#16130E">{{FACT:w_returns}}</div>
       </div></div></div>
-    <div class="card r" style="--d:760"><div class="n">3</div><h3>Fees can't buy rank</h3>
-      <p>A merchant pays its fee only when an agent buys, and the fee only breaks near-ties (under 0.5 merit points).</p>
-      <div class="vis"><span class="b fee r st" style="--d:1600;--rot:0deg">Bribe ignored</span><span class="note r f" style="--d:1750">{{LIVE:bribe_fee}}/sale offered, still #{{LIVE:bribe_rank}}</span></div></div>
+    <div class="card r" style="--d:760"><div class="n">3</div><h3>Commission can't buy rank</h3>
+      <p>A merchant pays commission only when an agent buys, and it only breaks near-ties (under 0.5 merit points).</p>
+      <div class="vis"><span class="b fee r st" style="--d:1600;--rot:0deg">Bribe ignored</span><span class="note r f" style="--d:1750">Offered {{LIVE:bribe_fee}} commission · still No. {{LIVE:bribe_rank}}</span></div></div>
   </div>
   <div class="card strip r f" style="--d:1900"><span class="k">YC prompt: rebuild a tool that was built for humans.</span><span>Search: Google → Exa</span><span>Ads: Google Ads → <b>Bidwire</b></span></div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
-<!-- ============================== 4. HOW IT WORKS ============================== -->
+<!-- ============================== 4. HOW A LOT SELLS ============================== -->
 <section class="slide s4" data-n="4">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">How it works<i></i><em>4 / 10</em></div></header>
-  <h1 class="r" style="--d:60;font-size:50px">One tool call in. <span class="mute">A verified, merit-ranked purchase out.</span></h1>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 04 · How a lot sells</div></header>
+  <h1 class="r" style="--d:60">One tool call in. <span class="mute">A verified purchase out.</span></h1>
   <div class="pipe">
-    <div class="card step" style="--d:250;--h:0;--sc:var(--agent);--sc-soft:var(--agent-soft)"><div class="sn">1</div><h4 class="mono">find_offers</h4><p>The agent sends its need, budget, deadline and must-haves.</p></div>
+    <div class="card step" style="--d:250;--h:0"><div class="sn">1</div><h4 class="mono">find_offers</h4><p>The agent opens a lot: need, budget, deadline and must-haves.</p></div>
     <svg class="flow r f" style="--d:350" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:390;--h:1200;--sc:var(--agent);--sc-soft:var(--agent-soft)"><div class="sn">2</div><h4>Live auction</h4><p>About 12 seconds. Bots, people on phones and merchant agents bid.</p></div>
+    <div class="card step" style="--d:390;--h:1200"><div class="sn">2</div><h4>Paddles go up</h4><p>A 12-second live auction. Bots, people on phones and merchant agents bid.</p></div>
     <svg class="flow r f" style="--d:490" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:530;--h:2400;--sc:var(--green);--sc-soft:var(--green-soft)"><div class="sn">3</div><h4>Verify</h4><p>Fetch the product page JSON-LD and the checkout quote. {{FACT:checks}} checks.</p></div>
+    <div class="card step" style="--d:530;--h:2400"><div class="sn">3</div><h4>Verify</h4><p>Fetch the product page JSON-LD and the checkout quote. {{FACT:checks}} checks.</p></div>
     <svg class="flow r f" style="--d:630" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:670;--h:3600;--sc:var(--green);--sc-soft:var(--green-soft)"><div class="sn">4</div><h4>Rank on merit</h4><p>Price {{FACT:w_price}}, must-haves {{FACT:w_specs}}, delivery {{FACT:w_delivery}}, trust {{FACT:w_trust}}, returns {{FACT:w_returns}}.</p></div>
+    <div class="card step" style="--d:670;--h:3600"><div class="sn">4</div><h4>Rank on merit</h4><p>Price {{FACT:w_price}}, must-haves {{FACT:w_specs}}, delivery {{FACT:w_delivery}}, trust {{FACT:w_trust}}, returns {{FACT:w_returns}}.</p></div>
     <svg class="flow r f" style="--d:770" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:810;--h:4800;--sc:var(--agent);--sc-soft:var(--agent-soft)"><div class="sn">5</div><h4 class="mono">buy_offer</h4><p>Pays from the agent's prepaid wallet. Idempotent.</p></div>
+    <div class="card step" style="--d:810;--h:4800"><div class="sn">5</div><h4 class="mono">buy_offer</h4><p><span class="going"><i>Going once…</i><i>twice…</i><i>Sold.</i></span><br>Paid from the agent's prepaid wallet.</p></div>
     <svg class="flow r f" style="--d:910" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:950;--h:6000;--sc:var(--fee);--sc-soft:var(--fee-soft)"><div class="sn">6</div><h4>Spending policy</h4><p>Over the limit? Inkbox texts the human: “Reply YES 1234”.</p></div>
+    <div class="card step" style="--d:950;--h:6000"><div class="sn">6</div><h4>Spending policy</h4><p>Over the limit? Inkbox texts the human: “Reply YES 1234”.</p></div>
     <svg class="flow r f" style="--d:1050" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-    <div class="card step" style="--d:1090;--h:7200;--sc:var(--green);--sc-soft:var(--green-soft)"><div class="sn">7</div><h4>Ledger + receipt</h4><p>Double-entry. Every transaction sums to $0.</p></div>
+    <div class="card step" style="--d:1090;--h:7200"><div class="sn">7</div><h4>Settlement ledger</h4><p>Double-entry. Every transaction sums to $0. Receipt sent.</p></div>
   </div>
   <div class="tags">
-    <div class="tag red r st" style="--d:1500;--rot:0deg;left:498px"><b>Lied ✗</b>Excluded. Trust −12 for every agent.</div>
-    <div class="tag fee r st" style="--d:1650;--rot:0deg;left:747px"><b>Bribe ignored</b>Fees only break near-ties.</div>
+    <div class="tag red r st" style="--d:1500;--rot:0deg;left:498px"><b>Withdrawn</b>Misrepresentation: excluded, trust −12 for every agent.</div>
+    <div class="tag fee r st" style="--d:1650;--rot:0deg;left:747px"><b>Bribe ignored</b>Commission only breaks near-ties.</div>
     <div class="tag agent r st" style="--d:1800;--rot:0deg;left:996px"><b>Sold out</b>out_of_stock + next best offer. The agent recovers.</div>
     <div class="tag green r st" style="--d:1950;--rot:0deg;left:1245px"><b>Approved</b>The human replies YES 1234.</div>
   </div>
   <div class="card kpis r" style="--d:2150">
     <div><strong class="count" data-to="2">2</strong>calls for the agent</div>
-    <div><strong>~<span class="count" data-to="12">12</span> s</strong>live auction</div>
-    <div><strong class="count" data-to="{{FACT:checks}}" style="color:var(--green)">{{FACT:checks}}</strong>checks per bid</div>
+    <div><strong>~<span class="count" data-to="12">12</span>s</strong>per lot</div>
+    <div><strong class="count" data-to="{{FACT:checks}}" style="color:var(--green)">{{FACT:checks}}</strong>checks per paddle</div>
     <div><strong style="color:var(--fee)"><span class="count" data-to="0">0</span>%</strong>of rank for sale</div>
   </div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 5. DEMO ============================== -->
 <section class="slide s5" data-n="5">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Live demo highlights<i></i><em>5 / 10</em></div></header>
-  <h1 class="r" style="--d:60">Live today: <span class="mute">liars caught, bribes ignored, a human in the loop.</span></h1>
-  <div class="cap r f" style="--d:200;left:108px;top:236px">Exchange board · caught lying</div>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 05 · Live demo highlights</div></header>
+  <h1 class="r" style="--d:60">Live today: <span class="mute">liars withdrawn, bribes ignored.</span></h1>
+  <div class="cap sc r f" style="--d:200;left:108px;top:246px">The saleroom · bid withdrawn</div>
   <div class="ex r" style="--d:260">
     <div class="browser">
       <div class="chrome"><i></i><i></i><i></i><span>localhost:8787/exchange</span></div>
       <figure class="shot">
-        <img src="{{SHOT:exchange-liar}}" alt="Live exchange board">
+        <img src="{{SHOT:exchange-liar}}" alt="Live saleroom board">
         <div class="ph mx">
-          <div class="bar">Bidwire <span>Exchange</span></div>
-          <div class="lie"><b>Caught lying · {{LIVE:lie1_merchant}}</b><small>{{LIVE:lie1}}</small></div>
+          <div class="board mb"><div class="sc">Lot · Headphones · Opened by Claude</div><small>Best verified offer</small><strong>{{LIVE:hammer}}</strong><em>{{LIVE:hammer_merchant}}</em></div>
+          <div class="card wire"><div class="sc" style="font-size:10px;color:var(--dim)">Agent bidders</div><div>find_offers</div><div>buy_offer</div><div>check_approval</div></div>
           <table>
-            <tr><td>#1</td><td>Last Unit Labs</td><td><span class="b accent">#1 pick</span></td></tr>
-            <tr><td>#2</td><td>Parcel &amp; Pine</td><td><span class="b green">Verified</span></td></tr>
-            <tr><td>#3</td><td>Northwind Electronics</td><td><span class="b green">Verified</span></td></tr>
-            <tr><td>#5</td><td>MegaMart Ads Co.</td><td><span class="b fee">Bribe ignored</span></td></tr>
-            <tr><td>—</td><td>Specsmith</td><td><span class="b red">Lied</span></td></tr>
+            <tr><td>1</td><td>{{LIVE:hammer_merchant}}</td><td><span class="b gold">Hammer</span></td></tr>
+            <tr><td>5</td><td>MegaMart Ads Co.</td><td><span class="b fee">Bribe ignored</span></td></tr>
+            <tr><td>—</td><td>Specsmith</td><td><span class="b red">Withdrawn</span></td></tr>
           </table>
           <div class="ph-tag">Placeholder: screenshots/exchange-liar.png</div>
         </div>
@@ -485,37 +492,37 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     </div>
   </div>
   <div class="ev">
-    <div class="card r" style="--d:900"><div class="hd"><span class="b fee sm">Bribe ignored</span><span>{{LIVE:bribe_merchant}}</span></div><p>{{LIVE:bribe_why}}</p></div>
+    <div class="card r" style="--d:900"><div class="hd"><span class="b fee sm">Bribe ignored</span><span>{{LIVE:bribe_merchant}}</span></div><p>Offered {{LIVE:bribe_fee}} commission · still No. {{LIVE:bribe_rank}}. Fees never buy rank.</p></div>
     <div class="card r" style="--d:1020"><div class="hd"><span class="b agent sm">Sold out, recovered</span><span class="mono">buy_offer</span></div><p>out_of_stock + next_offer: the agent buys {{LIVE:soldout_next}} on its own.</p></div>
   </div>
-  <div class="cap r f" style="--d:330;left:1098px;top:236px">Approver phone · SMS</div>
+  <div class="cap sc r f" style="--d:330;left:1098px;top:246px">Approver phone · SMS</div>
   <div class="ph5 r" style="--d:420">
     <div class="phone"><figure class="shot">
       <img src="{{SHOT:phone-approval}}" alt="Approval request on the human's phone">
       <div class="ph" style="padding:70px 18px 0;font-size:14px">
-        <div style="text-align:center;font-weight:700;margin-bottom:22px">Bidwire</div>
-        <div style="background:var(--raised);border-radius:18px;padding:14px 16px;line-height:1.4">Your agent wants to buy Sennheiser Momentum 4 Wireless for {{LIVE:approval_amount}} (your limit is {{LIVE:approval_limit}}). Reply YES 1234 to approve.</div>
-        <div style="margin:14px 0 0 auto;width:max-content;background:var(--ink);color:#fff;border-radius:18px;padding:10px 16px;font-weight:600">YES 1234</div>
-        <div style="text-align:center;color:var(--green);font-weight:600;margin-top:22px">Approved · purchase completed</div>
+        <div style="text-align:center;font:400 24px var(--serif);margin-bottom:22px">Bidwire</div>
+        <div style="background:var(--raised);border-radius:18px;padding:14px 16px;line-height:1.4">Your agent wants to bid {{LIVE:hammer}} on {{LIVE:hammer_product}} (limit {{LIVE:approval_limit}}). Reply YES 1234 to approve.</div>
+        <div style="margin:14px 0 0 auto;width:max-content;background:var(--ink);color:var(--panel);border-radius:18px;padding:10px 16px;font-weight:600">YES 1234</div>
+        <div style="text-align:center;color:var(--green);font-weight:600;margin-top:22px">Approved · sold</div>
         <div class="ph-tag" style="right:10px;bottom:40px;font-size:9px">Placeholder: phone-approval.png</div>
       </div>
     </figure></div>
   </div>
-  <div class="card kcol r" style="--d:1100">
-    <div><strong style="color:var(--green)"><span class="count" data-to="{{LIVE:bids}}">{{LIVE:bids}}</span> → <span class="count" data-to="{{LIVE:verified}}">{{LIVE:verified}}</span></strong><span>bids → verified</span></div>
-    <div><strong style="color:var(--red)" class="count" data-to="{{LIVE:excluded}}">{{LIVE:excluded}}</strong><span>excluded for lying: a hidden fee and a fake ANC claim</span></div>
-    <div><strong style="color:var(--fee)">#<span class="count" data-to="{{LIVE:bribe_rank}}">{{LIVE:bribe_rank}}</span></strong><span>where the {{LIVE:bribe_fee}}/sale bribe stayed</span></div>
-    <div><strong style="color:var(--agent)">{{LIVE:approval_amount}}</strong><span>over the {{LIVE:approval_limit}} limit, so the human texted YES</span></div>
+  <div class="board kcol r" style="--d:1100">
+    <div><strong><span class="count" data-to="{{LIVE:bids}}">{{LIVE:bids}}</span> → <span class="count" data-to="{{LIVE:verified}}">{{LIVE:verified}}</span></strong><span>paddles raised → verified</span></div>
+    <div><strong class="count" data-to="{{LIVE:excluded}}">{{LIVE:excluded}}</strong><span>withdrawn: a hidden fee and a fake ANC claim</span></div>
+    <div><strong style="color:var(--bamber)">No. <span class="count" data-to="{{LIVE:bribe_rank}}">{{LIVE:bribe_rank}}</span></strong><span>where the {{LIVE:bribe_fee}} commission bribe stayed</span></div>
+    <div><strong>{{LIVE:approval_amount}}</strong><span>over the {{LIVE:approval_limit}} limit: the human texted YES</span></div>
   </div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 6. BUILT FOR AGENTS ============================== -->
 <section class="slide s6" data-n="6">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Built for agents · Manufact track<i></i><em>6 / 10</em></div></header>
-  <h1 class="r" style="--d:60;font-size:50px">One MCP server. Two calls. <span class="mute">Every client.</span></h1>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 06 · Built for agents · Manufact track</div></header>
+  <h1 class="r" style="--d:60">One MCP server. Two calls. <span class="mute">Every client.</span></h1>
   <div class="card surf r" style="--d:200">
-    <h3>The MCP surface</h3>
+    <div class="sc">The MCP surface</div>
     <div class="k3">
       <div><strong class="count" data-to="{{FACT:tools}}">{{FACT:tools}}</strong>tools</div>
       <div><strong class="count" data-to="{{FACT:resources}}">{{FACT:resources}}</strong>resources</div>
@@ -535,128 +542,128 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     </div>
     <div class="foot6">Built on mcp-use (Manufact) · TypeScript · streamable HTTP at /mcp</div>
   </div>
-  <div class="code r" style="--d:320">
-    <div class="hd"><b>Two calls</b><span>from any MCP client</span></div>
-<pre><div class="r t" style="--d:800"><span class="c-d">→</span> <span class="c-f">find_offers</span>({ need: <span class="c-s">"noise cancelling headphones"</span>,</div><div class="r t" style="--d:1150">                budget_usd: <span class="c-n">400</span>, deliver_within_days: <span class="c-n">5</span> })</div><div class="r t" style="--d:1500"><span class="c-d">← {{LIVE:bids}} bids → {{LIVE:verified}} verified · {{LIVE:excluded}} excluded for lying · ranked</span></div><div class="r t" style="--d:1850"><span class="c-d">→</span> <span class="c-f">buy_offer</span>({ offer_id: <span class="c-s">"bid_…"</span> })</div><div class="r t" style="--d:2200"><span class="c-d">← approval_required → human texts YES →</span> <span class="c-ok">purchased ✓</span></div></pre>
+  <div class="board code r" style="--d:320">
+    <div class="hd"><span class="sc">Two calls from any MCP client</span></div>
+<pre><div class="r t" style="--d:800"><span class="c-d">→</span> <span class="c-f">find_offers</span>({ need: <span class="c-s">"noise cancelling headphones"</span>,</div><div class="r t" style="--d:1150">                budget_usd: <span class="c-n">400</span>, deliver_within_days: <span class="c-n">5</span> })</div><div class="r t" style="--d:1500"><span class="c-d">← {{LIVE:bids}} paddles → {{LIVE:verified}} verified · {{LIVE:excluded}} withdrawn · ranked</span></div><div class="r t" style="--d:1850"><span class="c-d">→</span> <span class="c-f">buy_offer</span>({ offer_id: <span class="c-s">"bid_…"</span> })</div><div class="r t" style="--d:2200"><span class="c-d">← approval_required → human texts YES →</span> <span class="c-ok">sold ✓</span></div></pre>
   </div>
   <div class="feats">
     <div class="card r" style="--d:1300"><h4>Zero-config first call</h4><p>No key = guest agent. Claude, ChatGPT and Codex auto-map to demo agents.</p></div>
     <div class="card r" style="--d:1390"><h4>Errors with hints</h4><p><span class="mono" style="font-size:13px">{ error, message, hint }</span> tells the agent what to call next.</p></div>
     <div class="card r" style="--d:1480"><h4>Idempotency keys</h4><p>Retries never double-buy. Same offer twice returns the same order.</p></div>
     <div class="card r" style="--d:1570"><h4>Per-caller keys</h4><p>Bearer bw_buy_… for shoppers, bw_mer_… for merchant agents.</p></div>
-    <div class="card r" style="--d:1660"><h4>Waits, doesn't poll</h4><p>find_offers waits for the auction; buy_offer waits for the human's YES.</p></div>
+    <div class="card r" style="--d:1660"><h4>Waits, doesn't poll</h4><p>find_offers waits for the lot; buy_offer waits for the human's YES.</p></div>
     <div class="card r" style="--d:1750"><h4>Every client</h4><p>Claude Code · Claude Desktop · ChatGPT · Codex · Cursor</p></div>
   </div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 7. TRUST ============================== -->
 <section class="slide s7" data-n="7">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Trust &amp; safety<i></i><em>7 / 10</em></div></header>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 07 · Trust &amp; safety</div></header>
   <h1 class="r" style="--d:60">Trust is enforced in code.</h1>
   <p class="sub r f" style="--d:240">Every claim checked. Every cent balanced. Every call logged.</p>
   <div class="card checks r" style="--d:300">
-    <h3>{{FACT:checks}} checks on every bid</h3>
+    <div class="sc">{{FACT:checks}} checks on every paddle</div>
     <div class="chk r l" style="--d:520"><i>✓</i><div><b>1. Product page</b><span>schema.org Offer found on the merchant's own page</span></div></div>
     <div class="chk r l" style="--d:640"><i>✓</i><div><b>2. Checkout total</b><span>claimed delivered price ≥ the real checkout total</span></div></div>
     <div class="chk r l" style="--d:760"><i>✓</i><div><b>3. Delivery time</b><span>claimed days ≥ the store's real ship days</span></div></div>
     <div class="chk r l" style="--d:880"><i>✓</i><div><b>4. Features</b><span>every claimed feature is listed on the page</span></div></div>
     <div class="chk r l" style="--d:1000"><i>✓</i><div><b>5. In stock</b><span>available on the page and at checkout</span></div></div>
-    <div class="warn r" style="--d:1250"><b>Fail checks 1–4: excluded.</b> Trust −12, visible to every agent on the exchange.</div>
+    <div class="warn r" style="--d:1250"><b>Fail checks 1–4: withdrawn, misrepresentation.</b> Trust −12, visible to every agent.</div>
   </div>
   <div class="card merit r" style="--d:420">
-    <h3>Merit, not money · public weights</h3>
+    <div class="sc">Merit, not money · public weights</div>
     <div class="wbar r g" style="--d:800">
-      <div style="flex:{{FACT:w_price}};background:#0E0E10">Price {{FACT:w_price}}</div><div style="flex:{{FACT:w_specs}};background:#3A3A41">Must-haves {{FACT:w_specs}}</div><div style="flex:{{FACT:w_delivery}};background:#6E6E78">Delivery {{FACT:w_delivery}}</div><div style="flex:{{FACT:w_trust}};background:#A3A3AC;color:#0E0E10">Trust {{FACT:w_trust}}</div><div style="flex:{{FACT:w_returns}};background:#D6D6DB;color:#0E0E10">{{FACT:w_returns}}</div>
+      <div style="flex:{{FACT:w_price}};background:#16130E">Price {{FACT:w_price}}</div><div style="flex:{{FACT:w_specs}};background:#3B352B">Must-haves {{FACT:w_specs}}</div><div style="flex:{{FACT:w_delivery}};background:#6E6658">Delivery {{FACT:w_delivery}}</div><div style="flex:{{FACT:w_trust}};background:#A89E89;color:#16130E">Trust {{FACT:w_trust}}</div><div style="flex:{{FACT:w_returns}};background:#D8CDB6;color:#16130E">{{FACT:w_returns}}</div>
     </div>
-    <div class="feebar r f" style="--d:1500"><i></i><span><b>Merchant fee: 0.</b> Paid only on a sale; only breaks ties under 0.5 points.</span></div>
+    <div class="feebar r f" style="--d:1500"><i></i><span><b>Commission: 0.</b> Paid only at the hammer; only breaks ties under 0.5 points.</span></div>
   </div>
   <div class="ledg r" style="--d:900">
     <div class="browser">
       <div class="chrome"><i></i><i></i><i></i><span style="min-width:220px">localhost:8787/ledger</span></div>
       <figure class="shot">
-        <img src="{{SHOT:ledger}}" alt="Double-entry ledger">
-        <div class="ph mx" style="padding:14px">
+        <img src="{{SHOT:ledger}}" alt="Settlement ledger">
+        <div class="ph mx" style="display:block;padding:14px">
           <table>
-            <tr><td colspan="2" style="color:var(--muted);font-weight:600">Every transaction sums to $0.00</td><td></td></tr>
-            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">buyer:b_claude:wallet</td><td style="color:var(--red);font-weight:700">−$319.99</td></tr>
-            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">merchant:last-unit:revenue</td><td style="color:var(--green);font-weight:700">+$319.99</td></tr>
-            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">merchant:last-unit:revenue</td><td style="color:var(--red);font-weight:700">−$5.00</td></tr>
-            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">platform:fees</td><td style="color:var(--green);font-weight:700">+$5.00</td></tr>
+            <tr><td colspan="3" style="font:600 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)">Settlement ledger · every transaction sums to $0.00</td></tr>
+            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">buyer:b_claude:wallet</td><td style="color:var(--red);font-family:var(--serif);font-size:18px">−{{LIVE:hammer}}</td></tr>
+            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">merchant:revenue</td><td style="color:var(--green);font-family:var(--serif);font-size:18px">+{{LIVE:hammer}}</td></tr>
+            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">merchant:revenue</td><td style="color:var(--red);font-family:var(--serif);font-size:18px">−$5.00</td></tr>
+            <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">platform:fees</td><td style="color:var(--green);font-family:var(--serif);font-size:18px">+$5.00</td></tr>
           </table>
           <div class="ph-tag">Placeholder: screenshots/ledger.png</div>
         </div>
       </figure>
     </div>
   </div>
-  <div class="ledcap r f" style="--d:1300"><b>Double-entry ledger:</b> every transaction sums to $0</div>
+  <div class="ledcap r f" style="--d:1300"><b>Settlement ledger:</b> every transaction sums to $0</div>
   <div class="side">
     <div class="card acc r" style="--d:1100;--c:var(--fee)"><h4>Spending policy</h4><p>Per-purchase and daily limits from the human. Above them: SMS “Reply YES 1234”.</p></div>
-    <div class="card acc r" style="--d:1220;--c:var(--agent)"><h4>Keys + Agent Wire</h4><p>Per-caller keys. Every tool call logged: client, tool, args, ms, tokens.</p></div>
+    <div class="card acc r" style="--d:1220;--c:var(--agent)"><h4>Keys + audit trail</h4><p>Per-caller keys. Every tool call logged: client, tool, args, ms, tokens.</p></div>
   </div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 8. BUSINESS / WHY NOW ============================== -->
 <section class="slide s8" data-n="8">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Business model · Why now<i></i><em>8 / 10</em></div></header>
-  <h1 class="r" style="--d:60">Merchants pay <span class="mute">only when an agent buys.</span></h1>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 08 · Business model · Why now</div></header>
+  <h1 class="r" style="--d:60">Merchants pay <span class="mute">only at the hammer.</span></h1>
   <div class="card bm r" style="--d:200">
-    <h3>Business model</h3>
+    <div class="sc">Business model</div>
     <div class="money">
       <div class="node w r z" style="--d:450">Agent wallet</div>
-      <div class="marrow r f" style="--d:600"><svg viewBox="0 0 100 20" preserveAspectRatio="none"><line x1="0" y1="10" x2="92" y2="10"/><path d="M90 4 100 10 90 16Z"/></svg><span>price</span></div>
+      <div class="marrow r f" style="--d:600"><svg viewBox="0 0 100 20" preserveAspectRatio="none"><line x1="0" y1="10" x2="92" y2="10"/><path d="M90 4 100 10 90 16Z"/></svg><span>hammer price</span></div>
       <div class="node m r z" style="--d:700">Merchant</div>
-      <div class="marrow fee r f" style="--d:850"><svg viewBox="0 0 100 20" preserveAspectRatio="none"><line x1="0" y1="10" x2="92" y2="10"/><path d="M90 4 100 10 90 16Z"/></svg><span>fee</span></div>
+      <div class="marrow fee r f" style="--d:850"><svg viewBox="0 0 100 20" preserveAspectRatio="none"><line x1="0" y1="10" x2="92" y2="10"/><path d="M90 4 100 10 90 16Z"/></svg><span>commission</span></div>
       <div class="node bw r z" style="--d:950">Bidwire</div>
     </div>
-    <div class="feeonly r f" style="--d:1100">The fee is charged only on a verified sale.</div>
+    <div class="feeonly r f" style="--d:1100">Commission is charged only on a verified sale.</div>
     <div class="bul">
-      <div class="r" style="--d:1200;--c:var(--green)"><i></i><span><b>CPA, not CPM.</b> The fee a merchant bids is charged only when an agent buys a verified offer.</span></div>
-      <div class="r" style="--d:1320;--c:var(--fee)"><i></i><span><b>That fee is our take rate.</b> No impressions. No clicks. No pay-to-rank.</span></div>
+      <div class="r" style="--d:1200;--c:var(--green)"><i></i><span><b>CPA, not CPM.</b> The commission a merchant bids is charged only when an agent buys a verified offer.</span></div>
+      <div class="r" style="--d:1320;--c:var(--fee)"><i></i><span><b>That commission is our take rate.</b> No impressions. No clicks. No pay-to-rank.</span></div>
       <div class="r" style="--d:1440;--c:var(--agent)"><i></i><span><b>Wedge:</b> DTC merchants and agent shopping apps.</span></div>
-      <div class="r" style="--d:1560;--c:var(--accent)"><i></i><span><b>Long game:</b> the trust and reputation layer for agent commerce.</span></div>
+      <div class="r" style="--d:1560;--c:var(--gold)"><i></i><span><b>Long game:</b> the trust and reputation layer for agent commerce.</span></div>
     </div>
   </div>
   <div class="card wn r" style="--d:350">
-    <h3>Why now</h3>
+    <div class="sc">Why now</div>
     <div class="tl">
       <div class="r" style="--d:700;--c:var(--line2)"><b>18 months ago<em>YC kickoff</em></b><p>No MCP. No ACP. No agent had a credit card or a login.</p></div>
       <div class="r" style="--d:900;--c:var(--agent)"><b>This year</b><p>Agents got wallets and protocols: MCP and ACP.</p></div>
-      <div class="r" style="--d:1100;--c:var(--accent)"><b>Now<em>paraphrased</em></b><p>Paul Graham: Amazon banning agents is the biggest opening since Amazon. People will want agents to buy things for them.</p></div>
+      <div class="r" style="--d:1100;--c:var(--gold)"><b>Now<em>paraphrased</em></b><p>Paul Graham: Amazon banning agents is the biggest opening since Amazon. People will want agents to buy things for them.</p></div>
     </div>
     <div class="call r" style="--d:1450"><b>Search ads are a ~$200B+/yr business</b> built on human attention. Agents don't look at ads, so that spend has to compete on verifiable offers.</div>
   </div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 9. WHAT WE BUILT ============================== -->
 <section class="slide s9" data-n="9">
-  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">What we built in 24h<i></i><em>9 / 10</em></div></header>
+  <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 09 · What we built in 24 hours</div></header>
   <h1 class="r" style="--d:60">Built in 24 hours. <span class="mute">Running live.</span></h1>
   <div class="colA">
-    <div class="grp r f" style="--d:200">Agents (MCP)</div>
+    <div class="sc r f" style="--d:200">Agents · MCP</div>
     <span class="b agent r l" style="--d:250">Claude Code</span><span class="b agent r l" style="--d:310">Claude Desktop</span><span class="b agent r l" style="--d:370">ChatGPT</span><span class="b agent r l" style="--d:430">Codex</span><span class="b agent r l" style="--d:490">Cursor</span>
-    <div class="grp r f" style="--d:560;margin-top:26px">Merchants</div>
+    <div class="sc r f" style="--d:560;margin-top:26px">Merchants · paddles</div>
     <span class="b r l" style="--d:610">{{FACT:personas}} bot personas</span><span class="b r l" style="--d:670">People on phones</span><span class="b r l" style="--d:730">Merchant agents</span>
   </div>
-  <svg class="ar flow r f" style="--d:850;top:432px" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
-  <svg class="ar flow r f" style="--d:850;top:754px" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
+  <svg class="ar flow r f" style="--d:850;top:448px" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
+  <svg class="ar flow r f" style="--d:850;top:770px" viewBox="0 0 40 20"><line x1="2" y1="10" x2="29" y2="10"/><path d="M28 4 38 10 28 16Z"/></svg>
   <div class="card srv r" style="--d:800">
     <h3>Bidwire server</h3><div class="meta">mcp-use v2 · Hono · TypeScript</div>
     <div class="srow r f" style="--d:1000"><b>/mcp</b><span>{{FACT:tools}} tools · {{FACT:resources}} resources · {{FACT:prompts}} prompts</span></div>
     <div class="srow r f" style="--d:1100"><b>tools.ts</b><span>one registry: MCP, browser playground, demo agent</span></div>
-    <div class="srow r f" style="--d:1200"><b>exchange.ts</b><span>auction · verify · rank · policy · ledger</span></div>
+    <div class="srow r f" style="--d:1200"><b>exchange.ts</b><span>lot · verify · rank · policy · ledger</span></div>
     <div class="srow r f" style="--d:1300"><b>SQLite</b><span>{{FACT:tables}} tables, plain rows</span></div>
     <div class="srow r f" style="--d:1400"><b>SSE bus</b><span>{{FACT:events}} live event types</span></div>
   </div>
   <div class="outs">
-    <div class="card acc r" style="--d:1500;--c:var(--green)"><h4>Web app</h4><p>Landing · exchange · merchant phone · approver phone · ledger · connect · director</p></div>
+    <div class="card acc r" style="--d:1500;--c:var(--green)"><h4>Web app</h4><p>Landing · saleroom · paddle app · approver phone · settlement ledger · connect · auctioneer's desk</p></div>
     <div class="card acc r" style="--d:1630;--c:var(--agent)"><h4>Storefronts</h4><p>/store/:handle/:sku with schema.org JSON-LD + /quote. The verifier fetches them over HTTP.</p></div>
     <div class="card acc r" style="--d:1760;--c:var(--fee)"><h4>Inkbox</h4><p>Agent identity: approval SMS (“Reply YES 1234”) and email receipts.</p></div>
   </div>
   <div class="numsw">
-    <div class="grp r f" style="--d:1800;margin:0 0 12px">Counted from the code</div>
+    <div class="sc r f" style="--d:1800;margin:0 0 14px">Counted from the code</div>
     <div class="card r" style="--d:1850">
       <div class="nums">
         <div><strong class="count" data-to="{{FACT:tools}}">{{FACT:tools}}</strong><span>MCP tools</span></div>
@@ -672,18 +679,18 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
       </div>
     </div>
   </div>
-  <div class="foot"><span>Bidwire · YC Make Something Agents Want · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
+  <div class="foot"><span>Bidwire · the auction house for AI agents · Oct 18, 2026</span><span>github.com/vnmoorthy/bidwire</span></div>
 </section>
 
 <!-- ============================== 10. CLOSE ============================== -->
 <section class="slide s10" data-n="10">
   <div class="brandbig r z" style="--d:0"><svg><use href="#mark"/></svg>Bidwire</div>
   <div class="huge r" style="--d:250">You can't bribe <span>an agent.</span></div>
-  <p class="tag10 r f" style="--d:650">Bidwire is the ad exchange for AI agents: verified offers, merit ranking, pay per sale.</p>
+  <p class="tag10 r f" style="--d:650">Verified offers. Merit ranking. Commission only at the hammer.</p>
   <div class="ctas">
-    <div class="gh r" style="--d:950"><div class="lab">GitHub</div><div class="v">github.com/vnmoorthy/bidwire</div></div>
-    <div class="card r" style="--d:1100"><div class="lab"><i class="live"></i>Try it live</div><div class="v">Point any MCP client at /mcp. Two calls: <code>find_offers</code> → <code>buy_offer</code>.</div></div>
-    <div class="card r" style="--d:1250"><div class="lab">The ask</div><div class="v">Merchants: pilot pay-per-sale. Agent builders: plug in <code>find_offers</code>.</div></div>
+    <div class="board r" style="--d:950"><div class="sc">GitHub</div><div class="v">github.com/vnmoorthy/bidwire</div></div>
+    <div class="card r" style="--d:1100"><div class="sc"><i class="live"></i>Try it live</div><div class="v">Point any MCP client at /mcp. Two calls: <code>find_offers</code> → <code>buy_offer</code>.</div></div>
+    <div class="card r" style="--d:1250"><div class="sc">The ask</div><div class="v">Merchants: pilot pay-at-the-hammer. Agent builders: plug in <code>find_offers</code>.</div></div>
   </div>
   <div class="credit r f" style="--d:1500">Built at YC “Make Something Agents Want” · with mcp-use (Manufact) and Inkbox · by @vnmoorthy</div>
 </section>
@@ -707,13 +714,11 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
     document.documentElement.style.setProperty('--s', s);
   }
-
   function fmt(v, dec, sep) {
     var s = v.toFixed(dec);
     if (sep) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return s;
   }
-
   function counters(slide) {
     timers.forEach(clearTimeout); timers = [];
     slide.querySelectorAll('.count').forEach(function (el) {
@@ -734,7 +739,6 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
       }, delay + 250));
     });
   }
-
   function go(n) {
     n = Math.max(0, Math.min(slides.length - 1, n));
     if (n === cur) return;
@@ -752,10 +756,8 @@ h1{position:absolute;left:108px;right:108px;top:134px;font-size:56px;line-height
     notes.querySelector('span').textContent = NOTES[String(cur + 1)] || '';
     if (location.hash !== '#' + (cur + 1)) history.replaceState(null, '', '#' + (cur + 1));
   }
-
   function next() { go(cur + 1); }
   function prev() { go(cur - 1); }
-
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
