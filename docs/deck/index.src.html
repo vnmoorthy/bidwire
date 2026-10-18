@@ -115,6 +115,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 .mx tr:first-child td{border-top:0}
 .mx td:first-child{font:400 20px var(--serif);width:40px}.mx td:nth-child(2){font-weight:600}.mx td:last-child{text-align:right}
 .mx .b{height:24px;font-size:11.5px;padding:0 10px}
+.mx.lg{display:block;padding:14px}
 
 /* ---------- slide 1 ---------- */
 .s1 .left{position:absolute;left:112px;top:92px;width:880px}
@@ -262,7 +263,8 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 .feebar i{width:76px;height:26px;border:2px dashed var(--fee);border-radius:4px}
 .feebar b{color:var(--fee)}
 .s7 .ledg{position:absolute;left:950px;top:604px;width:536px}
-.s7 .ledcap{position:absolute;left:950px;top:932px;font-size:15px;color:var(--muted)}
+.s7 .ledg .shot img{width:166.7%;height:166.7%;max-width:none;object-fit:cover;object-position:top left}
+.s7 .ledcap{position:absolute;left:950px;top:962px;font-size:15px;color:var(--muted)}
 .s7 .ledcap b{color:var(--green)}
 .s7 .side{position:absolute;left:1512px;right:108px;top:604px;display:grid;gap:18px}
 .side .card{height:180px;padding:22px 24px 22px 28px}
@@ -474,12 +476,12 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
 <section class="slide s5" data-n="5">
   <header class="top"><div class="brand"><svg><use href="#mark"/></svg>Bidwire</div><div class="kick">Lot 05 · Live demo highlights</div></header>
   <h1 class="r" style="--d:60">Live today: <span class="mute">liars withdrawn, bribes ignored.</span></h1>
-  <div class="cap sc r f" style="--d:200;left:108px;top:246px">The saleroom · bid withdrawn</div>
+  <div class="cap sc r f" style="--d:200;left:108px;top:246px">The saleroom · after the hammer</div>
   <div class="ex r" style="--d:260">
     <div class="browser">
       <div class="chrome"><i></i><i></i><i></i><span>localhost:8787/exchange</span></div>
       <figure class="shot">
-        <img src="{{SHOT:exchange-liar}}" alt="Live saleroom board">
+        <img src="{{SHOT:exchange-ranked|exchange-liar}}" alt="Live saleroom board">
         <div class="ph mx">
           <div class="board mb"><div class="sc">Lot · Headphones · Opened by Claude</div><small>Best verified offer</small><strong>{{LIVE:hammer}}</strong><em>{{LIVE:hammer_merchant}}</em></div>
           <div class="card wire"><div class="sc" style="font-size:10px;color:var(--dim)">Agent bidders</div><div>find_offers</div><div>buy_offer</div><div>check_approval</div></div>
@@ -587,7 +589,7 @@ h1{position:absolute;left:108px;right:108px;top:146px;font-family:var(--serif);f
       <div class="chrome"><i></i><i></i><i></i><span style="min-width:220px">localhost:8787/ledger</span></div>
       <figure class="shot">
         <img src="{{SHOT:ledger}}" alt="Settlement ledger">
-        <div class="ph mx" style="display:block;padding:14px">
+        <div class="ph mx lg">
           <table>
             <tr><td colspan="3" style="font:600 11px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)">Settlement ledger · every transaction sums to $0.00</td></tr>
             <tr><td></td><td class="mono" style="font-weight:500;font-size:12px">buyer:b_claude:wallet</td><td style="color:var(--red);font-family:var(--serif);font-size:18px">−{{LIVE:hammer}}</td></tr>
