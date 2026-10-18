@@ -141,3 +141,14 @@ export function days(n: number | null | undefined): string {
   if (n == null) return "any time";
   return `${n} ${n === 1 ? "day" : "days"}`;
 }
+
+/** Sequential lot number: the newest auction is lot `total`, the one before it `total - 1`, … */
+export function lotNumber(auctions: { id: string }[], total: number, id: string): number {
+  const i = auctions.findIndex((a) => a.id === id);
+  const n = Math.max(total, auctions.length);
+  return i >= 0 ? Math.max(1, n - i) : n;
+}
+
+export function lotLabel(n: number): string {
+  return `Lot ${String(n).padStart(2, "0")}`;
+}
