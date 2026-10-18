@@ -22,7 +22,7 @@ No API keys are needed. State lives in `data/bidwire.db`; `POST /api/demo/reset`
 With the server running:
 
 ```bash
-npm test                                          # 24 end-to-end checks against http://localhost:8787
+npm test                                          # 26 end-to-end checks against http://localhost:8787
 BIDWIRE_URL=https://your-host npm test            # or against another deployment
 ```
 
