@@ -342,19 +342,23 @@ def arrow(shapes, x1, y1, x2, y2, color="line2", lw=1.25, head=True, dash=None):
     return c
 
 
-def picture(shapes, path, x, y, w, h, radius=0.05, focus=(0.5, 0.0), border=None, lw=0.75):
+def picture(shapes, path, x, y, w, h, radius=0.05, focus=(0.5, 0.0), border=None, lw=0.75, region=None):
+    """Aspect-fill picture. region=(l, t, r, b) fractions of the image to use (zoom into part of a screenshot)."""
     with Image.open(path) as im:
         iw, ih = im.size
     pic = shapes.add_picture(path, E(x), E(y), E(w), E(h))
-    ia, fa = iw / float(ih), w / float(h)
+    l, t, r, b = region or (0.0, 0.0, 1.0, 1.0)
+    cl, ct, cr, cb = l, t, 1 - r, 1 - b
+    ia, fa = (r - l) * iw / float((b - t) * ih), w / float(h)
     if ia > fa + 1e-3:
-        crop = 1 - fa / ia
-        pic.crop_left = crop * focus[0]
-        pic.crop_right = crop * (1 - focus[0])
+        extra = (1 - fa / ia) * (r - l)
+        cl += extra * focus[0]
+        cr += extra * (1 - focus[0])
     elif ia < fa - 1e-3:
-        crop = 1 - ia / fa
-        pic.crop_top = crop * focus[1]
-        pic.crop_bottom = crop * (1 - focus[1])
+        extra = (1 - ia / fa) * (b - t)
+        ct += extra * focus[1]
+        cb += extra * (1 - focus[1])
+    pic.crop_left, pic.crop_top, pic.crop_right, pic.crop_bottom = cl, ct, cr, cb
     if radius:
         geom = pic._element.spPr.find(qn("a:prstGeom"))
         geom.set("prst", "roundRect")
@@ -517,7 +521,7 @@ def mock_ledger(g, x, y, w, h, L):
 # --------------------------------------------------------------------------------------------------------------
 # Frames
 # --------------------------------------------------------------------------------------------------------------
-def browser(shapes, x, y, w, name, url, L, mock=mock_exchange, img_h=None, focus=(0.5, 0.0)):
+def browser(shapes, x, y, w, name, url, L, mock=mock_exchange, img_h=None, focus=(0.5, 0.0), region=None):
     ih = img_h or (w - 0.02) * 9 / 16.0
     bar = 0.3
     g = group(shapes)
@@ -531,7 +535,7 @@ def browser(shapes, x, y, w, name, url, L, mock=mock_exchange, img_h=None, focus
     box(s, x + 0.01, y + bar - 0.01, w - 0.02, 0.008, fill="line", r=0)
     p = shot(name)
     if p:
-        picture(s, p, x + 0.01, y + bar, w - 0.02, ih, radius=0.05, focus=focus)
+        picture(s, p, x + 0.01, y + bar, w - 0.02, ih, radius=0.05, focus=focus, region=region)
     else:
         mock(g, x + 0.01, y + bar, w - 0.02, ih, L)
         placeholder_tag(s, x + 0.1, y + bar + ih - 0.24, w - 0.2, name)
@@ -945,8 +949,8 @@ def s5_demo(prs, F, L, new_slide):
     chrome(s, 5, "Live demo highlights", m)
     sh = s.shapes
     headline(s, "Live today: [[muted,i|liars withdrawn, bribes ignored.]]", m, size=34, h=0.6)
-    m.add(smallcaps(sh, 0.75, 1.66, 6.6, "The saleroom · bid withdrawn"), "fade", 150, 400)
-    fr = browser(sh, 0.75, 1.95, 6.6, "exchange-liar", "localhost:8787/exchange", L)
+    m.add(smallcaps(sh, 0.75, 1.72, 6.6, "The saleroom · bid withdrawn"), "fade", 150, 400)
+    fr = browser(sh, 0.75, 2.0, 6.6, "exchange-liar", "localhost:8787/exchange", L)
     m.add(fr, "rise", 200, 700)
     ev = [("amber", "Bribe ignored", L["bribe_merchant"], "Offered %s commission · still No. %s. Fees never buy rank." % (L["bribe_fee"], L["bribe_rank"])),
           ("blue", "Sold out, recovered", "buy_offer", "out_of_stock + next_offer: the agent buys %s on its own." % L["soldout_next"])]
@@ -959,11 +963,11 @@ def s5_demo(prs, F, L, new_slide):
         text(g.shapes, x + 0.25 + bw, 6.2, 3.24 - bw - 0.35, 0.24, who, size=8.5, bold=True, color="muted", font=MONO if who == "buy_offer" else SANS, anchor="m")
         text(g.shapes, x + 0.15, 6.48, 2.98, 0.42, d, size=9, color="text", line=1.03)
         m.add(g, "rise", 950 + i * 130, 450)
-    m.add(smallcaps(sh, 7.62, 1.66, 2.6, "Approver phone · SMS"), "fade", 300, 400)
-    pg, pw = phone(sh, 7.62, 1.95, 4.97, "phone-approval", L)
+    m.add(smallcaps(sh, 7.62, 1.72, 2.6, "Approver phone · SMS"), "fade", 300, 400)
+    pg, pw = phone(sh, 7.62, 2.0, 4.92, "phone-approval", L)
     m.add(pg, "rise", 350, 700)
     sx = 7.62 + pw + 0.28
-    kpi_strip(sh, sx, 1.95, 12.583 - sx, 4.97,
+    kpi_strip(sh, sx, 2.0, 12.583 - sx, 4.92,
               [("%s → %s" % (L["bids"], L["verified"]), "paddles raised → verified", "board_text"),
                (str(L["excluded"]), "withdrawn: a hidden fee and a fake ANC claim", "board_text"),
                ("No. %s" % L["bribe_rank"], "where the %s commission bribe stayed" % L["bribe_fee"], "board_amber"),
